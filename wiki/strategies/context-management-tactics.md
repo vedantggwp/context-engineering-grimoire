@@ -98,3 +98,5 @@ give the model a "think"/scratchpad tool
 - [[failure-modes/how-contexts-fail]] — the four failure modes (poisoning, distraction, confusion, clash) that these six tactics are the fix for
 - [[strategies/four-context-strategies]] — LangChain's write/select/compress/isolate buckets, which these tactics map onto
 - [[strategies/agentic-search-and-retrieval]] — a deeper treatment of RAG and just-in-time retrieval as a context tactic
+- [[strategies/agentic-context-engineering]] — ACE, which turns summarization/offloading into a collapse-resistant evolving playbook
+- [[strategies/context-compression-optimization]] — ACON, which turns static summarization/pruning heuristics into an optimized compression guideline

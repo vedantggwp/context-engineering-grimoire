@@ -97,3 +97,6 @@ apply RAG over tool descriptions
 - [[strategies/context-management-tactics]] — Drew Breunig's six tactics, a parallel taxonomy that maps closely onto write/select/compress/isolate
 - [[strategies/agentic-search-and-retrieval]] — a deeper look at the "select" bucket: fetching knowledge on demand
 - [[failure-modes/how-contexts-fail]] — the failure modes (poisoning, distraction, confusion, clash) these strategies are designed to mitigate
+- [[strategies/agentic-context-engineering]] — ACE, a feedback-driven way to "write" and curate context into an evolving playbook
+- [[strategies/context-compression-optimization]] — ACON, the "compress" bucket made rigorous and self-tuning
+- [[agent-engineering/lessons-from-manus]] — Manus's field lessons operationalizing write/select/compress/isolate in a production agent

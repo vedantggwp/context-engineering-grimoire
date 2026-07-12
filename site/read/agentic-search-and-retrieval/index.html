@@ -76,17 +76,19 @@
   <div class="read-sidebar">
       <h4>Articles</h4>
       <ul>
-        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
-        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
         <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
+        <li><a href="../agentic-context-engineering/index.html">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
         <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
         <li><a href="../agentic-search-and-retrieval/index.html" aria-current="page">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-compression-optimization/index.html">Context Compression Optimization (ACON) for Long-Horizon Agents</a></li>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
         <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
         <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
         <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
-        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
         <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
-        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
         <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
       </ul>
     </div>
@@ -97,7 +99,7 @@
         <a href="#sources" class="source-count">2 sources</a>
         
         <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
-        <span class="article-meta__words">1306 words &middot; 6 min</span>
+        <span class="article-meta__words">1338 words &middot; 6 min</span>
       </div>
       <h1 style="view-transition-name: vta-agentic-search-and-retrieval">Agentic Search and Just-in-Time Retrieval</h1>
       <div class="tag-row"><span class="tag">context-engineering</span><span class="tag">agents</span><span class="tag">retrieval</span><span class="tag">rag</span><span class="tag">agentic-search</span></div>
@@ -167,6 +169,8 @@ at runtime: glob / grep to fetch specific files just-in-time
 <li><a class="internal" href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">strategies/context-management-tactics</a> — RAG and offloading as concrete tactics that complement agentic retrieval</li>
 <li><a class="internal" href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">foundations/what-is-context-engineering</a> — the definition and finite-attention-budget rationale behind retrieving on demand</li>
 <li><a class="internal" href="../how-contexts-fail/index.html" data-wikilink-slug="how-contexts-fail">failure-modes/how-contexts-fail</a> — context rot and the failure modes that pre-loading everything invites</li>
+<li><a class="internal" href="../agentic-context-engineering/index.html" data-wikilink-slug="agentic-context-engineering">strategies/agentic-context-engineering</a> — ACE, the "write"-side counterpart that evolves a curated context playbook from execution feedback</li>
+<li><a class="internal" href="../context-compression-optimization/index.html" data-wikilink-slug="context-compression-optimization">strategies/context-compression-optimization</a> — ACON, the compression counterpart: shrink what you keep rather than fetch on demand</li>
 </ul>
       </div>
       <section class="article-backlinks" aria-label="Articles linking here">
@@ -179,6 +183,14 @@ at runtime: glob / grep to fetch specific files just-in-time
         <li>
           <a href="../lost-in-the-middle/index.html" data-wikilink-slug="lost-in-the-middle">Lost in the Middle: How Models Use Long Contexts</a>
           <span class="article-backlinks__teaser">Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrad…</span>
+        </li>
+        <li>
+          <a href="../agentic-context-engineering/index.html" data-wikilink-slug="agentic-context-engineering">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a>
+          <span class="article-backlinks__teaser">A framework that treats an agent's context as a self-improving playbook, refined from execution feedback via g…</span>
+        </li>
+        <li>
+          <a href="../context-compression-optimization/index.html" data-wikilink-slug="context-compression-optimization">Context Compression Optimization (ACON) for Long-Horizon Agents</a>
+          <span class="article-backlinks__teaser">ACON compresses an agent's observations and history by iteratively refining compression guidelines from failur…</span>
         </li>
         <li>
           <a href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">Context Management Tactics: Six Ways to Fix Your Context</a>
@@ -199,7 +211,7 @@ at runtime: glob / grep to fetch specific files just-in-time
       </section>
       <nav class="article__nav" aria-label="Article navigation">
         <a href="../how-contexts-fail/index.html" class="btn read-nav-btn" rel="prev">&larr; How Contexts Fail: Four Failure Modes</a>
-        <a href="../context-window-as-working-memory/index.html" class="btn read-nav-btn" rel="next">The Context Window as Working Memory &rarr;</a>
+        <a href="../context-compression-optimization/index.html" class="btn read-nav-btn" rel="next">Context Compression Optimization (ACON) for Long-Horizon Agents &rarr;</a>
       </nav>
     </article>
   </div>
@@ -215,7 +227,7 @@ at runtime: glob / grep to fetch specific files just-in-time
       </ul>
     </div>
 </div>
-<script>window.LINK_PREVIEWS = {"evals-for-llm-systems":{"title":"Evals for LLM Systems","summary":"Why evals are the starting point for any LLM system, Hamel's three levels of evaluation, evaluating RAG, and Eugene Yan's eval metrics and pitfalls.","tags":["evaluation","llm-systems","rag"],"readingTime":8},"how-contexts-fail":{"title":"How Contexts Fail: Four Failure Modes","summary":"Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.","tags":["failure-modes","context-management","agents"],"readingTime":6},"lost-in-the-middle":{"title":"Lost in the Middle: How Models Use Long Contexts","summary":"Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrade sharply when it sits in the middle.","tags":["failure-modes","long-context","retrieval"],"readingTime":6},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7},"four-context-strategies":{"title":"The Four Context Strategies: Write, Select, Compress, Isolate","summary":"LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.","tags":["context-engineering","agents","strategies"],"readingTime":6}};</script>
+<script>window.LINK_PREVIEWS = {"evals-for-llm-systems":{"title":"Evals for LLM Systems","summary":"Why evals are the starting point for any LLM system, Hamel's three levels of evaluation, evaluating RAG, and Eugene Yan's eval metrics and pitfalls.","tags":["evaluation","llm-systems","rag"],"readingTime":8},"how-contexts-fail":{"title":"How Contexts Fail: Four Failure Modes","summary":"Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.","tags":["failure-modes","context-management","agents"],"readingTime":6},"lost-in-the-middle":{"title":"Lost in the Middle: How Models Use Long Contexts","summary":"Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrade sharply when it sits in the middle.","tags":["failure-modes","long-context","retrieval"],"readingTime":6},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"agentic-context-engineering":{"title":"Agentic Context Engineering (ACE): Contexts as Evolving Playbooks","summary":"A framework that treats an agent's context as a self-improving playbook, refined from execution feedback via generation, reflection, and curation — without weight updates.","tags":["context-engineering","agents","strategies"],"readingTime":4},"context-compression-optimization":{"title":"Context Compression Optimization (ACON) for Long-Horizon Agents","summary":"ACON compresses an agent's observations and history by iteratively refining compression guidelines from failure analysis — gradient-free, no fine-tuning, 26–54% fewer peak tokens.","tags":["context-engineering","agents","strategies"],"readingTime":4},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7},"four-context-strategies":{"title":"The Four Context Strategies: Write, Select, Compress, Isolate","summary":"LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.","tags":["context-engineering","agents","strategies"],"readingTime":7}};</script>
 <script>
 (function() {
   try { localStorage.setItem('grimoire-last-read', "agentic-search-and-retrieval"); } catch(e) {}
@@ -370,7 +382,7 @@ at runtime: glob / grep to fetch specific files just-in-time
 </script>
 </main>
 <footer class="footer container">
-  <p>Generated 2026-07-10 &middot; 12 articles &middot; Built with Grimoire</p>
+  <p>Generated 2026-07-12 &middot; 14 articles &middot; Built with Grimoire</p>
 </footer>
 <script>
 (function() {

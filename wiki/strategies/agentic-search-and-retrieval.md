@@ -101,3 +101,5 @@ at runtime: glob / grep to fetch specific files just-in-time
 - [[strategies/context-management-tactics]] — RAG and offloading as concrete tactics that complement agentic retrieval
 - [[foundations/what-is-context-engineering]] — the definition and finite-attention-budget rationale behind retrieving on demand
 - [[failure-modes/how-contexts-fail]] — context rot and the failure modes that pre-loading everything invites
+- [[strategies/agentic-context-engineering]] — ACE, the "write"-side counterpart that evolves a curated context playbook from execution feedback
+- [[strategies/context-compression-optimization]] — ACON, the compression counterpart: shrink what you keep rather than fetch on demand

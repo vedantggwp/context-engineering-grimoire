@@ -93,4 +93,5 @@ The guide's recommended usage is not "adopt a framework wholesale." Instead: "th
 - [[agent-engineering/lessons-from-manus]] — a parallel field-tested account of context engineering for agents, including keeping errors in context
 - [[agent-engineering/context-engineering-templates]] — open templates that operationalize similar own-your-context practices
 - [[foundations/what-is-context-engineering]] — the broader discipline these factors sit inside
+- [[strategies/agentic-context-engineering]] — ACE formalizes the evolving-context idea behind "own your context window"
 - [12-Factor Agents (HumanLayer)](https://github.com/humanlayer/12-factor-agents) — the full guide with per-factor deep dives
