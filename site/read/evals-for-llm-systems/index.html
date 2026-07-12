@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" class="motion-subtle density-comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Grimoire">
+  <meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <title>Evals for LLM Systems — Context Engineering for LLM Agents</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='%230d9488'/%3E%3Ccircle cx='25' cy='8' r='4' fill='%230d9488' opacity='0.55'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains%20Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body class="mode-read">
+<script>
+(function() {
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  window.GRIMOIRE_MOTION_OK = function() {
+    if (root.className.indexOf('motion-none') !== -1) return false;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  function revealAll() {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('revealed'); });
+  }
+
+  function start() {
+    if (!window.GRIMOIRE_MOTION_OK() || !('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav>
+  <a href="../../index.html" class="brand">Context Engineering for LLM Agents</a>
+  <div class="tabs">
+    <a href="../../read/index.html" class="tab active">Read</a>
+        <a href="../../graph/index.html" class="tab">Graph</a>
+        <a href="../../search/index.html" class="tab">Search</a>
+        <a href="../../feed/index.html" class="tab">Feed</a>
+        <a href="../../gaps/index.html" class="tab">Gaps</a>
+        <a href="../../quiz/index.html" class="tab">Quiz</a>
+  </div>
+  <div class="nav-right">
+    <kbd>&#8984;K</kbd>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <span id="theme-icon">&#9681;</span>
+    </button>
+  </div>
+</nav>
+<div class="read-progress" id="read-progress"></div>
+<main id="main" class="container">
+
+<div class="read-3col">
+  <div class="read-sidebar">
+      <h4>Articles</h4>
+      <ul>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
+        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
+        <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
+        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../evals-for-llm-systems/index.html" aria-current="page">Evals for LLM Systems</a></li>
+      </ul>
+    </div>
+  <div class="read-content">
+    <article class="article" id="evals-for-llm-systems" data-slug="evals-for-llm-systems">
+      <div class="article-meta">
+        <span class="confidence-badge p1" title="P1 — compiled from should-ingest sources (solid confidence)">P1</span>
+        <a href="#sources" class="source-count">2 sources</a>
+        
+        <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
+        <span class="article-meta__words">1631 words &middot; 8 min</span>
+      </div>
+      <h1 style="view-transition-name: vta-evals-for-llm-systems">Evals for LLM Systems</h1>
+      <div class="tag-row"><span class="tag">evaluation</span><span class="tag">llm-systems</span><span class="tag">rag</span><span class="tag">testing</span></div>
+      <div class="summary">Why evals are the starting point for any LLM system, Hamel's three levels of evaluation, evaluating RAG, and Eugene Yan's eval metrics and pitfalls.</div>
+      <div class="article-body">
+        <h2 id="overview">Overview</h2>
+<p>Evaluations ("evals") are a set of measurements used to assess a system's performance on a task. For any LLM-based system — and a "system" here can be made up of multiple components such as LLMs, prompt templates, retrieved context, and parameters like temperature — evals are what tell you whether a change helped or hurt. Without them, as Eugene Yan puts it, "we would be flying blind, or would have to visually inspect LLM outputs with each change."</p>
+<p>Hamel Husain frames the stakes bluntly from consulting experience: "unsuccessful products almost always share a common root cause: a failure to create robust evaluation systems." Success with AI hinges on how fast you can iterate, and iterating fast requires three things — a way to evaluate quality, a way to debug issues (logging and inspecting data), and a way to change behavior (prompt engineering, fine-tuning, code). Many people focus only on the third, which keeps their product stuck at the demo stage.</p>
+<p>For context engineering specifically, this is the feedback loop: the whole practice of assembling prompts, retrieved documents, and tool definitions is only "working" if you can measure it. Evals are how you know whether a context change actually improved the system or just moved the failures around.</p>
+<h2 id="key-capabilities">Key Capabilities</h2>
+<ul>
+<li><strong>Measure performance and catch regressions</strong> — a representative eval set lets you measure system changes at scale instead of eyeballing outputs each time.</li>
+<li><strong>Guide iteration</strong> — task-specific evals guide prompt engineering, model selection, and fine-tuning; Yan calls this Eval Driven Development (EDD).</li>
+<li><strong>Unlock debugging and fine-tuning</strong> — Hamel notes the infrastructure for evaluation (a searchable trace database, assertions, curated data) is nearly the same infrastructure you need for debugging and for generating fine-tuning data.</li>
+<li><strong>Reduce reliance on humans</strong> — a strong LLM can serve as a reference-free judge, potentially removing the need for gold references or human labels on every output.</li>
+</ul>
+<h2 id="how-it-works">How It Works</h2>
+<h3 id="hamels-three-levels-of-evaluation">Hamel's three levels of evaluation</h3>
+<p>Hamel organizes evaluation into three levels, ordered by cost (Level 3 > Level 2 > Level 1), which dictates how often you run each:</p>
+<ol>
+<li>
+<p><strong>Level 1 — Unit tests.</strong> Assertions, like you'd write in pytest, that run fast and cheaply on every code change. You scope them by breaking your LLM's surface into features and scenarios. For Rechat's real-estate assistant "Lucy," the <em>Listing Finder</em> feature has scenarios like "one listing matches" (<code>len(listing_array) == 1</code>), "multiple match" (<code>> 1</code>), and "none match" (<code>== 0</code>). Generic assertions apply across features — e.g., a regex that asserts no internal UUID leaks into the response. You generate test cases to trigger each scenario, often synthetically with an LLM. Rechat has hundreds of these tests. Unlike traditional unit tests, you don't necessarily need a 100% pass rate — the pass rate is a product decision based on the failures you're willing to tolerate.</p>
+</li>
+<li>
+<p><strong>Level 2 — Human &#x26; model eval.</strong> After a solid Level 1 foundation, evaluate what assertions can't catch. The prerequisite is <strong>logging traces</strong> (the conversation/request flow). You must "remove ALL friction from looking at data," often by building a domain-specific viewing and labeling tool (Rechat's was built with Shiny for Python in under a day). Start by labeling examples simply as good or bad. Then you can add <strong>automated evaluation with an LLM</strong>: a more powerful model writes a critique and a binary good/bad outcome, and you align that judge to a human (Hamel iterates on this in a spreadsheet, comparing model vs. human labels). Track the correlation between model-based and human evaluation to decide how much to trust the automated judge — and note that raw agreement is misleading under class imbalance, so measure precision and recall separately.</p>
+</li>
+<li>
+<p><strong>Level 3 — A/B testing.</strong> Confirm the product actually drives the user behaviors and outcomes you want. A/B testing for LLMs isn't much different from other products, and this level is usually only appropriate for more mature products.</p>
+</li>
+</ol>
+<p>Hamel runs Level 1 on every code change, Level 2 on a set cadence, and Level 3 only after significant product changes.</p>
+<h3 id="eugene-yans-eval-metrics-and-their-pitfalls">Eugene Yan's eval metrics and their pitfalls</h3>
+<p>Yan surveys the metric landscape and, crucially, its limits:</p>
+<ul>
+<li><strong>Benchmarks</strong> like MMLU, HELM, EleutherAI's harness, and AlpacaEval measure broad capability, but the same model can score very differently depending on implementation details (prompt phrasing, tokenization, how the answer probability is computed). Even MMLU is sensitive enough that the QLoRA author concluded "do not work with/report or trust MMLU scores."</li>
+<li><strong>Reference metrics.</strong> BLEU (precision-based, with a brevity penalty; common in translation) and ROUGE (recall-based; common in summarization) rely on n-gram overlap. BERTScore and MoverScore use contextualized embeddings and cosine similarity, so they can account for synonyms and paraphrasing that exact-match metrics miss.</li>
+<li><strong>Pitfalls.</strong> These conventional metrics have (1) poor correlation with human judgments — BLEU and ROUGE have shown negative correlation with human fluency ratings and low correlation on creative/diverse tasks; (2) poor adaptability across tasks — n-gram metrics make little sense for abstractive summarization or dialogue, where an output can have zero overlap with the reference yet be a great response; and (3) poor reproducibility — high variance is reported across studies.</li>
+<li><strong>LLM-as-judge.</strong> An emerging pattern uses a strong LLM as a reference-free evaluator. G-Eval applies an LLM with chain-of-thought and form-filling to score outputs and had high Spearman correlation with human judgments (0.514), outperforming prior methods. In the Vicuna/MT-Bench work, GPT-4's single-answer grading agreed with humans 85% of the time — higher than humans agreed with each other (81%). Known biases to mitigate: <strong>position bias</strong> (favoring the first response — swap order and evaluate twice), <strong>verbosity bias</strong> (favoring longer answers — keep compared responses similar in length), and <strong>self-enhancement bias</strong> (favoring its own outputs — GPT-4 favored itself with a 10% higher win rate, Claude-v1 with 25%; don't use the same model to judge its own output).</li>
+</ul>
+<p>Both authors converge on a practical stance: <strong>don't rely on generic, off-the-shelf benchmarks</strong> to measure your product. Yan recommends starting from task-specific evals (prompt, context, expected output). Hamel puts it as "create an evaluation system specific to your problem." And both keep a place for human "vibe checks" — Yan quotes MosaicML's Jonathan Frankle: "The vibe-based eval cannot be underrated."</p>
+<h3 id="evaluating-rag">Evaluating RAG</h3>
+<p>Because context-engineered systems so often rely on retrieval, the retrieval component needs its own evaluation. Hamel notes you can evaluate sub-components of your AI, like RAG, separately from the system as a whole (and points to Jason Liu's writing for depth). Yan grounds <em>why</em> RAG matters: it reduces hallucination by grounding the model on retrieved context, and it's cheaper to keep a retrieval index current than to continually pre-train a model. He also reports, from building Obsidian-Copilot, that <strong>hybrid retrieval</strong> (a traditional keyword/BM25 index plus embedding-based semantic search) works better than either alone — keyword search handles names, acronyms, and IDs where pure embedding search falls short, while semantic search handles synonyms and correlation that keyword search misses. Upstream retrieval quality flows through to end-to-end accuracy: DPR showed higher retrieval precision translates to higher QA accuracy.</p>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="example-eval-driven-development-for-a-context-change">Example: Eval Driven Development for a context change</h3>
+<p>You tweak the retrieved-context assembly in a RAG pipeline. Rather than eyeballing a few outputs, run your Level 1 assertion suite on every change (fast, cheap), then periodically run Level 2 human/model eval on logged traces to catch quality issues assertions miss. Track results over time — Rechat visualizes test results in Metabase to see an error's prevalence before vs. after a fix. This is EDD: the eval set is the thing that tells you the context change worked.</p>
+<h3 id="example-generating-test-cases-and-fine-tuning-data-from-one-engine">Example: Generating test cases and fine-tuning data from one engine</h3>
+<p>Hamel shows the same synthetic-generation prompt produces both test cases and fine-tuning data. Ask an LLM to "Write 50 different instructions a real estate agent can give to create contacts…," pair each with a lookup instruction, then assert the CRM returns exactly one result. Once you have an eval system, "you already have a robust data generation and curation engine" — your Level 1 and Level 2 checks filter undesirable synthetic data for fine-tuning.</p>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li><strong>Metrics can mislead</strong> — classical metrics (BLEU, ROUGE) correlate poorly with human judgment and don't fit open-ended tasks; benchmark scores aren't comparable unless the implementation is identical down to prompts and tokenization.</li>
+<li><strong>LLM judges are biased</strong> — position, verbosity, and self-enhancement biases require explicit mitigation, and agreement-as-a-metric is misleading under class imbalance (use precision and recall).</li>
+<li><strong>Human eval doesn't fully go away</strong> — Hamel: "You are doing it wrong if you aren't looking at lots of data"; you can sample more over time but never stop entirely. A reasonable heuristic is to keep reading logs until you stop learning anything new.</li>
+<li><strong>Semantic caching and other shortcuts carry risk</strong> — Yan warns that caching on semantic similarity can serve the wrong response (a summary of "Mission Impossible 2" for a "Mission Impossible 3" request); evals are what surface such failures.</li>
+</ul>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a class="internal" href="../how-contexts-fail/index.html" data-wikilink-slug="how-contexts-fail">failure-modes/how-contexts-fail</a> — the failure modes evals are meant to catch (poisoning, distraction, confusion, clash)</li>
+<li><a class="internal" href="../agentic-search-and-retrieval/index.html" data-wikilink-slug="agentic-search-and-retrieval">strategies/agentic-search-and-retrieval</a> — the RAG and retrieval techniques whose quality evals measure</li>
+<li><a class="internal" href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">foundations/what-is-context-engineering</a> — why measuring a context-engineered system is the point of building evals</li>
+<li><a href="https://hamel.dev/blog/posts/evals/">Your AI Product Needs Evals (Hamel Husain)</a> — the full three-level playbook with code</li>
+</ul>
+      </div>
+      
+      <section class="article-sources" id="sources" aria-label="Sources">
+        <h2>Sources</h2>
+        <ol>
+        <li><a href="https://eugeneyan.com/writing/llm-patterns/" rel="noopener">Patterns for Building LLM-based Systems &amp; Products (Eugene Yan)</a> <span class="article-sources__domain">eugeneyan.com</span></li>
+        <li><a href="https://hamel.dev/blog/posts/evals/" rel="noopener">Your AI Product Needs Evals (Hamel Husain)</a> <span class="article-sources__domain">hamel.dev</span></li>
+        </ol>
+      </section>
+      <nav class="article__nav" aria-label="Article navigation">
+        <a href="../lessons-from-manus/index.html" class="btn read-nav-btn" rel="prev">&larr; Lessons from Building Manus</a>
+        <span></span>
+      </nav>
+    </article>
+  </div>
+  <div class="read-toc-right">
+      <h4>On this page</h4>
+      <ul>
+          <li data-heading="overview"><a href="#overview">Overview</a></li>
+          <li data-heading="key-capabilities"><a href="#key-capabilities">Key Capabilities</a></li>
+          <li data-heading="how-it-works"><a href="#how-it-works">How It Works</a></li>
+          <li data-heading="usage-examples"><a href="#usage-examples">Usage Examples</a></li>
+          <li data-heading="limitations"><a href="#limitations">Limitations</a></li>
+          <li data-heading="see-also"><a href="#see-also">See Also</a></li>
+      </ul>
+    </div>
+</div>
+<script>window.LINK_PREVIEWS = {"how-contexts-fail":{"title":"How Contexts Fail: Four Failure Modes","summary":"Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.","tags":["failure-modes","context-management","agents"],"readingTime":6},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"agentic-search-and-retrieval":{"title":"Agentic Search and Just-in-Time Retrieval","summary":"How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.","tags":["context-engineering","agents","retrieval"],"readingTime":6}};</script>
+<script>
+(function() {
+  try { localStorage.setItem('grimoire-last-read', "evals-for-llm-systems"); } catch(e) {}
+
+  // Reading progress: the CSS scroll-timeline path takes over where
+  // supported; the scroll listener is the fallback.
+  var bar = document.getElementById('read-progress');
+  var cssProgress = window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+  if (!cssProgress) {
+    var updateProgress = function() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+      if (bar) bar.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  // Unresolved wikilinks stay inert.
+  document.addEventListener('click', function(e) {
+    var dead = e.target.closest('a[aria-disabled="true"]');
+    if (dead) e.preventDefault();
+  });
+
+  // TOC scroll spy with a sliding accent marker.
+  var toc = document.querySelector('.read-toc-right');
+  if (toc) {
+    var list = toc.querySelector('ul');
+    var marker = document.createElement('span');
+    marker.className = 'read-toc-marker';
+    marker.setAttribute('aria-hidden', 'true');
+    if (list) list.appendChild(marker);
+
+    var setActive = function(item) {
+      toc.querySelectorAll('li').forEach(function(l) { l.classList.remove('active'); });
+      item.classList.add('active');
+      if (list && marker) {
+        marker.style.transform = 'translateY(' + item.offsetTop + 'px)';
+        marker.style.height = item.offsetHeight + 'px';
+        marker.style.opacity = '1';
+      }
+    };
+
+    var spy = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var active = toc.querySelector('li[data-heading="' + entry.target.id + '"]');
+        if (active) setActive(active);
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    document.querySelectorAll('.article-body h2[id]').forEach(function(h) { spy.observe(h); });
+  }
+})();
+</script>
+<script>
+(function() {
+  var previews = window.LINK_PREVIEWS;
+  if (!previews) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  var HOVER_DELAY = 250;
+  var card = null;
+  var showTimer = null;
+  var hideTimer = null;
+  var currentLink = null;
+  var supportsPopover = typeof HTMLElement !== 'undefined' &&
+    Object.prototype.hasOwnProperty.call(HTMLElement.prototype, 'popover');
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function ensureCard() {
+    if (card) return card;
+    card = document.createElement('div');
+    card.className = 'link-preview';
+    card.setAttribute('role', 'tooltip');
+    if (supportsPopover) card.setAttribute('popover', 'manual');
+    document.body.appendChild(card);
+    card.addEventListener('pointerenter', function() { clearTimeout(hideTimer); });
+    card.addEventListener('pointerleave', scheduleHide);
+    return card;
+  }
+
+  function show(link, slug) {
+    var p = previews[slug];
+    if (!p) return;
+    var el = ensureCard();
+    var meta = [p.readingTime ? p.readingTime + ' min' : null]
+      .concat(p.tags || []).filter(Boolean).join(' \u00b7 ');
+    el.innerHTML =
+      '<span class="link-preview__title">' + esc(p.title) + '</span>' +
+      (p.summary ? '<span class="link-preview__summary">' + esc(p.summary) + '</span>' : '') +
+      (meta ? '<span class="link-preview__meta">' + esc(meta) + '</span>' : '');
+
+    var rect = link.getBoundingClientRect();
+    var top = rect.bottom + 8;
+    if (supportsPopover) { el.showPopover(); } else { el.style.display = 'block'; }
+    var cardHeight = el.offsetHeight;
+    if (top + cardHeight > window.innerHeight - 16) {
+      top = rect.top - cardHeight - 8;
+    }
+    var left = Math.min(
+      Math.max(rect.left, 12),
+      window.innerWidth - el.offsetWidth - 12
+    );
+    el.style.top = top + 'px';
+    el.style.left = left + 'px';
+    el.classList.add('visible');
+    currentLink = link;
+  }
+
+  function hide() {
+    if (!card) return;
+    card.classList.remove('visible');
+    if (supportsPopover) {
+      try { card.hidePopover(); } catch(e) {}
+    } else {
+      card.style.display = 'none';
+    }
+    currentLink = null;
+  }
+
+  function scheduleHide() {
+    clearTimeout(showTimer);
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, 120);
+  }
+
+  function bind(link) {
+    var slug = link.dataset.wikilinkSlug;
+    if (!slug || !previews[slug]) return;
+
+    link.addEventListener('pointerenter', function() {
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+      showTimer = setTimeout(function() { show(link, slug); }, HOVER_DELAY);
+    });
+    link.addEventListener('pointerleave', scheduleHide);
+    link.addEventListener('focus', function() { show(link, slug); });
+    link.addEventListener('blur', scheduleHide);
+  }
+
+  document.querySelectorAll('.article-body a[data-wikilink-slug], .article-backlinks a[data-wikilink-slug]')
+    .forEach(bind);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') hide();
+  });
+  window.addEventListener('scroll', function() { if (currentLink) hide(); }, { passive: true });
+})();
+</script>
+</main>
+<footer class="footer container">
+  <p>Generated 2026-07-10 &middot; 12 articles &middot; Built with Grimoire</p>
+</footer>
+<script>
+(function() {
+  var KEY = 'grimoire-theme';
+  var toggle = document.getElementById('theme-toggle');
+  var icon = document.getElementById('theme-icon');
+  var root = document.documentElement;
+
+  function getStored() {
+    try { return localStorage.getItem(KEY); } catch(e) { return null; }
+  }
+
+  function apply(theme) {
+    root.classList.remove('theme-light', 'theme-dark');
+    if (theme) root.classList.add('theme-' + theme);
+    icon.textContent = theme === 'dark' ? '\u2600' : '\u263E';
+    try { localStorage.setItem(KEY, theme || ''); } catch(e) {}
+  }
+
+  var stored = getStored();
+  if (stored) apply(stored);
+
+  toggle.addEventListener('click', function() {
+    var isDark = root.classList.contains('theme-dark') ||
+      (!root.classList.contains('theme-light') &&
+       window.matchMedia('(prefers-color-scheme: dark)').matches);
+    apply(isDark ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>

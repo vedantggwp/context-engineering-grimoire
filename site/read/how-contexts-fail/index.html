@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" class="motion-subtle density-comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Grimoire">
+  <meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <title>How Contexts Fail: Four Failure Modes — Context Engineering for LLM Agents</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='%230d9488'/%3E%3Ccircle cx='25' cy='8' r='4' fill='%230d9488' opacity='0.55'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains%20Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body class="mode-read">
+<script>
+(function() {
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  window.GRIMOIRE_MOTION_OK = function() {
+    if (root.className.indexOf('motion-none') !== -1) return false;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  function revealAll() {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('revealed'); });
+  }
+
+  function start() {
+    if (!window.GRIMOIRE_MOTION_OK() || !('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav>
+  <a href="../../index.html" class="brand">Context Engineering for LLM Agents</a>
+  <div class="tabs">
+    <a href="../../read/index.html" class="tab active">Read</a>
+        <a href="../../graph/index.html" class="tab">Graph</a>
+        <a href="../../search/index.html" class="tab">Search</a>
+        <a href="../../feed/index.html" class="tab">Feed</a>
+        <a href="../../gaps/index.html" class="tab">Gaps</a>
+        <a href="../../quiz/index.html" class="tab">Quiz</a>
+  </div>
+  <div class="nav-right">
+    <kbd>&#8984;K</kbd>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <span id="theme-icon">&#9681;</span>
+    </button>
+  </div>
+</nav>
+<div class="read-progress" id="read-progress"></div>
+<main id="main" class="container">
+
+<div class="read-3col">
+  <div class="read-sidebar">
+      <h4>Articles</h4>
+      <ul>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
+        <li><a href="../how-contexts-fail/index.html" aria-current="page">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
+        <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
+        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
+      </ul>
+    </div>
+  <div class="read-content">
+    <article class="article" id="how-contexts-fail" data-slug="how-contexts-fail">
+      <div class="article-meta">
+        <span class="confidence-badge p1" title="P1 — compiled from should-ingest sources (solid confidence)">P1</span>
+        <a href="#sources" class="source-count">1 source</a>
+        
+        <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
+        <span class="article-meta__words">1296 words &middot; 6 min</span>
+      </div>
+      <h1 style="view-transition-name: vta-how-contexts-fail">How Contexts Fail: Four Failure Modes</h1>
+      <div class="tag-row"><span class="tag">failure-modes</span><span class="tag">context-management</span><span class="tag">agents</span></div>
+      <div class="summary">Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.</div>
+      <div class="article-body">
+        <h2 id="overview">Overview</h2>
+<p>As frontier model context windows have grown — many now supporting up to 1 million tokens — a tempting assumption spread: with a large enough window, you can simply throw everything a model might need into a prompt (tools, documents, instructions) and let the model sort it out. Long contexts kneecapped RAG enthusiasm, enabled MCP hype, and fueled enthusiasm for agents.</p>
+<p>But in reality, longer contexts do not generate better responses. Overloading a context can cause agents and applications to fail in surprising ways. Drew Breunig catalogs four distinct failure modes: contexts can become <strong>poisoned</strong>, <strong>distracting</strong>, <strong>confusing</strong>, or <strong>conflicting</strong>. These failures hit agents hardest, because agents operate in exactly the scenarios where contexts balloon — gathering information from multiple sources, making sequential tool calls, engaging in multi-turn reasoning, and accumulating extensive histories.</p>
+<p>Anyone building agents needs to recognize these modes, because they explain why an agent that works in a short demo degrades as its context grows.</p>
+<h2 id="key-capabilities">Key Capabilities</h2>
+<ul>
+<li><strong>Context Poisoning</strong> — a hallucination or error makes it into the context, where it is repeatedly referenced, causing the model to fixate on impossible or irrelevant goals.</li>
+<li><strong>Context Distraction</strong> — a context grows so long the model over-focuses on it, neglecting what it learned during training and repeating past actions rather than synthesizing new plans.</li>
+<li><strong>Context Confusion</strong> — superfluous content in the context is used by the model to generate a low-quality response, such as calling irrelevant tools.</li>
+<li><strong>Context Clash</strong> — parts of the context directly conflict with each other, derailing the model's reasoning.</li>
+</ul>
+<h2 id="how-it-works">How It Works</h2>
+<h3 id="context-poisoning">Context Poisoning</h3>
+<p>Context Poisoning is when a hallucination or other error makes it into the context, where it is repeatedly referenced.</p>
+<p>The DeepMind team called this out in the Gemini 2.5 technical report, describing the Gemini agent playing Pokémon. As the report put it, "many parts of the context (goals, summary) are 'poisoned' with misinformation about the game state, which can often take a very long time to undo. As a result, the model can become fixated on achieving impossible or irrelevant goals." When the "goals" section of its context was poisoned, the agent developed nonsensical strategies and repeated behaviors in pursuit of a goal that could not be met.</p>
+<h3 id="context-distraction">Context Distraction</h3>
+<p>Context Distraction is when a context grows so long that the model over-focuses on the context, neglecting what it learned during training.</p>
+<p>As context accumulates during an agentic workflow, it can become distracting rather than helpful. The Pokémon-playing Gemini agent again illustrated this: as the context grew significantly beyond 100k tokens, the agent showed "a tendency toward favoring repeating actions from its vast history rather than synthesizing novel plans." This highlights a distinction between long-context for retrieval and long-context for multi-step, generative reasoning.</p>
+<p>For smaller models, the distraction ceiling is much lower. A Databricks study found that model correctness began to fall around 32k tokens for Llama 3.1 405b, and earlier for smaller models. Breunig's takeaway: if you're not doing summarization or fact retrieval, be wary of your chosen model's distraction ceiling — the useful working length is often far below the advertised window.</p>
+<h3 id="context-confusion">Context Confusion</h3>
+<p>Context Confusion is when superfluous content in the context is used by the model to generate a low-quality response.</p>
+<p>The clearest example is tool overload. The Berkeley Function-Calling Leaderboard, a tool-use benchmark now on its third version, shows that every model performs worse when provided with more than one tool. The Berkeley team also designed scenarios where none of the provided functions are relevant, expecting the model to make no function call — yet all models occasionally call tools that aren't relevant, and the problem worsens as models get smaller.</p>
+<p>A striking example comes from a paper evaluating small-model performance on the GeoEngine benchmark, which features 46 different tools. When the team gave a quantized Llama 3.1 8b a query with all 46 tools, it failed — even though the context was well within the 16k context window. But when they gave the model only 19 tools, it succeeded. The lesson: if you put something in the context, the model has to pay attention to it, even when it's irrelevant.</p>
+<h3 id="context-clash">Context Clash</h3>
+<p>Context Clash is when you accrue new information and tools in your context that conflict with other information already there. It is a more problematic version of Context Confusion — the bad context isn't merely irrelevant, it directly conflicts with other information in the prompt.</p>
+<p>A Microsoft and Salesforce team documented this by taking prompts from multiple benchmarks and "sharding" their information across multiple prompts, simulating a multi-step chat exchange rather than one fully-specified prompt. The sharded prompts yielded dramatically worse results, with an average drop of 39%. OpenAI's o3 dropped from 98.1 to 64.1.</p>
+<p>The cause: the assembled context contains early attempts by the model to answer before it had all the information. These incorrect early answers remain present and influence the final answer. As the team wrote, "LLMs often make assumptions in early turns and prematurely attempt to generate final solutions, on which they overly rely… when LLMs take a wrong turn in a conversation, they get lost and do not recover." For agents that assemble context from documents, tool calls, and other models tasked with subproblems, this diverse context has a real chance of disagreeing with itself.</p>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="example-diagnosing-a-fixated-agent">Example: Diagnosing a fixated agent</h3>
+<p>An agent keeps pursuing a goal that can't be achieved and repeats the same behaviors. Check whether an earlier hallucination entered a persistent part of the context (a goals or summary section). This is Context Poisoning — the error is being re-referenced every turn, so it must be removed from the context, not merely argued against.</p>
+<h3 id="example-an-agent-that-stops-making-new-plans">Example: An agent that stops making new plans</h3>
+<p>A long-running agent starts repeating actions from its history rather than devising novel strategies, and this begins well before the context window is full. This is Context Distraction. Note the model and its distraction ceiling (correctness fell around 32k tokens for Llama 3.1 405b, earlier for smaller models) and reduce accumulated history unless the task is summarization or fact retrieval.</p>
+<h3 id="example-too-many-tools">Example: Too many tools</h3>
+<p>An agent connected to many MCP tools calls irrelevant ones or produces low-quality output despite fitting inside the context window. This is Context Confusion. The GeoEngine result — failure with 46 tools, success with 19 — suggests cutting the number of tools presented at once.</p>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li><strong>The article names the failure modes but defers fixes</strong> — Breunig states solutions (dynamically loading tools, spinning up context quarantines) are covered in a follow-up post, "How to Fix Your Context." This article is diagnostic, not prescriptive.</li>
+<li><strong>Some evidence is anecdotal</strong> — the Gemini Pokémon observations are described in the source as anecdotal, and the distraction ceiling varies by model, so specific thresholds shouldn't be treated as universal constants.</li>
+<li><strong>Larger, reasoning models are improving</strong> — the source notes large models, especially reasoning models, are getting better at ignoring superfluous context, so the severity of confusion and distraction depends on the model in use.</li>
+</ul>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a class="internal" href="../lost-in-the-middle/index.html" data-wikilink-slug="lost-in-the-middle">failure-modes/lost-in-the-middle</a> — a related, measured degradation where models under-use information positioned in the middle of long contexts</li>
+<li><a class="internal" href="../four-context-strategies/index.html" data-wikilink-slug="four-context-strategies">strategies/four-context-strategies</a> — approaches for managing context to avoid these failure modes</li>
+<li><a class="internal" href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">strategies/context-management-tactics</a> — concrete tactics for keeping contexts lean and coherent</li>
+<li><a href="https://www.dbreunig.com/2025/06/26/how-to-fix-your-context.html">How to Fix Your Context (Drew Breunig)</a> — the follow-up covering mitigations</li>
+</ul>
+      </div>
+      <section class="article-backlinks" aria-label="Articles linking here">
+        <h2>Linked from</h2>
+        <ul>
+        <li>
+          <a href="../evals-for-llm-systems/index.html" data-wikilink-slug="evals-for-llm-systems">Evals for LLM Systems</a>
+          <span class="article-backlinks__teaser">Why evals are the starting point for any LLM system, Hamel's three levels of evaluation, evaluating RAG, and E…</span>
+        </li>
+        <li>
+          <a href="../lost-in-the-middle/index.html" data-wikilink-slug="lost-in-the-middle">Lost in the Middle: How Models Use Long Contexts</a>
+          <span class="article-backlinks__teaser">Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrad…</span>
+        </li>
+        <li>
+          <a href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">What Is Context Engineering</a>
+          <span class="article-backlinks__teaser">The discipline of filling an LLM's limited context window with the right information, tools, and format at eac…</span>
+        </li>
+        <li>
+          <a href="../agentic-search-and-retrieval/index.html" data-wikilink-slug="agentic-search-and-retrieval">Agentic Search and Just-in-Time Retrieval</a>
+          <span class="article-backlinks__teaser">How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-…</span>
+        </li>
+        <li>
+          <a href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">Context Management Tactics: Six Ways to Fix Your Context</a>
+          <span class="article-backlinks__teaser">Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigatin…</span>
+        </li>
+        <li>
+          <a href="../four-context-strategies/index.html" data-wikilink-slug="four-context-strategies">The Four Context Strategies: Write, Select, Compress, Isolate</a>
+          <span class="article-backlinks__teaser">LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with c…</span>
+        </li>
+        </ul>
+      </section>
+      <section class="article-sources" id="sources" aria-label="Sources">
+        <h2>Sources</h2>
+        <ol>
+        <li><a href="https://www.dbreunig.com/2025/06/22/how-contexts-fail-and-how-to-fix-them.html" rel="noopener">How Long Contexts Fail (Drew Breunig)</a> <span class="article-sources__domain">dbreunig.com</span></li>
+        </ol>
+      </section>
+      <nav class="article__nav" aria-label="Article navigation">
+        <a href="../four-context-strategies/index.html" class="btn read-nav-btn" rel="prev">&larr; The Four Context Strategies: Write, Select, Compress, Isolate</a>
+        <a href="../agentic-search-and-retrieval/index.html" class="btn read-nav-btn" rel="next">Agentic Search and Just-in-Time Retrieval &rarr;</a>
+      </nav>
+    </article>
+  </div>
+  <div class="read-toc-right">
+      <h4>On this page</h4>
+      <ul>
+          <li data-heading="overview"><a href="#overview">Overview</a></li>
+          <li data-heading="key-capabilities"><a href="#key-capabilities">Key Capabilities</a></li>
+          <li data-heading="how-it-works"><a href="#how-it-works">How It Works</a></li>
+          <li data-heading="usage-examples"><a href="#usage-examples">Usage Examples</a></li>
+          <li data-heading="limitations"><a href="#limitations">Limitations</a></li>
+          <li data-heading="see-also"><a href="#see-also">See Also</a></li>
+      </ul>
+    </div>
+</div>
+<script>window.LINK_PREVIEWS = {"evals-for-llm-systems":{"title":"Evals for LLM Systems","summary":"Why evals are the starting point for any LLM system, Hamel's three levels of evaluation, evaluating RAG, and Eugene Yan's eval metrics and pitfalls.","tags":["evaluation","llm-systems","rag"],"readingTime":8},"lost-in-the-middle":{"title":"Lost in the Middle: How Models Use Long Contexts","summary":"Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrade sharply when it sits in the middle.","tags":["failure-modes","long-context","retrieval"],"readingTime":6},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"agentic-search-and-retrieval":{"title":"Agentic Search and Just-in-Time Retrieval","summary":"How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.","tags":["context-engineering","agents","retrieval"],"readingTime":6},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7},"four-context-strategies":{"title":"The Four Context Strategies: Write, Select, Compress, Isolate","summary":"LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.","tags":["context-engineering","agents","strategies"],"readingTime":6}};</script>
+<script>
+(function() {
+  try { localStorage.setItem('grimoire-last-read', "how-contexts-fail"); } catch(e) {}
+
+  // Reading progress: the CSS scroll-timeline path takes over where
+  // supported; the scroll listener is the fallback.
+  var bar = document.getElementById('read-progress');
+  var cssProgress = window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+  if (!cssProgress) {
+    var updateProgress = function() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+      if (bar) bar.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  // Unresolved wikilinks stay inert.
+  document.addEventListener('click', function(e) {
+    var dead = e.target.closest('a[aria-disabled="true"]');
+    if (dead) e.preventDefault();
+  });
+
+  // TOC scroll spy with a sliding accent marker.
+  var toc = document.querySelector('.read-toc-right');
+  if (toc) {
+    var list = toc.querySelector('ul');
+    var marker = document.createElement('span');
+    marker.className = 'read-toc-marker';
+    marker.setAttribute('aria-hidden', 'true');
+    if (list) list.appendChild(marker);
+
+    var setActive = function(item) {
+      toc.querySelectorAll('li').forEach(function(l) { l.classList.remove('active'); });
+      item.classList.add('active');
+      if (list && marker) {
+        marker.style.transform = 'translateY(' + item.offsetTop + 'px)';
+        marker.style.height = item.offsetHeight + 'px';
+        marker.style.opacity = '1';
+      }
+    };
+
+    var spy = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var active = toc.querySelector('li[data-heading="' + entry.target.id + '"]');
+        if (active) setActive(active);
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    document.querySelectorAll('.article-body h2[id]').forEach(function(h) { spy.observe(h); });
+  }
+})();
+</script>
+<script>
+(function() {
+  var previews = window.LINK_PREVIEWS;
+  if (!previews) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  var HOVER_DELAY = 250;
+  var card = null;
+  var showTimer = null;
+  var hideTimer = null;
+  var currentLink = null;
+  var supportsPopover = typeof HTMLElement !== 'undefined' &&
+    Object.prototype.hasOwnProperty.call(HTMLElement.prototype, 'popover');
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function ensureCard() {
+    if (card) return card;
+    card = document.createElement('div');
+    card.className = 'link-preview';
+    card.setAttribute('role', 'tooltip');
+    if (supportsPopover) card.setAttribute('popover', 'manual');
+    document.body.appendChild(card);
+    card.addEventListener('pointerenter', function() { clearTimeout(hideTimer); });
+    card.addEventListener('pointerleave', scheduleHide);
+    return card;
+  }
+
+  function show(link, slug) {
+    var p = previews[slug];
+    if (!p) return;
+    var el = ensureCard();
+    var meta = [p.readingTime ? p.readingTime + ' min' : null]
+      .concat(p.tags || []).filter(Boolean).join(' \u00b7 ');
+    el.innerHTML =
+      '<span class="link-preview__title">' + esc(p.title) + '</span>' +
+      (p.summary ? '<span class="link-preview__summary">' + esc(p.summary) + '</span>' : '') +
+      (meta ? '<span class="link-preview__meta">' + esc(meta) + '</span>' : '');
+
+    var rect = link.getBoundingClientRect();
+    var top = rect.bottom + 8;
+    if (supportsPopover) { el.showPopover(); } else { el.style.display = 'block'; }
+    var cardHeight = el.offsetHeight;
+    if (top + cardHeight > window.innerHeight - 16) {
+      top = rect.top - cardHeight - 8;
+    }
+    var left = Math.min(
+      Math.max(rect.left, 12),
+      window.innerWidth - el.offsetWidth - 12
+    );
+    el.style.top = top + 'px';
+    el.style.left = left + 'px';
+    el.classList.add('visible');
+    currentLink = link;
+  }
+
+  function hide() {
+    if (!card) return;
+    card.classList.remove('visible');
+    if (supportsPopover) {
+      try { card.hidePopover(); } catch(e) {}
+    } else {
+      card.style.display = 'none';
+    }
+    currentLink = null;
+  }
+
+  function scheduleHide() {
+    clearTimeout(showTimer);
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, 120);
+  }
+
+  function bind(link) {
+    var slug = link.dataset.wikilinkSlug;
+    if (!slug || !previews[slug]) return;
+
+    link.addEventListener('pointerenter', function() {
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+      showTimer = setTimeout(function() { show(link, slug); }, HOVER_DELAY);
+    });
+    link.addEventListener('pointerleave', scheduleHide);
+    link.addEventListener('focus', function() { show(link, slug); });
+    link.addEventListener('blur', scheduleHide);
+  }
+
+  document.querySelectorAll('.article-body a[data-wikilink-slug], .article-backlinks a[data-wikilink-slug]')
+    .forEach(bind);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') hide();
+  });
+  window.addEventListener('scroll', function() { if (currentLink) hide(); }, { passive: true });
+})();
+</script>
+</main>
+<footer class="footer container">
+  <p>Generated 2026-07-10 &middot; 12 articles &middot; Built with Grimoire</p>
+</footer>
+<script>
+(function() {
+  var KEY = 'grimoire-theme';
+  var toggle = document.getElementById('theme-toggle');
+  var icon = document.getElementById('theme-icon');
+  var root = document.documentElement;
+
+  function getStored() {
+    try { return localStorage.getItem(KEY); } catch(e) { return null; }
+  }
+
+  function apply(theme) {
+    root.classList.remove('theme-light', 'theme-dark');
+    if (theme) root.classList.add('theme-' + theme);
+    icon.textContent = theme === 'dark' ? '\u2600' : '\u263E';
+    try { localStorage.setItem(KEY, theme || ''); } catch(e) {}
+  }
+
+  var stored = getStored();
+  if (stored) apply(stored);
+
+  toggle.addEventListener('click', function() {
+    var isDark = root.classList.contains('theme-dark') ||
+      (!root.classList.contains('theme-light') &&
+       window.matchMedia('(prefers-color-scheme: dark)').matches);
+    apply(isDark ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>

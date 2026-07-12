@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" class="motion-subtle density-comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Grimoire">
+  <meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <title>The Four Context Strategies: Write, Select, Compress, Isolate — Context Engineering for LLM Agents</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='%230d9488'/%3E%3Ccircle cx='25' cy='8' r='4' fill='%230d9488' opacity='0.55'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains%20Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body class="mode-read">
+<script>
+(function() {
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  window.GRIMOIRE_MOTION_OK = function() {
+    if (root.className.indexOf('motion-none') !== -1) return false;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  function revealAll() {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('revealed'); });
+  }
+
+  function start() {
+    if (!window.GRIMOIRE_MOTION_OK() || !('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav>
+  <a href="../../index.html" class="brand">Context Engineering for LLM Agents</a>
+  <div class="tabs">
+    <a href="../../read/index.html" class="tab active">Read</a>
+        <a href="../../graph/index.html" class="tab">Graph</a>
+        <a href="../../search/index.html" class="tab">Search</a>
+        <a href="../../feed/index.html" class="tab">Feed</a>
+        <a href="../../gaps/index.html" class="tab">Gaps</a>
+        <a href="../../quiz/index.html" class="tab">Quiz</a>
+  </div>
+  <div class="nav-right">
+    <kbd>&#8984;K</kbd>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <span id="theme-icon">&#9681;</span>
+    </button>
+  </div>
+</nav>
+<div class="read-progress" id="read-progress"></div>
+<main id="main" class="container">
+
+<div class="read-3col">
+  <div class="read-sidebar">
+      <h4>Articles</h4>
+      <ul>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../four-context-strategies/index.html" aria-current="page">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
+        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
+        <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
+        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
+      </ul>
+    </div>
+  <div class="read-content">
+    <article class="article" id="four-context-strategies" data-slug="four-context-strategies">
+      <div class="article-meta">
+        <span class="confidence-badge p0" title="P0 — compiled from must-ingest sources (highest confidence)">P0</span>
+        <a href="#sources" class="source-count">1 source</a>
+        
+        <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
+        <span class="article-meta__words">1318 words &middot; 6 min</span>
+      </div>
+      <h1 style="view-transition-name: vta-four-context-strategies">The Four Context Strategies: Write, Select, Compress, Isolate</h1>
+      <div class="tag-row"><span class="tag">context-engineering</span><span class="tag">agents</span><span class="tag">strategies</span><span class="tag">langgraph</span></div>
+      <div class="summary">LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.</div>
+      <div class="article-body">
+        <h2 id="overview">Overview</h2>
+<p>Agents need context to perform tasks. LangChain defines context engineering as "the art and science of filling the context window with just the right information at each step of an agent's trajectory." Because agents interleave LLM calls and tool calls — often for long-running tasks — they accumulate feedback over many turns and can use a large number of tokens. This can exceed the size of the context window, balloon cost and latency, or degrade agent performance.</p>
+<p>To organize the response to this problem, LangChain groups common strategies for agent context engineering into four buckets: <strong>write, select, compress, and isolate</strong>. Each bucket is drawn from a review of popular agent products and papers. The framing borrows Andrej Karpathy's analogy that LLMs are like a new kind of operating system: the LLM is the CPU and its context window is the RAM, a working memory with limited capacity that must be curated — the role context engineering plays.</p>
+<p>This matters because, as Cognition put it, context engineering "is effectively the #1 job of engineers building AI agents," and Anthropic notes that agents "often engage in conversations spanning hundreds of turns, requiring careful context management strategies."</p>
+<h2 id="key-capabilities">Key Capabilities</h2>
+<ul>
+<li><strong>Write context</strong> — saving information outside the context window (scratchpads, memories) so it persists and is available to the agent later.</li>
+<li><strong>Select context</strong> — pulling the right information into the context window at each step (from scratchpads, memories, tools, and knowledge via RAG).</li>
+<li><strong>Compress context</strong> — retaining only the tokens required to perform a task, via summarization or trimming.</li>
+<li><strong>Isolate context</strong> — splitting context up across sub-agents, sandboxed environments, or state objects to keep each context window focused.</li>
+</ul>
+<h2 id="how-it-works">How It Works</h2>
+<p>The four strategies address the same underlying problem — a finite context window filling with accumulated tool feedback — from four different angles.</p>
+<h3 id="1-write-context">1. Write Context</h3>
+<p>Writing context means saving it outside the context window to help an agent perform a task.</p>
+<ul>
+<li><strong>Scratchpads</strong> — Note-taking that persists information while an agent works on a task. Anthropic's multi-agent researcher illustrates this: the LeadResearcher saves its plan to memory to persist context, "since if the context window exceeds 200,000 tokens it will be truncated and it is important to retain the plan." Scratchpads can be a tool call that writes to a file, or a field in a runtime state object that persists during the session.</li>
+<li><strong>Memories</strong> — Where scratchpads help within a single session, memories let agents remember across many sessions. Reflexion introduced reflection after each agent turn, re-using self-generated memories; Generative Agents synthesized memories periodically from past feedback. These concepts reached products like ChatGPT, Cursor, and Windsurf, which auto-generate long-term memories from user-agent interactions.</li>
+</ul>
+<h3 id="2-select-context">2. Select Context</h3>
+<p>Selecting context means pulling it into the context window to help an agent perform a task.</p>
+<ul>
+<li><strong>Scratchpad</strong> — Selection depends on implementation: a tool-based scratchpad is read via a tool call; a state-based scratchpad lets the developer choose which parts of state to expose each step.</li>
+<li><strong>Memories</strong> — Agents select few-shot examples (episodic memories), instructions (procedural memories), or facts (semantic memories). Some agents always pull a narrow set of files into context — Claude Code uses CLAUDE.md; Cursor and Windsurf use rules files. Larger memory collections use embeddings and/or knowledge graphs for indexing, but selection remains challenging. Simon Willison shared an example of selection gone wrong: ChatGPT fetched his location from memories and unexpectedly injected it into a requested image, making users feel the context window "no longer belongs to them."</li>
+<li><strong>Tools</strong> — Agents can become overloaded when given too many tools with overlapping descriptions, causing confusion about which to use. One approach is to apply RAG to tool descriptions to fetch only the most relevant tools; recent papers show this improves tool selection accuracy by 3-fold.</li>
+<li><strong>Knowledge (RAG)</strong> — A rich and central context engineering challenge. Varun from Windsurf notes that indexing code is not the same as context retrieval: as a codebase grows, embedding search becomes unreliable, so production code agents rely on a combination of grep/file search, knowledge-graph-based retrieval, and a re-ranking step.</li>
+</ul>
+<h3 id="3-compress-context">3. Compress Context</h3>
+<p>Compressing context involves retaining only the tokens required to perform a task.</p>
+<ul>
+<li><strong>Context Summarization</strong> — Interactions can span hundreds of turns with token-heavy tool calls. Claude Code runs "auto-compact" after you exceed 95% of the context window, summarizing the full trajectory. Summarization can be recursive or hierarchical, and can be applied at specific points — post-processing token-heavy tool calls, or at agent-agent boundaries during knowledge hand-off (Cognition uses a fine-tuned model for this).</li>
+<li><strong>Context Trimming</strong> — Whereas summarization uses an LLM to distill context, trimming filters or "prunes" it using hard-coded heuristics like removing older messages from a list. LangChain cites Provence, a trained context pruner for Question-Answering.</li>
+</ul>
+<h3 id="4-isolate-context">4. Isolate Context</h3>
+<p>Isolating context involves splitting it up to help an agent perform a task.</p>
+<ul>
+<li><strong>Multi-agent</strong> — Split context across sub-agents, each with its own tools, instructions, and context window (a motivation for OpenAI's Swarm library was separation of concerns). Anthropic's multi-agent researcher found many agents with isolated contexts outperformed a single agent, because each subagent's window is allocated to a narrower sub-task, operating "in parallel with their own context windows." Challenges include token use (up to 15× more than chat), the need for careful prompt engineering, and coordination.</li>
+<li><strong>Context Isolation with Environments</strong> — HuggingFace's deep researcher uses a CodeAgent that outputs code containing tool calls, then runs it in a sandbox. Context (e.g., return values) is passed back to the LLM, isolating token-heavy objects (images, audio) as variables in the environment.</li>
+<li><strong>State</strong> — An agent's runtime state object can isolate context: a state schema can have fields context is written to, exposing one field (e.g., <code>messages</code>) to the LLM each turn while isolating information in other fields.</li>
+</ul>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="example-persisting-a-plan-with-a-scratchpad-write">Example: Persisting a plan with a scratchpad (Write)</h3>
+<p>An agent facing a long-running research task risks losing its plan when the context window is truncated.</p>
+<pre><code>LeadResearcher: think through approach → save plan to Memory
+  (context window may exceed 200,000 tokens and truncate;
+   the persisted plan survives)
+</code></pre>
+<h3 id="example-trimming-tools-with-rag-select">Example: Trimming tools with RAG (Select)</h3>
+<p>An agent equipped with a large tool library keeps picking the wrong tool because descriptions overlap.</p>
+<pre><code>apply RAG over tool descriptions
+  → fetch only the most relevant tools for the current task
+  → up to 3x better tool selection accuracy (per cited papers)
+</code></pre>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li><strong>Memory selection is hard</strong> — Pulling the <em>right</em> memory from a large collection is unreliable; undesired retrieval (like ChatGPT injecting a location into an image) erodes user trust in the context window.</li>
+<li><strong>Summarization can lose critical detail</strong> — If specific events or decisions must be captured, summarization may drop them; Cognition found this required a fine-tuned model.</li>
+<li><strong>Multi-agent isolation is expensive</strong> — It can consume up to 15× more tokens than chat and demands careful prompt engineering and coordination of sub-agents.</li>
+<li><strong>These are patterns, not guarantees</strong> — LangChain recommends looking at your data, tracking token usage, and testing whether a given context engineering change actually helps or hurts agent performance before adopting it.</li>
+</ul>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a class="internal" href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">foundations/what-is-context-engineering</a> — the definition and mental model these four strategies operationalize</li>
+<li><a class="internal" href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">strategies/context-management-tactics</a> — Drew Breunig's six tactics, a parallel taxonomy that maps closely onto write/select/compress/isolate</li>
+<li><a class="internal" href="../agentic-search-and-retrieval/index.html" data-wikilink-slug="agentic-search-and-retrieval">strategies/agentic-search-and-retrieval</a> — a deeper look at the "select" bucket: fetching knowledge on demand</li>
+<li><a class="internal" href="../how-contexts-fail/index.html" data-wikilink-slug="how-contexts-fail">failure-modes/how-contexts-fail</a> — the failure modes (poisoning, distraction, confusion, clash) these strategies are designed to mitigate</li>
+</ul>
+      </div>
+      <section class="article-backlinks" aria-label="Articles linking here">
+        <h2>Linked from</h2>
+        <ul>
+        <li>
+          <a href="../how-contexts-fail/index.html" data-wikilink-slug="how-contexts-fail">How Contexts Fail: Four Failure Modes</a>
+          <span class="article-backlinks__teaser">Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger…</span>
+        </li>
+        <li>
+          <a href="../context-window-as-working-memory/index.html" data-wikilink-slug="context-window-as-working-memory">The Context Window as Working Memory</a>
+          <span class="article-backlinks__teaser">Karpathy's analogy of the LLM as an operating system and its context window as RAM — a finite working memory w…</span>
+        </li>
+        <li>
+          <a href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">What Is Context Engineering</a>
+          <span class="article-backlinks__teaser">The discipline of filling an LLM's limited context window with the right information, tools, and format at eac…</span>
+        </li>
+        <li>
+          <a href="../agentic-search-and-retrieval/index.html" data-wikilink-slug="agentic-search-and-retrieval">Agentic Search and Just-in-Time Retrieval</a>
+          <span class="article-backlinks__teaser">How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-…</span>
+        </li>
+        <li>
+          <a href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">Context Management Tactics: Six Ways to Fix Your Context</a>
+          <span class="article-backlinks__teaser">Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigatin…</span>
+        </li>
+        </ul>
+      </section>
+      <section class="article-sources" id="sources" aria-label="Sources">
+        <h2>Sources</h2>
+        <ol>
+        <li><a href="https://blog.langchain.com/context-engineering-for-agents/" rel="noopener">Context Engineering for Agents (LangChain)</a> <span class="article-sources__domain">blog.langchain.com</span></li>
+        </ol>
+      </section>
+      <nav class="article__nav" aria-label="Article navigation">
+        <a href="../context-management-tactics/index.html" class="btn read-nav-btn" rel="prev">&larr; Context Management Tactics: Six Ways to Fix Your Context</a>
+        <a href="../how-contexts-fail/index.html" class="btn read-nav-btn" rel="next">How Contexts Fail: Four Failure Modes &rarr;</a>
+      </nav>
+    </article>
+  </div>
+  <div class="read-toc-right">
+      <h4>On this page</h4>
+      <ul>
+          <li data-heading="overview"><a href="#overview">Overview</a></li>
+          <li data-heading="key-capabilities"><a href="#key-capabilities">Key Capabilities</a></li>
+          <li data-heading="how-it-works"><a href="#how-it-works">How It Works</a></li>
+          <li data-heading="usage-examples"><a href="#usage-examples">Usage Examples</a></li>
+          <li data-heading="limitations"><a href="#limitations">Limitations</a></li>
+          <li data-heading="see-also"><a href="#see-also">See Also</a></li>
+      </ul>
+    </div>
+</div>
+<script>window.LINK_PREVIEWS = {"how-contexts-fail":{"title":"How Contexts Fail: Four Failure Modes","summary":"Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.","tags":["failure-modes","context-management","agents"],"readingTime":6},"context-window-as-working-memory":{"title":"The Context Window as Working Memory","summary":"Karpathy's analogy of the LLM as an operating system and its context window as RAM — a finite working memory whose limited capacity makes context curation essential.","tags":["context-engineering","foundations","context-window"],"readingTime":5},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"agentic-search-and-retrieval":{"title":"Agentic Search and Just-in-Time Retrieval","summary":"How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.","tags":["context-engineering","agents","retrieval"],"readingTime":6},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7}};</script>
+<script>
+(function() {
+  try { localStorage.setItem('grimoire-last-read', "four-context-strategies"); } catch(e) {}
+
+  // Reading progress: the CSS scroll-timeline path takes over where
+  // supported; the scroll listener is the fallback.
+  var bar = document.getElementById('read-progress');
+  var cssProgress = window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+  if (!cssProgress) {
+    var updateProgress = function() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+      if (bar) bar.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  // Unresolved wikilinks stay inert.
+  document.addEventListener('click', function(e) {
+    var dead = e.target.closest('a[aria-disabled="true"]');
+    if (dead) e.preventDefault();
+  });
+
+  // TOC scroll spy with a sliding accent marker.
+  var toc = document.querySelector('.read-toc-right');
+  if (toc) {
+    var list = toc.querySelector('ul');
+    var marker = document.createElement('span');
+    marker.className = 'read-toc-marker';
+    marker.setAttribute('aria-hidden', 'true');
+    if (list) list.appendChild(marker);
+
+    var setActive = function(item) {
+      toc.querySelectorAll('li').forEach(function(l) { l.classList.remove('active'); });
+      item.classList.add('active');
+      if (list && marker) {
+        marker.style.transform = 'translateY(' + item.offsetTop + 'px)';
+        marker.style.height = item.offsetHeight + 'px';
+        marker.style.opacity = '1';
+      }
+    };
+
+    var spy = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var active = toc.querySelector('li[data-heading="' + entry.target.id + '"]');
+        if (active) setActive(active);
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    document.querySelectorAll('.article-body h2[id]').forEach(function(h) { spy.observe(h); });
+  }
+})();
+</script>
+<script>
+(function() {
+  var previews = window.LINK_PREVIEWS;
+  if (!previews) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  var HOVER_DELAY = 250;
+  var card = null;
+  var showTimer = null;
+  var hideTimer = null;
+  var currentLink = null;
+  var supportsPopover = typeof HTMLElement !== 'undefined' &&
+    Object.prototype.hasOwnProperty.call(HTMLElement.prototype, 'popover');
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function ensureCard() {
+    if (card) return card;
+    card = document.createElement('div');
+    card.className = 'link-preview';
+    card.setAttribute('role', 'tooltip');
+    if (supportsPopover) card.setAttribute('popover', 'manual');
+    document.body.appendChild(card);
+    card.addEventListener('pointerenter', function() { clearTimeout(hideTimer); });
+    card.addEventListener('pointerleave', scheduleHide);
+    return card;
+  }
+
+  function show(link, slug) {
+    var p = previews[slug];
+    if (!p) return;
+    var el = ensureCard();
+    var meta = [p.readingTime ? p.readingTime + ' min' : null]
+      .concat(p.tags || []).filter(Boolean).join(' \u00b7 ');
+    el.innerHTML =
+      '<span class="link-preview__title">' + esc(p.title) + '</span>' +
+      (p.summary ? '<span class="link-preview__summary">' + esc(p.summary) + '</span>' : '') +
+      (meta ? '<span class="link-preview__meta">' + esc(meta) + '</span>' : '');
+
+    var rect = link.getBoundingClientRect();
+    var top = rect.bottom + 8;
+    if (supportsPopover) { el.showPopover(); } else { el.style.display = 'block'; }
+    var cardHeight = el.offsetHeight;
+    if (top + cardHeight > window.innerHeight - 16) {
+      top = rect.top - cardHeight - 8;
+    }
+    var left = Math.min(
+      Math.max(rect.left, 12),
+      window.innerWidth - el.offsetWidth - 12
+    );
+    el.style.top = top + 'px';
+    el.style.left = left + 'px';
+    el.classList.add('visible');
+    currentLink = link;
+  }
+
+  function hide() {
+    if (!card) return;
+    card.classList.remove('visible');
+    if (supportsPopover) {
+      try { card.hidePopover(); } catch(e) {}
+    } else {
+      card.style.display = 'none';
+    }
+    currentLink = null;
+  }
+
+  function scheduleHide() {
+    clearTimeout(showTimer);
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, 120);
+  }
+
+  function bind(link) {
+    var slug = link.dataset.wikilinkSlug;
+    if (!slug || !previews[slug]) return;
+
+    link.addEventListener('pointerenter', function() {
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+      showTimer = setTimeout(function() { show(link, slug); }, HOVER_DELAY);
+    });
+    link.addEventListener('pointerleave', scheduleHide);
+    link.addEventListener('focus', function() { show(link, slug); });
+    link.addEventListener('blur', scheduleHide);
+  }
+
+  document.querySelectorAll('.article-body a[data-wikilink-slug], .article-backlinks a[data-wikilink-slug]')
+    .forEach(bind);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') hide();
+  });
+  window.addEventListener('scroll', function() { if (currentLink) hide(); }, { passive: true });
+})();
+</script>
+</main>
+<footer class="footer container">
+  <p>Generated 2026-07-10 &middot; 12 articles &middot; Built with Grimoire</p>
+</footer>
+<script>
+(function() {
+  var KEY = 'grimoire-theme';
+  var toggle = document.getElementById('theme-toggle');
+  var icon = document.getElementById('theme-icon');
+  var root = document.documentElement;
+
+  function getStored() {
+    try { return localStorage.getItem(KEY); } catch(e) { return null; }
+  }
+
+  function apply(theme) {
+    root.classList.remove('theme-light', 'theme-dark');
+    if (theme) root.classList.add('theme-' + theme);
+    icon.textContent = theme === 'dark' ? '\u2600' : '\u263E';
+    try { localStorage.setItem(KEY, theme || ''); } catch(e) {}
+  }
+
+  var stored = getStored();
+  if (stored) apply(stored);
+
+  toggle.addEventListener('click', function() {
+    var isDark = root.classList.contains('theme-dark') ||
+      (!root.classList.contains('theme-light') &&
+       window.matchMedia('(prefers-color-scheme: dark)').matches);
+    apply(isDark ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>

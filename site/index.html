@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" class="motion-subtle density-comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Grimoire">
+  <meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <title>Context Engineering for LLM Agents</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='%230d9488'/%3E%3Ccircle cx='25' cy='8' r='4' fill='%230d9488' opacity='0.55'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains%20Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<script>
+(function() {
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  window.GRIMOIRE_MOTION_OK = function() {
+    if (root.className.indexOf('motion-none') !== -1) return false;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  function revealAll() {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('revealed'); });
+  }
+
+  function start() {
+    if (!window.GRIMOIRE_MOTION_OK() || !('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav>
+  <a href="index.html" class="brand">Context Engineering for LLM Agents</a>
+  <div class="tabs">
+    <a href="read/index.html" class="tab">Read</a>
+        <a href="graph/index.html" class="tab">Graph</a>
+        <a href="search/index.html" class="tab">Search</a>
+        <a href="feed/index.html" class="tab">Feed</a>
+        <a href="gaps/index.html" class="tab">Gaps</a>
+        <a href="quiz/index.html" class="tab">Quiz</a>
+  </div>
+  <div class="nav-right">
+    <kbd>&#8984;K</kbd>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <span id="theme-icon">&#9681;</span>
+    </button>
+  </div>
+</nav>
+<main id="main" class="container">
+
+<div class="hub-hero">
+    <canvas id="constellation" class="hub-hero-canvas" aria-hidden="true"></canvas>
+    <div class="hub-hero-content">
+    <h1 class="hub-title">Context Engineering for LLM Agents</h1>
+    <p class="hub-lead">A structured knowledge base about Context Engineering for LLM Agents, built for senior engineers building LLM agents who need a working mental model plus concrete, source-grounded tactics.</p>
+    <div class="hub-stats">
+      <div class="hub-stat"><strong data-count="12">12</strong>articles</div>
+      <div class="hub-stat"><strong data-count="15">15</strong>sources</div>
+      <div class="hub-stat" title="Articles compiled from partial or failed raw captures."><strong data-count="10">10</strong>source warnings</div>
+      <div class="hub-stat"><strong data-count="30">30</strong>tags</div>
+      <div class="hub-stat"><strong data-count="28">28</strong>cross-refs</div>
+      <div class="hub-stat"><strong data-count="42" data-count-suffix="%">42%</strong>graph density</div>
+    </div>
+    </div>
+  </div>
+  <div class="bento">
+    <a href="read/index.html" class="bento-card reveal" style="--reveal-i: 0">
+      <span class="icon">📖</span>
+      <h3>Read</h3>
+      <p>Articles sorted by graph centrality. Start here for a deep, linear study of the core concepts.</p>
+      <div class="when">Best for: Deep study of key topics</div>
+    </a>
+    <a href="graph/index.html" class="bento-card featured reveal" style="--reveal-i: 1">
+      <div class="badge">Recommended</div>
+      <span class="icon">🕸</span>
+      <h3>Graph</h3>
+      <p>Force-directed knowledge map showing how articles connect.</p>
+      <ul class="bento-preview"><li><span class="bento-preview__num">1</span>What Is Context Engineering</li><li><span class="bento-preview__num">2</span>How Contexts Fail: Four Failure Modes</li><li><span class="bento-preview__num">3</span>Context Management Tactics: Six Ways to Fix Your Context</li><li><span class="bento-preview__num">4</span>The Four Context Strategies: Write, Select, Compress, Isolate</li></ul>
+      <div class="when">Best for: Explore connections</div>
+    </a>
+    <a href="search/index.html" class="bento-card reveal" style="--reveal-i: 2">
+      <span class="icon">🔍</span>
+      <h3>Search</h3>
+      <p>Full-text search across all articles and tags.</p>
+      <div class="when">Best for: Find a concept fast</div>
+    </a>
+    <a href="feed/index.html" class="bento-card reveal" style="--reveal-i: 3">
+      <span class="icon">📋</span>
+      <h3>Feed</h3>
+      <p>Chronological changelog of all activity.</p>
+      <div class="when">Best for: See what changed</div>
+    </a>
+    <a href="gaps/index.html" class="bento-card reveal" style="--reveal-i: 4">
+      <span class="icon">🔬</span>
+      <h3>Gaps</h3>
+      <p>Coverage gap analysis by topic area.</p>
+      <div class="when">Best for: Find thin spots</div>
+    </a>
+    <a href="quiz/index.html" class="bento-card reveal" style="--reveal-i: 5">
+      <span class="icon">🧠</span>
+      <h3>Quiz</h3>
+      <p>Flashcard-style study quiz.</p>
+      <div class="when">Best for: Test understanding</div>
+    </a>
+  </div>
+<script>window.HUB_GRAPH = {"nodes":[{"id":"what-is-context-engineering","label":"What Is Context Engineering","x":0.259,"y":0.08,"r":0.03},{"id":"context-management-tactics","label":"Context Management Tactics: Six Ways to Fix Your Context","x":0.4572,"y":0.4551,"r":0.0284},{"id":"how-contexts-fail","label":"How Contexts Fail: Four Failure Modes","x":0.4597,"y":0.4302,"r":0.0283},{"id":"four-context-strategies","label":"The Four Context Strategies: Write, Select, Compress, Isolate","x":0.2188,"y":0.92,"r":0.0278},{"id":"agentic-search-and-retrieval","label":"Agentic Search and Just-in-Time Retrieval","x":0.1888,"y":0.5304,"r":0.0265},{"id":"context-window-as-working-memory","label":"The Context Window as Working Memory","x":0.2616,"y":0.4995,"r":0.0252},{"id":"lost-in-the-middle","label":"Lost in the Middle: How Models Use Long Contexts","x":0.321,"y":0.3469,"r":0.0245},{"id":"context-vs-prompt-engineering","label":"Context Engineering vs. Prompt Engineering","x":0.08,"y":0.2838,"r":0.023},{"id":"twelve-factor-agents","label":"12-Factor Agents","x":0.1481,"y":0.1065,"r":0.0229},{"id":"lessons-from-manus","label":"Lessons from Building Manus","x":0.3166,"y":0.8973,"r":0.0213},{"id":"context-engineering-templates","label":"Context Engineering Templates","x":0.5833,"y":0.7467,"r":0.0213},{"id":"evals-for-llm-systems","label":"Evals for LLM Systems","x":0.92,"y":0.3311,"r":0.0197}],"edges":[{"source":"context-engineering-templates","target":"context-vs-prompt-engineering"},{"source":"context-engineering-templates","target":"what-is-context-engineering"},{"source":"context-engineering-templates","target":"twelve-factor-agents"},{"source":"lessons-from-manus","target":"twelve-factor-agents"},{"source":"lessons-from-manus","target":"lost-in-the-middle"},{"source":"lessons-from-manus","target":"context-management-tactics"},{"source":"twelve-factor-agents","target":"lessons-from-manus"},{"source":"twelve-factor-agents","target":"context-engineering-templates"},{"source":"twelve-factor-agents","target":"what-is-context-engineering"},{"source":"evals-for-llm-systems","target":"how-contexts-fail"},{"source":"evals-for-llm-systems","target":"agentic-search-and-retrieval"},{"source":"evals-for-llm-systems","target":"what-is-context-engineering"},{"source":"how-contexts-fail","target":"lost-in-the-middle"},{"source":"how-contexts-fail","target":"four-context-strategies"},{"source":"how-contexts-fail","target":"context-management-tactics"},{"source":"lost-in-the-middle","target":"how-contexts-fail"},{"source":"lost-in-the-middle","target":"agentic-search-and-retrieval"},{"source":"lost-in-the-middle","target":"context-window-as-working-memory"},{"source":"context-vs-prompt-engineering","target":"what-is-context-engineering"},{"source":"context-vs-prompt-engineering","target":"context-window-as-working-memory"},{"source":"context-vs-prompt-engineering","target":"context-management-tactics"},{"source":"context-window-as-working-memory","target":"what-is-context-engineering"},{"source":"context-window-as-working-memory","target":"four-context-strategies"},{"source":"context-window-as-working-memory","target":"lost-in-the-middle"},{"source":"context-window-as-working-memory","target":"context-management-tactics"},{"source":"what-is-context-engineering","target":"context-vs-prompt-engineering"},{"source":"what-is-context-engineering","target":"context-window-as-working-memory"},{"source":"what-is-context-engineering","target":"four-context-strategies"},{"source":"what-is-context-engineering","target":"how-contexts-fail"},{"source":"agentic-search-and-retrieval","target":"four-context-strategies"},{"source":"agentic-search-and-retrieval","target":"context-management-tactics"},{"source":"agentic-search-and-retrieval","target":"what-is-context-engineering"},{"source":"agentic-search-and-retrieval","target":"how-contexts-fail"},{"source":"context-management-tactics","target":"how-contexts-fail"},{"source":"context-management-tactics","target":"four-context-strategies"},{"source":"context-management-tactics","target":"agentic-search-and-retrieval"},{"source":"four-context-strategies","target":"what-is-context-engineering"},{"source":"four-context-strategies","target":"context-management-tactics"},{"source":"four-context-strategies","target":"agentic-search-and-retrieval"},{"source":"four-context-strategies","target":"how-contexts-fail"}]};</script>
+<script>
+(function() {
+  var data = window.HUB_GRAPH;
+  var canvas = document.getElementById('constellation');
+  if (!canvas || !data || !data.nodes || data.nodes.length === 0) return;
+
+  var ctx = canvas.getContext('2d');
+  var nodes = data.nodes;
+  var edges = data.edges;
+  var pointer = { x: -1, y: -1, active: false };
+  var running = false;
+  var t = 0;
+  var last = null;
+
+  function colors() {
+    var cs = getComputedStyle(document.documentElement);
+    return {
+      edge: cs.getPropertyValue('--graph-edge').trim() || '#d4d4d4',
+      node: cs.getPropertyValue('--text-tertiary').trim() || '#8a8a8a',
+      accent: cs.getPropertyValue('--color-accent').trim() || '#0d9488',
+      label: cs.getPropertyValue('--text-secondary').trim() || '#5c5c5c'
+    };
+  }
+
+  function resize() {
+    var rect = canvas.parentElement.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function pos(node, time) {
+    var rect = canvas.getBoundingClientRect();
+    // Seeded per-node phase from its layout position keeps drift stable
+    // across reloads without shipping per-node randomness.
+    var phase = (node.x * 7 + node.y * 13) * Math.PI;
+    var driftX = Math.sin(time * 0.00022 + phase) * 6;
+    var driftY = Math.cos(time * 0.00017 + phase * 1.3) * 6;
+    var x = node.x * rect.width + driftX;
+    var y = node.y * rect.height + driftY;
+
+    if (pointer.active) {
+      var dx = pointer.x - x;
+      var dy = pointer.y - y;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 140 && dist > 0.001) {
+        var pull = (1 - dist / 140) * 10;
+        x += (dx / dist) * pull;
+        y += (dy / dist) * pull;
+      }
+    }
+    return { x: x, y: y };
+  }
+
+  function draw(time) {
+    var rect = canvas.getBoundingClientRect();
+    var c = colors();
+    ctx.clearRect(0, 0, rect.width, rect.height);
+
+    var positions = {};
+    nodes.forEach(function(n) { positions[n.id] = pos(n, time); });
+
+    ctx.globalAlpha = 0.08;
+    ctx.strokeStyle = c.edge;
+    ctx.lineWidth = 1;
+    edges.forEach(function(e) {
+      var a = positions[e.source];
+      var b = positions[e.target];
+      if (!a || !b) return;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    });
+
+    var minDim = Math.min(rect.width, rect.height);
+    var nearest = null;
+    var nearestDist = Infinity;
+
+    nodes.forEach(function(n, i) {
+      var p = positions[n.id];
+      var r = Math.max(n.r * minDim, 2);
+      var isTop = i < 3; // nodes arrive weight-sorted; the top 3 glow
+      ctx.globalAlpha = isTop ? 0.85 : 0.45;
+      ctx.fillStyle = isTop ? c.accent : c.node;
+      if (isTop) {
+        ctx.shadowColor = c.accent;
+        ctx.shadowBlur = 12;
+      }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      if (pointer.active) {
+        var dx = pointer.x - p.x;
+        var dy = pointer.y - p.y;
+        var d = dx * dx + dy * dy;
+        if (d < nearestDist) { nearestDist = d; nearest = { node: n, p: p }; }
+      }
+    });
+
+    if (nearest && nearestDist < 120 * 120) {
+      ctx.globalAlpha = Math.max(0, 1 - Math.sqrt(nearestDist) / 120);
+      ctx.fillStyle = c.label;
+      ctx.font = '11px ' + (getComputedStyle(document.body).getPropertyValue('--font-mono') || 'monospace');
+      ctx.textAlign = 'center';
+      ctx.fillText(nearest.node.label, nearest.p.x, nearest.p.y - 14);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function frame(now) {
+    if (!running) return;
+    if (last !== null) t += Math.min(now - last, 50);
+    last = now;
+    draw(t);
+    requestAnimationFrame(frame);
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    last = null;
+    requestAnimationFrame(frame);
+  }
+
+  function stop() { running = false; }
+
+  resize();
+
+  if (window.GRIMOIRE_MOTION_OK && window.GRIMOIRE_MOTION_OK()) {
+    canvas.parentElement.addEventListener('pointermove', function(e) {
+      var rect = canvas.getBoundingClientRect();
+      pointer.x = e.clientX - rect.left;
+      pointer.y = e.clientY - rect.top;
+      pointer.active = true;
+    });
+    canvas.parentElement.addEventListener('pointerleave', function() {
+      pointer.active = false;
+    });
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) stop(); else start();
+    });
+    window.addEventListener('resize', function() { resize(); if (!running) draw(t); });
+    start();
+  } else {
+    // Motion off: one static frame.
+    draw(0);
+    window.addEventListener('resize', function() { resize(); draw(0); });
+  }
+
+  // Theme toggle repaints with the new custom-property colors.
+  var toggle = document.getElementById('theme-toggle');
+  if (toggle) toggle.addEventListener('click', function() {
+    requestAnimationFrame(function() { if (!running) draw(t); });
+  });
+})();
+</script>
+<script>
+(function() {
+  var els = document.querySelectorAll('[data-count]');
+  if (els.length === 0) return;
+  if (!window.GRIMOIRE_MOTION_OK || !window.GRIMOIRE_MOTION_OK() || !('IntersectionObserver' in window)) return;
+
+  function animate(el) {
+    var target = parseFloat(el.dataset.count);
+    if (isNaN(target)) return;
+    var suffix = el.dataset.countSuffix || '';
+    var start = null;
+    var DURATION = 600;
+    function tick(now) {
+      if (start === null) start = now;
+      var p = Math.min((now - start) / DURATION, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        animate(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  els.forEach(function(el) { io.observe(el); });
+})();
+</script>
+<script>
+(function() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (!window.GRIMOIRE_MOTION_OK || !window.GRIMOIRE_MOTION_OK()) return;
+
+  var raf = null;
+  document.querySelectorAll(".bento-card").forEach(function(card) {
+    card.classList.add('tiltable');
+    card.addEventListener('pointermove', function(e) {
+      if (raf) return;
+      raf = requestAnimationFrame(function() {
+        raf = null;
+        var rect = card.getBoundingClientRect();
+        var px = (e.clientX - rect.left) / rect.width;
+        var py = (e.clientY - rect.top) / rect.height;
+        card.style.setProperty('--mx', (px * 100) + '%');
+        card.style.setProperty('--my', (py * 100) + '%');
+        card.style.setProperty('--rx', ((0.5 - py) * 2) + '');
+        card.style.setProperty('--ry', ((px - 0.5) * 2) + '');
+      });
+    });
+    card.addEventListener('pointerleave', function() {
+      card.style.setProperty('--rx', '0');
+      card.style.setProperty('--ry', '0');
+    });
+  });
+})();
+</script>
+</main>
+<footer class="footer container">
+  <p>Generated 2026-07-10 &middot; 12 articles &middot; Built with Grimoire</p>
+</footer>
+<script>
+(function() {
+  var KEY = 'grimoire-theme';
+  var toggle = document.getElementById('theme-toggle');
+  var icon = document.getElementById('theme-icon');
+  var root = document.documentElement;
+
+  function getStored() {
+    try { return localStorage.getItem(KEY); } catch(e) { return null; }
+  }
+
+  function apply(theme) {
+    root.classList.remove('theme-light', 'theme-dark');
+    if (theme) root.classList.add('theme-' + theme);
+    icon.textContent = theme === 'dark' ? '\u2600' : '\u263E';
+    try { localStorage.setItem(KEY, theme || ''); } catch(e) {}
+  }
+
+  var stored = getStored();
+  if (stored) apply(stored);
+
+  toggle.addEventListener('click', function() {
+    var isDark = root.classList.contains('theme-dark') ||
+      (!root.classList.contains('theme-light') &&
+       window.matchMedia('(prefers-color-scheme: dark)').matches);
+    apply(isDark ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>

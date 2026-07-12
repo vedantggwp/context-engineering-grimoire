@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" class="motion-subtle density-comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Grimoire">
+  <meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <title>The Context Window as Working Memory — Context Engineering for LLM Agents</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='%230d9488'/%3E%3Ccircle cx='25' cy='8' r='4' fill='%230d9488' opacity='0.55'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains%20Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body class="mode-read">
+<script>
+(function() {
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  window.GRIMOIRE_MOTION_OK = function() {
+    if (root.className.indexOf('motion-none') !== -1) return false;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  function revealAll() {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('revealed'); });
+  }
+
+  function start() {
+    if (!window.GRIMOIRE_MOTION_OK() || !('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav>
+  <a href="../../index.html" class="brand">Context Engineering for LLM Agents</a>
+  <div class="tabs">
+    <a href="../../read/index.html" class="tab active">Read</a>
+        <a href="../../graph/index.html" class="tab">Graph</a>
+        <a href="../../search/index.html" class="tab">Search</a>
+        <a href="../../feed/index.html" class="tab">Feed</a>
+        <a href="../../gaps/index.html" class="tab">Gaps</a>
+        <a href="../../quiz/index.html" class="tab">Quiz</a>
+  </div>
+  <div class="nav-right">
+    <kbd>&#8984;K</kbd>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <span id="theme-icon">&#9681;</span>
+    </button>
+  </div>
+</nav>
+<div class="read-progress" id="read-progress"></div>
+<main id="main" class="container">
+
+<div class="read-3col">
+  <div class="read-sidebar">
+      <h4>Articles</h4>
+      <ul>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
+        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-window-as-working-memory/index.html" aria-current="page">The Context Window as Working Memory</a></li>
+        <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
+        <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
+        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
+      </ul>
+    </div>
+  <div class="read-content">
+    <article class="article" id="context-window-as-working-memory" data-slug="context-window-as-working-memory">
+      <div class="article-meta">
+        <span class="confidence-badge p0" title="P0 — compiled from must-ingest sources (highest confidence)">P0</span>
+        <a href="#sources" class="source-count">2 sources</a>
+        
+        <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
+        <span class="article-meta__words">1112 words &middot; 5 min</span>
+      </div>
+      <h1 style="view-transition-name: vta-context-window-as-working-memory">The Context Window as Working Memory</h1>
+      <div class="tag-row"><span class="tag">context-engineering</span><span class="tag">foundations</span><span class="tag">context-window</span><span class="tag">working-memory</span><span class="tag">analogy</span></div>
+      <div class="summary">Karpathy's analogy of the LLM as an operating system and its context window as RAM — a finite working memory whose limited capacity makes context curation essential.</div>
+      <div class="article-body">
+        <h2 id="overview">Overview</h2>
+<p>A useful mental model for context engineering treats the LLM's context window as its working memory. Lance Martin relays Andrej Karpathy's framing: "LLMs are like a new kind of operating system. The LLM is like the CPU and its context window is like the RAM, serving as the model's working memory." Just as RAM has limited capacity, the LLM context window has limited capacity to hold the various sources of context an agent needs — and just as an operating system curates what fits into RAM, context engineering plays the same curating role.</p>
+<p>This analogy explains why context engineering exists as a discipline. Martin defines it as "the art and science of filling the context window with just the right information at each step of an agent's trajectory" (echoing Karpathy's line about "just the right information for the next step"). The arXiv <em>Survey of Context Engineering for LLMs</em> corroborates the working-memory mapping: "Short-term memory in LLMs operates through the context window, serving as working memory maintaining immediate access to previously processed tokens," implemented through key-value caches that disappear when a session terminates.</p>
+<h2 id="key-capabilities">Key Capabilities</h2>
+<ul>
+<li><strong>A unifying analogy</strong> — The OS/RAM framing (Martin, via Karpathy) gives engineers an intuitive model: the context window is scarce, shared working memory that must be actively managed, not an unlimited scratch space.</li>
+<li><strong>A basis for memory hierarchy</strong> — The survey classifies memory temporally into sensory memory (input prompts), short-term memory (immediate context processing), and long-term memory (external databases or dedicated structures), with short-term memory being the context window itself.</li>
+<li><strong>A driver for curation strategy</strong> — Because working memory is finite, agents must decide at each step what to keep in context, motivating the write / select / compress / isolate strategies Martin catalogs.</li>
+</ul>
+<h2 id="how-it-works">How It Works</h2>
+<h3 id="the-operating-system-analogy">The operating-system analogy</h3>
+<p>Martin lays out the mapping directly (crediting Karpathy):</p>
+<ol>
+<li><strong>LLM ≈ CPU</strong> — the model is the processing unit.</li>
+<li><strong>Context window ≈ RAM</strong> — the context window is the model's working memory, holding what the model can act on right now.</li>
+<li><strong>Context engineering ≈ the OS's memory management</strong> — "just as an operating system curates what fits into a CPU's RAM, 'context engineering' plays a similar role."</li>
+</ol>
+<p>The survey extends the same OS metaphor into implementation: OS-inspired hierarchical memory systems like MemGPT "page information between limited context windows (main memory) and external storage, similar to traditional operating systems," and PagedAttention is "inspired by virtual memory and paging techniques in operating systems."</p>
+<h3 id="finite-capacity-and-why-curation-is-required">Finite capacity and why curation is required</h3>
+<p>The pressure that makes curation necessary comes from finite capacity. Martin notes that RAM, and therefore the context window, has "limited capacity to handle various sources of context." In agents this bites hard: "long-running tasks and accumulating feedback from tool calls mean that agents often utilize a large number of tokens. This can cause numerous problems: it can exceed the size of the context window, balloon cost / latency, or degrade agent performance." He cites Cognition's claim that context engineering "is effectively the #1 job of engineers building AI agents," and Anthropic's observation that agents "often engage in conversations spanning hundreds of turns, requiring careful context management strategies."</p>
+<p>The survey grounds the same constraint architecturally. LLMs "face fundamental constraints in context management stemming from finite context window sizes," and traditional transformer architectures "experience quadratic computational complexity growth as sequence length increases, making processing extremely long texts prohibitively expensive." Simply enlarging the window does not solve the problem: it surfaces the "lost-in-the-middle" phenomenon, where models "struggle to access information positioned in middle sections of long contexts," and risks both context window overflow (models "forget" prior context after exceeding limits) and context collapse (enlarged windows cause models to fail to distinguish between different conversational contexts). The survey also notes LLMs "inherently process each interaction independently," so working memory in the context window is ephemeral and must be explicitly managed.</p>
+<h3 id="the-types-of-context-to-manage">The types of context to manage</h3>
+<p>Martin frames context engineering as an umbrella spanning a few context types that all compete for this finite working memory:</p>
+<pre><code>- Instructions – prompts, memories, few-shot examples, tool descriptions, etc.
+- Knowledge    – facts, memories, etc.
+- Tools        – feedback from tool calls
+</code></pre>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="example-persisting-a-plan-outside-working-memory">Example: Persisting a plan outside working memory</h3>
+<p>Because the context window is limited RAM, agents offload important information to external storage. Martin cites Anthropic's multi-agent researcher: "The LeadResearcher begins by thinking through the approach and saving its plan to Memory to persist the context, since if the context window exceeds 200,000 tokens it will be truncated and it is important to retain the plan." The plan is written outside working memory precisely because working memory will be overrun.</p>
+<h3 id="example-auto-compaction-when-ram-fills-up">Example: Auto-compaction when RAM fills up</h3>
+<p>When working memory approaches capacity, it can be compressed. Martin points to Claude Code, which "runs 'auto-compact' after you exceed 95% of the context window and it will summarize the full trajectory of user-agent interactions" — the working-memory equivalent of reclaiming RAM by condensing what it holds.</p>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li><strong>The analogy is a model, not a mechanism</strong> — Martin presents OS/RAM as an intuition pump. The survey shows the underlying reality is messier: attention is quadratic in sequence length, and capacity limits interact with positional biases like lost-in-the-middle rather than behaving like clean byte-addressable RAM.</li>
+<li><strong>Bigger windows don't remove the constraint</strong> — Per the survey, extending context windows to millions of tokens still leaves models struggling to reason over extended contexts, especially when relevant information sits in the middle, so curation remains necessary even as capacity grows.</li>
+<li><strong>Working memory is ephemeral</strong> — The survey notes short-term memory (KV caches, hidden states) exists only within a single session and disappears when the session ends, so anything durable must be pushed to long-term memory outside the window.</li>
+</ul>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a class="internal" href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">foundations/what-is-context-engineering</a> — the discipline this analogy motivates</li>
+<li><a class="internal" href="../four-context-strategies/index.html" data-wikilink-slug="four-context-strategies">strategies/four-context-strategies</a> — write, select, compress, isolate as ways to manage finite working memory</li>
+<li><a class="internal" href="../lost-in-the-middle/index.html" data-wikilink-slug="lost-in-the-middle">failure-modes/lost-in-the-middle</a> — the positional degradation that finite windows expose</li>
+<li><a class="internal" href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">strategies/context-management-tactics</a> — compaction and offloading when working memory fills</li>
+<li><a href="https://rlancemartin.github.io/2025/06/23/context_engineering/">Context Engineering (Lance Martin)</a> — the source of the OS/RAM framing and the four-bucket taxonomy</li>
+</ul>
+      </div>
+      <section class="article-backlinks" aria-label="Articles linking here">
+        <h2>Linked from</h2>
+        <ul>
+        <li>
+          <a href="../lost-in-the-middle/index.html" data-wikilink-slug="lost-in-the-middle">Lost in the Middle: How Models Use Long Contexts</a>
+          <span class="article-backlinks__teaser">Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrad…</span>
+        </li>
+        <li>
+          <a href="../context-vs-prompt-engineering/index.html" data-wikilink-slug="context-vs-prompt-engineering">Context Engineering vs. Prompt Engineering</a>
+          <span class="article-backlinks__teaser">How context engineering broadens prompt engineering — from crafting one static string to curating an entire dy…</span>
+        </li>
+        <li>
+          <a href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">What Is Context Engineering</a>
+          <span class="article-backlinks__teaser">The discipline of filling an LLM's limited context window with the right information, tools, and format at eac…</span>
+        </li>
+        </ul>
+      </section>
+      <section class="article-sources" id="sources" aria-label="Sources">
+        <h2>Sources</h2>
+        <ol>
+        <li><a href="https://rlancemartin.github.io/2025/06/23/context_engineering/" rel="noopener">Context Engineering (Lance Martin)</a> <span class="article-sources__domain">rlancemartin.github.io</span></li>
+        <li><a href="https://arxiv.org/html/2507.13334v1" rel="noopener">A Survey of Context Engineering for Large Language Models (arXiv 2507.13334)</a> <span class="article-sources__domain">arxiv.org</span></li>
+        </ol>
+      </section>
+      <nav class="article__nav" aria-label="Article navigation">
+        <a href="../agentic-search-and-retrieval/index.html" class="btn read-nav-btn" rel="prev">&larr; Agentic Search and Just-in-Time Retrieval</a>
+        <a href="../lost-in-the-middle/index.html" class="btn read-nav-btn" rel="next">Lost in the Middle: How Models Use Long Contexts &rarr;</a>
+      </nav>
+    </article>
+  </div>
+  <div class="read-toc-right">
+      <h4>On this page</h4>
+      <ul>
+          <li data-heading="overview"><a href="#overview">Overview</a></li>
+          <li data-heading="key-capabilities"><a href="#key-capabilities">Key Capabilities</a></li>
+          <li data-heading="how-it-works"><a href="#how-it-works">How It Works</a></li>
+          <li data-heading="usage-examples"><a href="#usage-examples">Usage Examples</a></li>
+          <li data-heading="limitations"><a href="#limitations">Limitations</a></li>
+          <li data-heading="see-also"><a href="#see-also">See Also</a></li>
+      </ul>
+    </div>
+</div>
+<script>window.LINK_PREVIEWS = {"lost-in-the-middle":{"title":"Lost in the Middle: How Models Use Long Contexts","summary":"Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrade sharply when it sits in the middle.","tags":["failure-modes","long-context","retrieval"],"readingTime":6},"context-vs-prompt-engineering":{"title":"Context Engineering vs. Prompt Engineering","summary":"How context engineering broadens prompt engineering — from crafting one static string to curating an entire dynamic, stateful information payload across multiple turns.","tags":["context-engineering","prompt-engineering","foundations"],"readingTime":5},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7},"four-context-strategies":{"title":"The Four Context Strategies: Write, Select, Compress, Isolate","summary":"LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.","tags":["context-engineering","agents","strategies"],"readingTime":6}};</script>
+<script>
+(function() {
+  try { localStorage.setItem('grimoire-last-read', "context-window-as-working-memory"); } catch(e) {}
+
+  // Reading progress: the CSS scroll-timeline path takes over where
+  // supported; the scroll listener is the fallback.
+  var bar = document.getElementById('read-progress');
+  var cssProgress = window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+  if (!cssProgress) {
+    var updateProgress = function() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+      if (bar) bar.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  // Unresolved wikilinks stay inert.
+  document.addEventListener('click', function(e) {
+    var dead = e.target.closest('a[aria-disabled="true"]');
+    if (dead) e.preventDefault();
+  });
+
+  // TOC scroll spy with a sliding accent marker.
+  var toc = document.querySelector('.read-toc-right');
+  if (toc) {
+    var list = toc.querySelector('ul');
+    var marker = document.createElement('span');
+    marker.className = 'read-toc-marker';
+    marker.setAttribute('aria-hidden', 'true');
+    if (list) list.appendChild(marker);
+
+    var setActive = function(item) {
+      toc.querySelectorAll('li').forEach(function(l) { l.classList.remove('active'); });
+      item.classList.add('active');
+      if (list && marker) {
+        marker.style.transform = 'translateY(' + item.offsetTop + 'px)';
+        marker.style.height = item.offsetHeight + 'px';
+        marker.style.opacity = '1';
+      }
+    };
+
+    var spy = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var active = toc.querySelector('li[data-heading="' + entry.target.id + '"]');
+        if (active) setActive(active);
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    document.querySelectorAll('.article-body h2[id]').forEach(function(h) { spy.observe(h); });
+  }
+})();
+</script>
+<script>
+(function() {
+  var previews = window.LINK_PREVIEWS;
+  if (!previews) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  var HOVER_DELAY = 250;
+  var card = null;
+  var showTimer = null;
+  var hideTimer = null;
+  var currentLink = null;
+  var supportsPopover = typeof HTMLElement !== 'undefined' &&
+    Object.prototype.hasOwnProperty.call(HTMLElement.prototype, 'popover');
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function ensureCard() {
+    if (card) return card;
+    card = document.createElement('div');
+    card.className = 'link-preview';
+    card.setAttribute('role', 'tooltip');
+    if (supportsPopover) card.setAttribute('popover', 'manual');
+    document.body.appendChild(card);
+    card.addEventListener('pointerenter', function() { clearTimeout(hideTimer); });
+    card.addEventListener('pointerleave', scheduleHide);
+    return card;
+  }
+
+  function show(link, slug) {
+    var p = previews[slug];
+    if (!p) return;
+    var el = ensureCard();
+    var meta = [p.readingTime ? p.readingTime + ' min' : null]
+      .concat(p.tags || []).filter(Boolean).join(' \u00b7 ');
+    el.innerHTML =
+      '<span class="link-preview__title">' + esc(p.title) + '</span>' +
+      (p.summary ? '<span class="link-preview__summary">' + esc(p.summary) + '</span>' : '') +
+      (meta ? '<span class="link-preview__meta">' + esc(meta) + '</span>' : '');
+
+    var rect = link.getBoundingClientRect();
+    var top = rect.bottom + 8;
+    if (supportsPopover) { el.showPopover(); } else { el.style.display = 'block'; }
+    var cardHeight = el.offsetHeight;
+    if (top + cardHeight > window.innerHeight - 16) {
+      top = rect.top - cardHeight - 8;
+    }
+    var left = Math.min(
+      Math.max(rect.left, 12),
+      window.innerWidth - el.offsetWidth - 12
+    );
+    el.style.top = top + 'px';
+    el.style.left = left + 'px';
+    el.classList.add('visible');
+    currentLink = link;
+  }
+
+  function hide() {
+    if (!card) return;
+    card.classList.remove('visible');
+    if (supportsPopover) {
+      try { card.hidePopover(); } catch(e) {}
+    } else {
+      card.style.display = 'none';
+    }
+    currentLink = null;
+  }
+
+  function scheduleHide() {
+    clearTimeout(showTimer);
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, 120);
+  }
+
+  function bind(link) {
+    var slug = link.dataset.wikilinkSlug;
+    if (!slug || !previews[slug]) return;
+
+    link.addEventListener('pointerenter', function() {
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+      showTimer = setTimeout(function() { show(link, slug); }, HOVER_DELAY);
+    });
+    link.addEventListener('pointerleave', scheduleHide);
+    link.addEventListener('focus', function() { show(link, slug); });
+    link.addEventListener('blur', scheduleHide);
+  }
+
+  document.querySelectorAll('.article-body a[data-wikilink-slug], .article-backlinks a[data-wikilink-slug]')
+    .forEach(bind);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') hide();
+  });
+  window.addEventListener('scroll', function() { if (currentLink) hide(); }, { passive: true });
+})();
+</script>
+</main>
+<footer class="footer container">
+  <p>Generated 2026-07-10 &middot; 12 articles &middot; Built with Grimoire</p>
+</footer>
+<script>
+(function() {
+  var KEY = 'grimoire-theme';
+  var toggle = document.getElementById('theme-toggle');
+  var icon = document.getElementById('theme-icon');
+  var root = document.documentElement;
+
+  function getStored() {
+    try { return localStorage.getItem(KEY); } catch(e) { return null; }
+  }
+
+  function apply(theme) {
+    root.classList.remove('theme-light', 'theme-dark');
+    if (theme) root.classList.add('theme-' + theme);
+    icon.textContent = theme === 'dark' ? '\u2600' : '\u263E';
+    try { localStorage.setItem(KEY, theme || ''); } catch(e) {}
+  }
+
+  var stored = getStored();
+  if (stored) apply(stored);
+
+  toggle.addEventListener('click', function() {
+    var isDark = root.classList.contains('theme-dark') ||
+      (!root.classList.contains('theme-light') &&
+       window.matchMedia('(prefers-color-scheme: dark)').matches);
+    apply(isDark ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>

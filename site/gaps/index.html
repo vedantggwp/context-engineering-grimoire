@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" class="motion-subtle density-comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Grimoire">
+  <meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <title>Context Engineering for LLM Agents — Gaps</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='%230d9488'/%3E%3Ccircle cx='25' cy='8' r='4' fill='%230d9488' opacity='0.55'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains%20Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body class="mode-gaps">
+<script>
+(function() {
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  window.GRIMOIRE_MOTION_OK = function() {
+    if (root.className.indexOf('motion-none') !== -1) return false;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  function revealAll() {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('revealed'); });
+  }
+
+  function start() {
+    if (!window.GRIMOIRE_MOTION_OK() || !('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav>
+  <a href="../index.html" class="brand">Context Engineering for LLM Agents</a>
+  <div class="tabs">
+    <a href="../read/index.html" class="tab">Read</a>
+        <a href="../graph/index.html" class="tab">Graph</a>
+        <a href="../search/index.html" class="tab">Search</a>
+        <a href="../feed/index.html" class="tab">Feed</a>
+        <a href="#" class="tab active">Gaps</a>
+        <a href="../quiz/index.html" class="tab">Quiz</a>
+  </div>
+  <div class="nav-right">
+    <kbd>&#8984;K</kbd>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <span id="theme-icon">&#9681;</span>
+    </button>
+  </div>
+</nav>
+
+<main id="main" class="container">
+
+<div class="gaps-wrap">
+  <div class="gaps-header">
+    <h2>Coverage Map</h2>
+    <p class="gaps-subtitle">Tag-weighted view of what this knowledge base covers well and where the thin spots are. Cell size reflects article count &times; depth.</p>
+    <div class="gaps-summary"><span class="gaps-stat"><strong>12</strong>articles</span><span class="gaps-stat"><strong>30</strong>tags</span><span class="gaps-stat gaps-stat--full"><strong>4</strong>full</span><span class="gaps-stat gaps-stat--partial"><strong>5</strong>partial</span><span class="gaps-stat gaps-stat--thin"><strong>21</strong>thin</span></div>
+  </div>
+  <div class="gaps-lens" id="gaps-lens" role="group" aria-label="Treemap lens">
+    <button type="button" data-lens="coverage" class="active" aria-pressed="true">Coverage</button>
+    <button type="button" data-lens="freshness" aria-pressed="false">Freshness</button>
+  </div>
+  
+  <div class="gaps-legend" data-legend="coverage">
+    <span class="gaps-legend__item gaps-legend__item--full"><span class="dot"></span>Full (3+ articles)</span>
+    <span class="gaps-legend__item gaps-legend__item--partial"><span class="dot"></span>Partial (2)</span>
+    <span class="gaps-legend__item gaps-legend__item--thin"><span class="dot"></span>Thin (1)</span>
+    <span class="gaps-legend__item gaps-legend__item--missing"><span class="dot"></span>Missing (0)</span>
+  </div>
+  <div class="gaps-legend" data-legend="freshness" hidden>
+    <span class="gaps-legend__item gaps-legend__item--full"><span class="dot"></span>Fresh / evergreen</span>
+    <span class="gaps-legend__item gaps-legend__item--partial"><span class="dot"></span>Aging</span>
+    <span class="gaps-legend__item gaps-legend__item--thin"><span class="dot"></span>Stale</span>
+    <span class="gaps-legend__item gaps-legend__item--missing"><span class="dot"></span>Unknown</span>
+  </div>
+  <div class="treemap-container">
+    <div class="treemap-board" id="treemap-board">
+    <div class="treemap-cell treemap-cell--full treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="context-engineering — full coverage, 9 articles, fresh"
+      data-tag="context-engineering" data-tier="full" data-freshness="fresh"
+      data-count="9" data-titles="Context Engineering Templates, Lessons from Building Manus, 12-Factor Agents, Context Engineering vs. Prompt Engineering, The Context Window as Working Memory"
+      style="left:0%;top:0%;width:45.55%;height:69.871%;--reveal-i:0">
+      <span class="treemap-cell__tag">context-engineering</span>
+      <span class="treemap-cell__count">9 articles</span>
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--full treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="agents — full coverage, 5 articles, fresh"
+      data-tag="agents" data-tier="full" data-freshness="fresh"
+      data-count="5" data-titles="Lessons from Building Manus, How Contexts Fail: Four Failure Modes, Agentic Search and Just-in-Time Retrieval, Context Management Tactics: Six Ways to Fix Your Context, The Four Context Strategies: Write, Select, Compress, Isolate"
+      style="left:0%;top:69.871%;width:45.55%;height:30.129%;--reveal-i:1">
+      <span class="treemap-cell__tag">agents</span>
+      <span class="treemap-cell__count">5 articles</span>
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--full treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="foundations — full coverage, 3 articles, fresh"
+      data-tag="foundations" data-tier="full" data-freshness="fresh"
+      data-count="3" data-titles="Context Engineering vs. Prompt Engineering, The Context Window as Working Memory, What Is Context Engineering"
+      style="left:45.55%;top:0%;width:28.088%;height:21.749%;--reveal-i:2">
+      <span class="treemap-cell__tag">foundations</span>
+      <span class="treemap-cell__count">3 articles</span>
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--full treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="agent-engineering — full coverage, 3 articles, fresh"
+      data-tag="agent-engineering" data-tier="full" data-freshness="fresh"
+      data-count="3" data-titles="Context Engineering Templates, Lessons from Building Manus, 12-Factor Agents"
+      style="left:73.638%;top:0%;width:26.362%;height:21.749%;--reveal-i:3">
+      <span class="treemap-cell__tag">agent-engineering</span>
+      <span class="treemap-cell__count">3 articles</span>
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--partial treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="rag — partial coverage, 2 articles, fresh"
+      data-tag="rag" data-tier="partial" data-freshness="fresh"
+      data-count="2" data-titles="Evals for LLM Systems, Agentic Search and Just-in-Time Retrieval"
+      style="left:45.55%;top:21.749%;width:18.72%;height:19.881%;--reveal-i:4">
+      <span class="treemap-cell__tag">rag</span>
+      <span class="treemap-cell__count">2 articles</span>
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--partial treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="strategies — partial coverage, 2 articles, fresh"
+      data-tag="strategies" data-tier="partial" data-freshness="fresh"
+      data-count="2" data-titles="Context Management Tactics: Six Ways to Fix Your Context, The Four Context Strategies: Write, Select, Compress, Isolate"
+      style="left:64.27%;top:21.749%;width:17.902%;height:19.881%;--reveal-i:5">
+      <span class="treemap-cell__tag">strategies</span>
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--partial treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="context-management — partial coverage, 2 articles, fresh"
+      data-tag="context-management" data-tier="partial" data-freshness="fresh"
+      data-count="2" data-titles="How Contexts Fail: Four Failure Modes, Context Management Tactics: Six Ways to Fix Your Context"
+      style="left:82.172%;top:21.749%;width:17.828%;height:19.881%;--reveal-i:6">
+      <span class="treemap-cell__tag">context-management</span>
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--partial treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="retrieval — partial coverage, 2 articles, fresh"
+      data-tag="retrieval" data-tier="partial" data-freshness="fresh"
+      data-count="2" data-titles="Lost in the Middle: How Models Use Long Contexts, Agentic Search and Just-in-Time Retrieval"
+      style="left:45.55%;top:41.63%;width:22.662%;height:15.121%;--reveal-i:7">
+      <span class="treemap-cell__tag">retrieval</span>
+      <span class="treemap-cell__count">2 articles</span>
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--partial treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="failure-modes — partial coverage, 2 articles, fresh"
+      data-tag="failure-modes" data-tier="partial" data-freshness="fresh"
+      data-count="2" data-titles="How Contexts Fail: Four Failure Modes, Lost in the Middle: How Models Use Long Contexts"
+      style="left:68.213%;top:41.63%;width:22.617%;height:15.121%;--reveal-i:8">
+      <span class="treemap-cell__tag">failure-modes</span>
+      <span class="treemap-cell__count">2 articles</span>
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="evaluation — thin coverage, 1 article, fresh"
+      data-tag="evaluation" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Evals for LLM Systems"
+      style="left:90.829%;top:41.63%;width:9.171%;height:15.121%;--reveal-i:9">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="llm-systems — thin coverage, 1 article, fresh"
+      data-tag="llm-systems" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Evals for LLM Systems"
+      style="left:45.55%;top:56.751%;width:12.164%;height:11.4%;--reveal-i:10">
+      <span class="treemap-cell__tag">llm-systems</span>
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="testing — thin coverage, 1 article, fresh"
+      data-tag="testing" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Evals for LLM Systems"
+      style="left:45.55%;top:68.151%;width:12.164%;height:11.4%;--reveal-i:11">
+      <span class="treemap-cell__tag">testing</span>
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="langgraph — thin coverage, 1 article, fresh"
+      data-tag="langgraph" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="The Four Context Strategies: Write, Select, Compress, Isolate"
+      style="left:45.55%;top:79.551%;width:12.164%;height:10.248%;--reveal-i:12">
+      <span class="treemap-cell__tag">langgraph</span>
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="agentic-search — thin coverage, 1 article, fresh"
+      data-tag="agentic-search" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Agentic Search and Just-in-Time Retrieval"
+      style="left:45.55%;top:89.799%;width:12.164%;height:10.201%;--reveal-i:12">
+      <span class="treemap-cell__tag">agentic-search</span>
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="definition — thin coverage, 1 article, fresh"
+      data-tag="definition" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="What Is Context Engineering"
+      style="left:57.714%;top:56.751%;width:10.808%;height:11.432%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="llm-agents — thin coverage, 1 article, fresh"
+      data-tag="llm-agents" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="What Is Context Engineering"
+      style="left:68.522%;top:56.751%;width:10.808%;height:11.432%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="long-context — thin coverage, 1 article, fresh"
+      data-tag="long-context" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Lost in the Middle: How Models Use Long Contexts"
+      style="left:79.331%;top:56.751%;width:10.335%;height:11.432%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="research — thin coverage, 1 article, fresh"
+      data-tag="research" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Lost in the Middle: How Models Use Long Contexts"
+      style="left:89.665%;top:56.751%;width:10.335%;height:11.432%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="analogy — thin coverage, 1 article, fresh"
+      data-tag="analogy" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="The Context Window as Working Memory"
+      style="left:57.714%;top:68.183%;width:10.796%;height:10.606%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="context-window — thin coverage, 1 article, fresh"
+      data-tag="context-window" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="The Context Window as Working Memory"
+      style="left:57.714%;top:78.789%;width:10.796%;height:10.606%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="working-memory — thin coverage, 1 article, fresh"
+      data-tag="working-memory" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="The Context Window as Working Memory"
+      style="left:57.714%;top:89.394%;width:10.796%;height:10.606%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="prompt-engineering — thin coverage, 1 article, fresh"
+      data-tag="prompt-engineering" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Context Engineering vs. Prompt Engineering"
+      style="left:68.51%;top:68.183%;width:10.509%;height:10.885%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="terminology — thin coverage, 1 article, fresh"
+      data-tag="terminology" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Context Engineering vs. Prompt Engineering"
+      style="left:79.02%;top:68.183%;width:10.509%;height:10.885%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="kv-cache — thin coverage, 1 article, fresh"
+      data-tag="kv-cache" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Lessons from Building Manus"
+      style="left:89.529%;top:68.183%;width:10.471%;height:10.885%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="memory — thin coverage, 1 article, fresh"
+      data-tag="memory" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Lessons from Building Manus"
+      style="left:68.51%;top:79.068%;width:10.769%;height:10.585%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="open-source — thin coverage, 1 article, fresh"
+      data-tag="open-source" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Context Engineering Templates"
+      style="left:68.51%;top:89.653%;width:10.769%;height:10.347%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="prp — thin coverage, 1 article, fresh"
+      data-tag="prp" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Context Engineering Templates"
+      style="left:79.279%;top:79.068%;width:10.361%;height:10.754%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="templates — thin coverage, 1 article, fresh"
+      data-tag="templates" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="Context Engineering Templates"
+      style="left:89.639%;top:79.068%;width:10.361%;height:10.754%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="design-patterns — thin coverage, 1 article, fresh"
+      data-tag="design-patterns" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="12-Factor Agents"
+      style="left:79.279%;top:89.823%;width:10.361%;height:10.177%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    <div class="treemap-cell treemap-cell--thin treemap-cell--f-fresh" tabindex="0" role="img"
+      aria-label="reliability — thin coverage, 1 article, fresh"
+      data-tag="reliability" data-tier="thin" data-freshness="fresh"
+      data-count="1" data-titles="12-Factor Agents"
+      style="left:89.639%;top:89.823%;width:10.361%;height:10.177%;--reveal-i:12">
+      
+      
+      <span class="treemap-cell__dot" aria-hidden="true"></span>
+    </div>
+    </div>
+    <div class="treemap-tooltip" id="treemap-tooltip"></div>
+  </div>
+</div>
+<script>
+(function() {
+  var board = document.getElementById('treemap-board');
+  var tooltip = document.getElementById('treemap-tooltip');
+  if (!board || !tooltip) return;
+
+  function fill(cell) {
+    var lens = board.classList.contains('lens-freshness');
+    var tier = lens && cell.dataset.freshness ? cell.dataset.freshness : cell.dataset.tier;
+    tooltip.innerHTML =
+      '<strong></strong><br><span class="tier-' + tier + '"></span> — ' +
+      cell.dataset.count + ' article' + (cell.dataset.count === '1' ? '' : 's') +
+      (cell.dataset.titles ? '<br><em></em>' : '');
+    tooltip.querySelector('strong').textContent = cell.dataset.tag;
+    tooltip.querySelector('span').textContent = tier;
+    var em = tooltip.querySelector('em');
+    if (em) em.textContent = cell.dataset.titles;
+    tooltip.style.display = 'block';
+  }
+
+  board.addEventListener('pointermove', function(e) {
+    var cell = e.target.closest('.treemap-cell');
+    if (!cell) { tooltip.style.display = 'none'; return; }
+    fill(cell);
+    var rect = board.getBoundingClientRect();
+    tooltip.style.left = Math.min(e.clientX - rect.left + 14, rect.width - 290) + 'px';
+    tooltip.style.top = (e.clientY - rect.top + 14) + 'px';
+  });
+  board.addEventListener('pointerleave', function() { tooltip.style.display = 'none'; });
+
+  // Keyboard: focus shows the tooltip pinned to the cell.
+  board.addEventListener('focusin', function(e) {
+    var cell = e.target.closest('.treemap-cell');
+    if (!cell) return;
+    fill(cell);
+    tooltip.style.left = cell.style.left;
+    tooltip.style.top = 'calc(' + cell.style.top + ' + 28px)';
+  });
+  board.addEventListener('focusout', function() { tooltip.style.display = 'none'; });
+
+  // Coverage | Freshness lens toggle
+  var toggle = document.getElementById('gaps-lens');
+  if (toggle) {
+    toggle.addEventListener('click', function(e) {
+      var btn = e.target.closest('button[data-lens]');
+      if (!btn) return;
+      var lens = btn.dataset.lens;
+      board.classList.toggle('lens-freshness', lens === 'freshness');
+      toggle.querySelectorAll('button').forEach(function(b) {
+        b.classList.toggle('active', b === btn);
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+      document.querySelectorAll('[data-legend]').forEach(function(l) {
+        l.hidden = l.dataset.legend !== lens;
+      });
+    });
+  }
+})();
+</script>
+</main>
+<footer class="footer container">
+  <p>Generated 2026-07-10 &middot; 12 articles &middot; Built with Grimoire</p>
+</footer>
+<script>
+(function() {
+  var KEY = 'grimoire-theme';
+  var toggle = document.getElementById('theme-toggle');
+  var icon = document.getElementById('theme-icon');
+  var root = document.documentElement;
+
+  function getStored() {
+    try { return localStorage.getItem(KEY); } catch(e) { return null; }
+  }
+
+  function apply(theme) {
+    root.classList.remove('theme-light', 'theme-dark');
+    if (theme) root.classList.add('theme-' + theme);
+    icon.textContent = theme === 'dark' ? '\u2600' : '\u263E';
+    try { localStorage.setItem(KEY, theme || ''); } catch(e) {}
+  }
+
+  var stored = getStored();
+  if (stored) apply(stored);
+
+  toggle.addEventListener('click', function() {
+    var isDark = root.classList.contains('theme-dark') ||
+      (!root.classList.contains('theme-light') &&
+       window.matchMedia('(prefers-color-scheme: dark)').matches);
+    apply(isDark ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>

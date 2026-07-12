@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" class="motion-subtle density-comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Grimoire">
+  <meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <title>Context Engineering vs. Prompt Engineering — Context Engineering for LLM Agents</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='%230d9488'/%3E%3Ccircle cx='25' cy='8' r='4' fill='%230d9488' opacity='0.55'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains%20Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body class="mode-read">
+<script>
+(function() {
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  window.GRIMOIRE_MOTION_OK = function() {
+    if (root.className.indexOf('motion-none') !== -1) return false;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  function revealAll() {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('revealed'); });
+  }
+
+  function start() {
+    if (!window.GRIMOIRE_MOTION_OK() || !('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav>
+  <a href="../../index.html" class="brand">Context Engineering for LLM Agents</a>
+  <div class="tabs">
+    <a href="../../read/index.html" class="tab active">Read</a>
+        <a href="../../graph/index.html" class="tab">Graph</a>
+        <a href="../../search/index.html" class="tab">Search</a>
+        <a href="../../feed/index.html" class="tab">Feed</a>
+        <a href="../../gaps/index.html" class="tab">Gaps</a>
+        <a href="../../quiz/index.html" class="tab">Quiz</a>
+  </div>
+  <div class="nav-right">
+    <kbd>&#8984;K</kbd>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <span id="theme-icon">&#9681;</span>
+    </button>
+  </div>
+</nav>
+<div class="read-progress" id="read-progress"></div>
+<main id="main" class="container">
+
+<div class="read-3col">
+  <div class="read-sidebar">
+      <h4>Articles</h4>
+      <ul>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
+        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
+        <li><a href="../context-vs-prompt-engineering/index.html" aria-current="page">Context Engineering vs. Prompt Engineering</a></li>
+        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
+      </ul>
+    </div>
+  <div class="read-content">
+    <article class="article" id="context-vs-prompt-engineering" data-slug="context-vs-prompt-engineering">
+      <div class="article-meta">
+        <span class="confidence-badge p0" title="P0 — compiled from must-ingest sources (highest confidence)">P0</span>
+        <a href="#sources" class="source-count">3 sources</a>
+        
+        <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
+        <span class="article-meta__words">1110 words &middot; 5 min</span>
+      </div>
+      <h1 style="view-transition-name: vta-context-vs-prompt-engineering">Context Engineering vs. Prompt Engineering</h1>
+      <div class="tag-row"><span class="tag">context-engineering</span><span class="tag">prompt-engineering</span><span class="tag">foundations</span><span class="tag">terminology</span></div>
+      <div class="summary">How context engineering broadens prompt engineering — from crafting one static string to curating an entire dynamic, stateful information payload across multiple turns.</div>
+      <div class="article-body">
+        <h2 id="overview">Overview</h2>
+<p>"Context engineering" is gaining traction as a broader successor to "prompt engineering." Where prompt engineering focuses on crafting the perfect set of instructions in a single text string, context engineering asks the broader question of what configuration of context — across system instructions, tools, message history, external data, and memory — is most likely to produce the desired behavior. Anthropic states its position directly: "we view context engineering as the natural progression of prompt engineering."</p>
+<p>The two are not opposites. Prompt engineering is best understood as a subset of context engineering: writing effective instructions (especially system prompts) remains one component of the larger job of curating everything in the context window. What changed is the scope of the problem, driven by the shift from one-shot chat interactions to agents that operate over many turns and long time horizons.</p>
+<h2 id="key-capabilities">Key Capabilities</h2>
+<ul>
+<li><strong>Broader unit of design</strong> — Per Schmid, prompt engineering focuses on "crafting the perfect set of instructions in a single text string," while context engineering is "far broader," designing dynamic systems that assemble information and tools.</li>
+<li><strong>A subset relationship</strong> — Anthropic defines prompt engineering as "methods for writing and organizing LLM instructions for optimal outcomes" and context engineering as "the set of strategies for curating and maintaining the optimal set of tokens (information) during LLM inference, including all the other information that may land there outside of the prompts."</li>
+<li><strong>Iterative vs. discrete</strong> — Anthropic contrasts "the discrete task of writing a prompt" with context engineering, which "is iterative and the curation phase happens each time we decide what to pass to the model."</li>
+</ul>
+<h2 id="how-it-works">How It Works</h2>
+<h3 id="anthropics-framing-of-the-shift">Anthropic's framing of the shift</h3>
+<p>Anthropic traces the transition to a change in what AI engineering actually involves:</p>
+<ol>
+<li><strong>The prompt-era baseline</strong> — "In the early days of engineering with LLMs, prompting was the biggest component of AI engineering work," because most use cases outside everyday chat needed prompts optimized for one-shot classification or text generation. The primary focus was how to write effective prompts, particularly system prompts.</li>
+<li><strong>The move to agents</strong> — "As we move towards engineering more capable agents that operate over multiple turns of inference and longer time horizons, we need strategies for managing the entire context state (system instructions, tools, Model Context Protocol (MCP), external data, message history, etc)."</li>
+<li><strong>Cyclical refinement</strong> — "An agent running in a loop generates more and more data that could be relevant for the next turn of inference, and this information must be cyclically refined." Context engineering is "the art and science of curating what will go into the limited context window from that constantly evolving universe of possible information."</li>
+</ol>
+<p>Anthropic summarizes the reframing: building with language models is "becoming less about finding the right words and phrases for your prompts, and more about answering the broader question of 'what configuration of context is most likely to generate our model's desired behavior?'"</p>
+<h3 id="why-the-term-has-sticking-power-simon-willison">Why the term has sticking power (Simon Willison)</h3>
+<p>Simon Willison argues the term will last, and roots his reasoning in how definitions are actually adopted:</p>
+<ul>
+<li>He had "spoken favorably of prompt engineering" in the past, hoping the term could capture the inherent complexity of constructing reliable prompts.</li>
+<li>But, he notes, "most people's inferred definition is that it's a laughably pretentious term for typing things into a chatbot."</li>
+<li>His conclusion: "It turns out that inferred definitions are the ones that stick. I think the inferred definition of 'context engineering' is likely to be much closer to the intended meaning." Because the word "context" naturally implies the broader informational payload, casual observers infer roughly the right meaning — unlike "prompt," which people associate with short throwaway task descriptions.</li>
+</ul>
+<p>Willison anchors the term in Tobi Lütke's definition ("the art of providing all the context for the task to be plausibly solvable by the LLM") and Karpathy's amplification, which explicitly lists what fills the context window: "task descriptions and explanations, few shot examples, RAG, related (possibly multimodal) data, tools, state and history, compacting." Karpathy's own framing captures the superset relationship: people associate prompts with the short task descriptions of day-to-day use, whereas "in every industrial-strength LLM app, context engineering is the delicate art and science of filling the context window with just the right information for the next step."</p>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="example-when-prompt-engineering-is-enough">Example: When prompt engineering is enough</h3>
+<p>For everyday chat interactions and one-shot tasks — classification, a single text generation — the prompt is nearly the whole job. Anthropic notes these "required prompts optimized for one-shot classification or text generation tasks," where writing an effective system prompt is the dominant concern. Here, prompt engineering and context engineering largely coincide.</p>
+<h3 id="example-when-you-need-context-engineering">Example: When you need context engineering</h3>
+<p>A multi-turn agent doing a codebase migration or a research project cannot be steered by one static string. Following Anthropic, the engineer must manage the entire evolving context state — system instructions, tool definitions, MCP servers, retrieved external data, and a growing message history — and re-curate what to pass to the model on each turn. Prompt engineering still contributes (the system prompt must sit at the right "altitude"), but it is now one lever among many.</p>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li><strong>Not a replacement, a superset</strong> — The sources treat prompt engineering as a still-valid component, not a discarded practice. Anthropic calls context engineering the "natural progression" of prompt engineering, and prompt quality (especially the system prompt) remains part of the work.</li>
+<li><strong>Terminology is still settling</strong> — Willison presents the sticking power of "context engineering" as a prediction ("I think this one may have sticking power"), grounded in how inferred definitions spread, not as a settled fact.</li>
+<li><strong>Curation adds complexity</strong> — Moving from a discrete prompt to iterative, per-turn curation (Anthropic) means more moving parts to design, evaluate, and debug than a single prompt string.</li>
+</ul>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a class="internal" href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">foundations/what-is-context-engineering</a> — the full definition and anatomy of context</li>
+<li><a class="internal" href="../context-window-as-working-memory/index.html" data-wikilink-slug="context-window-as-working-memory">foundations/context-window-as-working-memory</a> — why finite context forces curation rather than one-shot prompting</li>
+<li><a class="internal" href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">strategies/context-management-tactics</a> — the per-turn curation practices that distinguish context from prompt work</li>
+<li><a href="https://simonwillison.net/2025/Jun/27/context-engineering/">Context Engineering (Simon Willison)</a> — the argument for why the term will stick</li>
+</ul>
+      </div>
+      <section class="article-backlinks" aria-label="Articles linking here">
+        <h2>Linked from</h2>
+        <ul>
+        <li>
+          <a href="../context-engineering-templates/index.html" data-wikilink-slug="context-engineering-templates">Context Engineering Templates</a>
+          <span class="article-backlinks__teaser">Two open-source templates that operationalize context engineering: coleam00's PRP/CLAUDE.md workflow and david…</span>
+        </li>
+        <li>
+          <a href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">What Is Context Engineering</a>
+          <span class="article-backlinks__teaser">The discipline of filling an LLM's limited context window with the right information, tools, and format at eac…</span>
+        </li>
+        </ul>
+      </section>
+      <section class="article-sources" id="sources" aria-label="Sources">
+        <h2>Sources</h2>
+        <ol>
+        <li><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" rel="noopener">Effective Context Engineering for AI Agents (Anthropic)</a> <span class="article-sources__domain">anthropic.com</span></li>
+        <li><a href="https://simonwillison.net/2025/Jun/27/context-engineering/" rel="noopener">Context Engineering (Simon Willison)</a> <span class="article-sources__domain">simonwillison.net</span></li>
+        <li><a href="https://www.philschmid.de/context-engineering" rel="noopener">The New Skill in AI is Context Engineering (Philipp Schmid)</a> <span class="article-sources__domain">philschmid.de</span></li>
+        </ol>
+      </section>
+      <nav class="article__nav" aria-label="Article navigation">
+        <a href="../lost-in-the-middle/index.html" class="btn read-nav-btn" rel="prev">&larr; Lost in the Middle: How Models Use Long Contexts</a>
+        <a href="../twelve-factor-agents/index.html" class="btn read-nav-btn" rel="next">12-Factor Agents &rarr;</a>
+      </nav>
+    </article>
+  </div>
+  <div class="read-toc-right">
+      <h4>On this page</h4>
+      <ul>
+          <li data-heading="overview"><a href="#overview">Overview</a></li>
+          <li data-heading="key-capabilities"><a href="#key-capabilities">Key Capabilities</a></li>
+          <li data-heading="how-it-works"><a href="#how-it-works">How It Works</a></li>
+          <li data-heading="usage-examples"><a href="#usage-examples">Usage Examples</a></li>
+          <li data-heading="limitations"><a href="#limitations">Limitations</a></li>
+          <li data-heading="see-also"><a href="#see-also">See Also</a></li>
+      </ul>
+    </div>
+</div>
+<script>window.LINK_PREVIEWS = {"context-engineering-templates":{"title":"Context Engineering Templates","summary":"Two open-source templates that operationalize context engineering: coleam00's PRP/CLAUDE.md workflow and davidkimai's atoms-to-fields biological progression.","tags":["agent-engineering","context-engineering","templates"],"readingTime":5},"context-window-as-working-memory":{"title":"The Context Window as Working Memory","summary":"Karpathy's analogy of the LLM as an operating system and its context window as RAM — a finite working memory whose limited capacity makes context curation essential.","tags":["context-engineering","foundations","context-window"],"readingTime":5},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7}};</script>
+<script>
+(function() {
+  try { localStorage.setItem('grimoire-last-read', "context-vs-prompt-engineering"); } catch(e) {}
+
+  // Reading progress: the CSS scroll-timeline path takes over where
+  // supported; the scroll listener is the fallback.
+  var bar = document.getElementById('read-progress');
+  var cssProgress = window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+  if (!cssProgress) {
+    var updateProgress = function() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+      if (bar) bar.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  // Unresolved wikilinks stay inert.
+  document.addEventListener('click', function(e) {
+    var dead = e.target.closest('a[aria-disabled="true"]');
+    if (dead) e.preventDefault();
+  });
+
+  // TOC scroll spy with a sliding accent marker.
+  var toc = document.querySelector('.read-toc-right');
+  if (toc) {
+    var list = toc.querySelector('ul');
+    var marker = document.createElement('span');
+    marker.className = 'read-toc-marker';
+    marker.setAttribute('aria-hidden', 'true');
+    if (list) list.appendChild(marker);
+
+    var setActive = function(item) {
+      toc.querySelectorAll('li').forEach(function(l) { l.classList.remove('active'); });
+      item.classList.add('active');
+      if (list && marker) {
+        marker.style.transform = 'translateY(' + item.offsetTop + 'px)';
+        marker.style.height = item.offsetHeight + 'px';
+        marker.style.opacity = '1';
+      }
+    };
+
+    var spy = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var active = toc.querySelector('li[data-heading="' + entry.target.id + '"]');
+        if (active) setActive(active);
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    document.querySelectorAll('.article-body h2[id]').forEach(function(h) { spy.observe(h); });
+  }
+})();
+</script>
+<script>
+(function() {
+  var previews = window.LINK_PREVIEWS;
+  if (!previews) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  var HOVER_DELAY = 250;
+  var card = null;
+  var showTimer = null;
+  var hideTimer = null;
+  var currentLink = null;
+  var supportsPopover = typeof HTMLElement !== 'undefined' &&
+    Object.prototype.hasOwnProperty.call(HTMLElement.prototype, 'popover');
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function ensureCard() {
+    if (card) return card;
+    card = document.createElement('div');
+    card.className = 'link-preview';
+    card.setAttribute('role', 'tooltip');
+    if (supportsPopover) card.setAttribute('popover', 'manual');
+    document.body.appendChild(card);
+    card.addEventListener('pointerenter', function() { clearTimeout(hideTimer); });
+    card.addEventListener('pointerleave', scheduleHide);
+    return card;
+  }
+
+  function show(link, slug) {
+    var p = previews[slug];
+    if (!p) return;
+    var el = ensureCard();
+    var meta = [p.readingTime ? p.readingTime + ' min' : null]
+      .concat(p.tags || []).filter(Boolean).join(' \u00b7 ');
+    el.innerHTML =
+      '<span class="link-preview__title">' + esc(p.title) + '</span>' +
+      (p.summary ? '<span class="link-preview__summary">' + esc(p.summary) + '</span>' : '') +
+      (meta ? '<span class="link-preview__meta">' + esc(meta) + '</span>' : '');
+
+    var rect = link.getBoundingClientRect();
+    var top = rect.bottom + 8;
+    if (supportsPopover) { el.showPopover(); } else { el.style.display = 'block'; }
+    var cardHeight = el.offsetHeight;
+    if (top + cardHeight > window.innerHeight - 16) {
+      top = rect.top - cardHeight - 8;
+    }
+    var left = Math.min(
+      Math.max(rect.left, 12),
+      window.innerWidth - el.offsetWidth - 12
+    );
+    el.style.top = top + 'px';
+    el.style.left = left + 'px';
+    el.classList.add('visible');
+    currentLink = link;
+  }
+
+  function hide() {
+    if (!card) return;
+    card.classList.remove('visible');
+    if (supportsPopover) {
+      try { card.hidePopover(); } catch(e) {}
+    } else {
+      card.style.display = 'none';
+    }
+    currentLink = null;
+  }
+
+  function scheduleHide() {
+    clearTimeout(showTimer);
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, 120);
+  }
+
+  function bind(link) {
+    var slug = link.dataset.wikilinkSlug;
+    if (!slug || !previews[slug]) return;
+
+    link.addEventListener('pointerenter', function() {
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+      showTimer = setTimeout(function() { show(link, slug); }, HOVER_DELAY);
+    });
+    link.addEventListener('pointerleave', scheduleHide);
+    link.addEventListener('focus', function() { show(link, slug); });
+    link.addEventListener('blur', scheduleHide);
+  }
+
+  document.querySelectorAll('.article-body a[data-wikilink-slug], .article-backlinks a[data-wikilink-slug]')
+    .forEach(bind);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') hide();
+  });
+  window.addEventListener('scroll', function() { if (currentLink) hide(); }, { passive: true });
+})();
+</script>
+</main>
+<footer class="footer container">
+  <p>Generated 2026-07-10 &middot; 12 articles &middot; Built with Grimoire</p>
+</footer>
+<script>
+(function() {
+  var KEY = 'grimoire-theme';
+  var toggle = document.getElementById('theme-toggle');
+  var icon = document.getElementById('theme-icon');
+  var root = document.documentElement;
+
+  function getStored() {
+    try { return localStorage.getItem(KEY); } catch(e) { return null; }
+  }
+
+  function apply(theme) {
+    root.classList.remove('theme-light', 'theme-dark');
+    if (theme) root.classList.add('theme-' + theme);
+    icon.textContent = theme === 'dark' ? '\u2600' : '\u263E';
+    try { localStorage.setItem(KEY, theme || ''); } catch(e) {}
+  }
+
+  var stored = getStored();
+  if (stored) apply(stored);
+
+  toggle.addEventListener('click', function() {
+    var isDark = root.classList.contains('theme-dark') ||
+      (!root.classList.contains('theme-light') &&
+       window.matchMedia('(prefers-color-scheme: dark)').matches);
+    apply(isDark ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>

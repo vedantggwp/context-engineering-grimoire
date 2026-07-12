@@ -1,0 +1,6 @@
+{
+  "extraKnownMarketplaces": {
+    "athanor": { "source": { "source": "github", "repo": "vedantggwp/athanor" } }
+  },
+  "enabledPlugins": { "grimoire@athanor": true }
+}

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" class="motion-subtle density-comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Grimoire">
+  <meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <title>Agentic Search and Just-in-Time Retrieval — Context Engineering for LLM Agents</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='%230d9488'/%3E%3Ccircle cx='25' cy='8' r='4' fill='%230d9488' opacity='0.55'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains%20Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body class="mode-read">
+<script>
+(function() {
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  window.GRIMOIRE_MOTION_OK = function() {
+    if (root.className.indexOf('motion-none') !== -1) return false;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  function revealAll() {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('revealed'); });
+  }
+
+  function start() {
+    if (!window.GRIMOIRE_MOTION_OK() || !('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav>
+  <a href="../../index.html" class="brand">Context Engineering for LLM Agents</a>
+  <div class="tabs">
+    <a href="../../read/index.html" class="tab active">Read</a>
+        <a href="../../graph/index.html" class="tab">Graph</a>
+        <a href="../../search/index.html" class="tab">Search</a>
+        <a href="../../feed/index.html" class="tab">Feed</a>
+        <a href="../../gaps/index.html" class="tab">Gaps</a>
+        <a href="../../quiz/index.html" class="tab">Quiz</a>
+  </div>
+  <div class="nav-right">
+    <kbd>&#8984;K</kbd>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <span id="theme-icon">&#9681;</span>
+    </button>
+  </div>
+</nav>
+<div class="read-progress" id="read-progress"></div>
+<main id="main" class="container">
+
+<div class="read-3col">
+  <div class="read-sidebar">
+      <h4>Articles</h4>
+      <ul>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
+        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../agentic-search-and-retrieval/index.html" aria-current="page">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
+        <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
+        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
+      </ul>
+    </div>
+  <div class="read-content">
+    <article class="article" id="agentic-search-and-retrieval" data-slug="agentic-search-and-retrieval">
+      <div class="article-meta">
+        <span class="confidence-badge p0" title="P0 — compiled from must-ingest sources (highest confidence)">P0</span>
+        <a href="#sources" class="source-count">2 sources</a>
+        
+        <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
+        <span class="article-meta__words">1306 words &middot; 6 min</span>
+      </div>
+      <h1 style="view-transition-name: vta-agentic-search-and-retrieval">Agentic Search and Just-in-Time Retrieval</h1>
+      <div class="tag-row"><span class="tag">context-engineering</span><span class="tag">agents</span><span class="tag">retrieval</span><span class="tag">rag</span><span class="tag">agentic-search</span></div>
+      <div class="summary">How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.</div>
+      <div class="article-body">
+        <h2 id="overview">Overview</h2>
+<p>A central design question in context engineering is <em>when</em> an agent fetches its data: pre-load everything up front, or retrieve on demand as the task unfolds. Anthropic frames a shift in how engineers think about designing context for agents. Many AI-native applications employ embedding-based, pre-inference-time retrieval to surface important context. As the field moves toward more agentic approaches, teams increasingly augment these systems with <strong>"just in time"</strong> context strategies.</p>
+<p>Rather than pre-processing all relevant data up front, agents built with the just-in-time approach maintain lightweight identifiers — file paths, stored queries, web links — and use these references to dynamically load data into context at runtime using tools. This mirrors human cognition: we don't memorize entire corpuses; we use external organization and indexing systems like file systems, inboxes, and bookmarks to retrieve relevant information on demand.</p>
+<p>Lance Martin's treatment of "Select Context" describes the mechanics on the retrieval side — how agents pull scratchpads, memories, tools, and knowledge into the window. Together these sources describe how an agent assembles the right context piece by piece instead of drowning in an exhaustive but potentially irrelevant dump.</p>
+<h2 id="key-capabilities">Key Capabilities</h2>
+<ul>
+<li><strong>Just-in-time retrieval</strong> — Load data at runtime via lightweight references rather than pre-computing and pre-loading everything.</li>
+<li><strong>Agentic search</strong> — Let the model autonomously use tools in a loop to navigate and retrieve data, recovering from errors as models become more capable.</li>
+<li><strong>Progressive disclosure</strong> — Incrementally discover relevant context through exploration, where each interaction yields signals that inform the next decision.</li>
+<li><strong>Metadata-driven refinement</strong> — Use folder hierarchies, naming conventions, file sizes, and timestamps as signals for how and when to use information.</li>
+<li><strong>Hybrid retrieval</strong> — Combine some up-front data (for speed) with autonomous exploration (for freshness) at the agent's discretion.</li>
+<li><strong>Select-context mechanics (Lance Martin)</strong> — Pull scratchpads, memories, tools, and knowledge into the window with fine-grained control.</li>
+</ul>
+<h2 id="how-it-works">How It Works</h2>
+<h3 id="just-in-time-context-anthropic">Just-in-time context (Anthropic)</h3>
+<p>Anthropic defines agents, following Simon Willison, as "LLMs autonomously using tools in a loop." As underlying models get more capable, agent autonomy can scale — smarter models can independently navigate nuanced problem spaces and recover from errors.</p>
+<p>In the just-in-time approach, the agent holds lightweight identifiers and loads data at runtime:</p>
+<ol>
+<li><strong>Maintain references, not payloads</strong> — file paths, stored queries, web links.</li>
+<li><strong>Load on demand with tools</strong> — Claude Code performs complex data analysis over large databases by writing targeted queries, storing results, and using Bash commands like <code>head</code> and <code>tail</code> to analyze large volumes of data without ever loading full data objects into context.</li>
+<li><strong>Read the metadata</strong> — The presence of <code>test_utils.py</code> in a tests folder implies a different purpose than the same filename in <code>src/core_logic/</code>. Folder hierarchies, naming conventions, and timestamps are signals that help agents understand how and when to use information.</li>
+<li><strong>Assemble understanding through progressive disclosure</strong> — Each interaction yields context that informs the next decision: file sizes suggest complexity, naming conventions hint at purpose, timestamps proxy relevance. The agent maintains only what's necessary in working memory, keeping itself focused on relevant subsets.</li>
+</ol>
+<p>The trade-off is explicit: runtime exploration is <strong>slower</strong> than retrieving pre-computed data, and it requires thoughtful engineering so the LLM has the right tools and heuristics. Without proper guidance, an agent can waste context by misusing tools, chasing dead-ends, or failing to identify key information.</p>
+<h3 id="the-hybrid-strategy">The hybrid strategy</h3>
+<p>The most effective agents may retrieve some data up front for speed and pursue further autonomous exploration at their discretion; the right level of autonomy depends on the task. Claude Code is a hybrid example: CLAUDE.md files are dropped into context up front, while primitives like <code>glob</code> and <code>grep</code> let it retrieve files just-in-time — bypassing stale indexing and complex syntax trees. Anthropic suggests the hybrid strategy suits contexts with less dynamic content, such as legal or finance work, and closes with the guidance that "do the simplest thing that works" will likely remain the best advice.</p>
+<h3 id="select-context-mechanics-lance-martin">Select-context mechanics (Lance Martin)</h3>
+<p>Lance Martin groups agent context engineering into write, select, compress, and isolate, and the <strong>select</strong> bucket is the retrieval side of this article:</p>
+<ul>
+<li><strong>Scratchpad</strong> — Selection depends on implementation: a tool-based scratchpad is read by a tool call; a state-based one lets the developer expose chosen parts of state each step.</li>
+<li><strong>Memories</strong> — Agents select episodic memories (few-shot examples), procedural memories (instructions), or semantic memories (facts). Narrow always-on files are common — Claude Code uses CLAUDE.md; Cursor and Windsurf use rules files. Larger collections use embeddings and/or knowledge graphs, though selection remains hard (Simon Willison's example of ChatGPT injecting his location into an image).</li>
+<li><strong>Tools</strong> — Too many tools with overlapping descriptions cause confusion; applying RAG to tool descriptions fetches the most relevant tools by semantic similarity and can improve tool selection accuracy 3-fold.</li>
+<li><strong>Knowledge (RAG)</strong> — Code agents are among the best examples of RAG in production. Varun from Windsurf notes indexing code is not the same as context retrieval: embedding search becomes unreliable as a codebase grows, so teams combine grep/file search, knowledge-graph retrieval, and a re-ranking step that orders context by relevance.</li>
+</ul>
+<h3 id="why-on-demand-retrieval-matters-the-attention-budget">Why on-demand retrieval matters: the attention budget</h3>
+<p>Anthropic grounds the case for careful retrieval in a hard constraint. Studies on needle-in-a-haystack benchmarks uncovered <strong>context rot</strong>: as the number of tokens increases, the model's ability to accurately recall information decreases. LLMs have an "attention budget" that every new token depletes, stemming from the transformer architecture — every token attends to every other token, giving n² pairwise relationships for n tokens. This creates a performance gradient rather than a hard cliff, and it's why good context engineering means finding "the smallest possible set of high-signal tokens that maximize the likelihood of some desired outcome."</p>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="example-analyzing-a-large-database-without-loading-it-just-in-time">Example: Analyzing a large database without loading it (just-in-time)</h3>
+<p>An agent must analyze a database far larger than its context window.</p>
+<pre><code>hold a reference (query / file path), not the data
+  → write a targeted query, store results
+  → use head / tail (Bash) to inspect large volumes
+  → never load full data objects into context
+</code></pre>
+<h3 id="example-hybrid-retrieval-in-a-coding-agent">Example: Hybrid retrieval in a coding agent</h3>
+<p>An agent needs both stable project conventions and fresh, current file contents.</p>
+<pre><code>up front:  drop CLAUDE.md into context (stable conventions)
+at runtime: glob / grep to fetch specific files just-in-time
+  → avoids stale indexing and complex syntax trees
+</code></pre>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li><strong>Runtime exploration is slower</strong> — Just-in-time retrieval trades speed for freshness; pre-computed retrieval is faster when data is static.</li>
+<li><strong>Requires opinionated engineering</strong> — Without the right tools and heuristics, an agent wastes context misusing tools, chasing dead-ends, or missing key information.</li>
+<li><strong>Embedding search degrades at scale</strong> — As a codebase grows, embedding search becomes an unreliable retrieval heuristic; production systems must combine grep/file search, knowledge-graph retrieval, and re-ranking.</li>
+<li><strong>Memory selection is unreliable</strong> — Selecting the right item from a large memory collection is hard, and undesired retrieval erodes user trust.</li>
+<li><strong>Simplicity often wins</strong> — Anthropic's standing advice is "do the simplest thing that works"; smarter models require less prescriptive retrieval engineering over time.</li>
+</ul>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a class="internal" href="../four-context-strategies/index.html" data-wikilink-slug="four-context-strategies">strategies/four-context-strategies</a> — the write/select/compress/isolate framing; this article expands the "select" bucket</li>
+<li><a class="internal" href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">strategies/context-management-tactics</a> — RAG and offloading as concrete tactics that complement agentic retrieval</li>
+<li><a class="internal" href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">foundations/what-is-context-engineering</a> — the definition and finite-attention-budget rationale behind retrieving on demand</li>
+<li><a class="internal" href="../how-contexts-fail/index.html" data-wikilink-slug="how-contexts-fail">failure-modes/how-contexts-fail</a> — context rot and the failure modes that pre-loading everything invites</li>
+</ul>
+      </div>
+      <section class="article-backlinks" aria-label="Articles linking here">
+        <h2>Linked from</h2>
+        <ul>
+        <li>
+          <a href="../evals-for-llm-systems/index.html" data-wikilink-slug="evals-for-llm-systems">Evals for LLM Systems</a>
+          <span class="article-backlinks__teaser">Why evals are the starting point for any LLM system, Hamel's three levels of evaluation, evaluating RAG, and E…</span>
+        </li>
+        <li>
+          <a href="../lost-in-the-middle/index.html" data-wikilink-slug="lost-in-the-middle">Lost in the Middle: How Models Use Long Contexts</a>
+          <span class="article-backlinks__teaser">Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrad…</span>
+        </li>
+        <li>
+          <a href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">Context Management Tactics: Six Ways to Fix Your Context</a>
+          <span class="article-backlinks__teaser">Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigatin…</span>
+        </li>
+        <li>
+          <a href="../four-context-strategies/index.html" data-wikilink-slug="four-context-strategies">The Four Context Strategies: Write, Select, Compress, Isolate</a>
+          <span class="article-backlinks__teaser">LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with c…</span>
+        </li>
+        </ul>
+      </section>
+      <section class="article-sources" id="sources" aria-label="Sources">
+        <h2>Sources</h2>
+        <ol>
+        <li><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" rel="noopener">Effective Context Engineering for AI Agents (Anthropic)</a> <span class="article-sources__domain">anthropic.com</span></li>
+        <li><a href="https://rlancemartin.github.io/2025/06/23/context_engineering/" rel="noopener">Context Engineering (Lance Martin)</a> <span class="article-sources__domain">rlancemartin.github.io</span></li>
+        </ol>
+      </section>
+      <nav class="article__nav" aria-label="Article navigation">
+        <a href="../how-contexts-fail/index.html" class="btn read-nav-btn" rel="prev">&larr; How Contexts Fail: Four Failure Modes</a>
+        <a href="../context-window-as-working-memory/index.html" class="btn read-nav-btn" rel="next">The Context Window as Working Memory &rarr;</a>
+      </nav>
+    </article>
+  </div>
+  <div class="read-toc-right">
+      <h4>On this page</h4>
+      <ul>
+          <li data-heading="overview"><a href="#overview">Overview</a></li>
+          <li data-heading="key-capabilities"><a href="#key-capabilities">Key Capabilities</a></li>
+          <li data-heading="how-it-works"><a href="#how-it-works">How It Works</a></li>
+          <li data-heading="usage-examples"><a href="#usage-examples">Usage Examples</a></li>
+          <li data-heading="limitations"><a href="#limitations">Limitations</a></li>
+          <li data-heading="see-also"><a href="#see-also">See Also</a></li>
+      </ul>
+    </div>
+</div>
+<script>window.LINK_PREVIEWS = {"evals-for-llm-systems":{"title":"Evals for LLM Systems","summary":"Why evals are the starting point for any LLM system, Hamel's three levels of evaluation, evaluating RAG, and Eugene Yan's eval metrics and pitfalls.","tags":["evaluation","llm-systems","rag"],"readingTime":8},"how-contexts-fail":{"title":"How Contexts Fail: Four Failure Modes","summary":"Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.","tags":["failure-modes","context-management","agents"],"readingTime":6},"lost-in-the-middle":{"title":"Lost in the Middle: How Models Use Long Contexts","summary":"Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrade sharply when it sits in the middle.","tags":["failure-modes","long-context","retrieval"],"readingTime":6},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7},"four-context-strategies":{"title":"The Four Context Strategies: Write, Select, Compress, Isolate","summary":"LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.","tags":["context-engineering","agents","strategies"],"readingTime":6}};</script>
+<script>
+(function() {
+  try { localStorage.setItem('grimoire-last-read', "agentic-search-and-retrieval"); } catch(e) {}
+
+  // Reading progress: the CSS scroll-timeline path takes over where
+  // supported; the scroll listener is the fallback.
+  var bar = document.getElementById('read-progress');
+  var cssProgress = window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+  if (!cssProgress) {
+    var updateProgress = function() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+      if (bar) bar.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  // Unresolved wikilinks stay inert.
+  document.addEventListener('click', function(e) {
+    var dead = e.target.closest('a[aria-disabled="true"]');
+    if (dead) e.preventDefault();
+  });
+
+  // TOC scroll spy with a sliding accent marker.
+  var toc = document.querySelector('.read-toc-right');
+  if (toc) {
+    var list = toc.querySelector('ul');
+    var marker = document.createElement('span');
+    marker.className = 'read-toc-marker';
+    marker.setAttribute('aria-hidden', 'true');
+    if (list) list.appendChild(marker);
+
+    var setActive = function(item) {
+      toc.querySelectorAll('li').forEach(function(l) { l.classList.remove('active'); });
+      item.classList.add('active');
+      if (list && marker) {
+        marker.style.transform = 'translateY(' + item.offsetTop + 'px)';
+        marker.style.height = item.offsetHeight + 'px';
+        marker.style.opacity = '1';
+      }
+    };
+
+    var spy = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var active = toc.querySelector('li[data-heading="' + entry.target.id + '"]');
+        if (active) setActive(active);
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    document.querySelectorAll('.article-body h2[id]').forEach(function(h) { spy.observe(h); });
+  }
+})();
+</script>
+<script>
+(function() {
+  var previews = window.LINK_PREVIEWS;
+  if (!previews) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  var HOVER_DELAY = 250;
+  var card = null;
+  var showTimer = null;
+  var hideTimer = null;
+  var currentLink = null;
+  var supportsPopover = typeof HTMLElement !== 'undefined' &&
+    Object.prototype.hasOwnProperty.call(HTMLElement.prototype, 'popover');
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function ensureCard() {
+    if (card) return card;
+    card = document.createElement('div');
+    card.className = 'link-preview';
+    card.setAttribute('role', 'tooltip');
+    if (supportsPopover) card.setAttribute('popover', 'manual');
+    document.body.appendChild(card);
+    card.addEventListener('pointerenter', function() { clearTimeout(hideTimer); });
+    card.addEventListener('pointerleave', scheduleHide);
+    return card;
+  }
+
+  function show(link, slug) {
+    var p = previews[slug];
+    if (!p) return;
+    var el = ensureCard();
+    var meta = [p.readingTime ? p.readingTime + ' min' : null]
+      .concat(p.tags || []).filter(Boolean).join(' \u00b7 ');
+    el.innerHTML =
+      '<span class="link-preview__title">' + esc(p.title) + '</span>' +
+      (p.summary ? '<span class="link-preview__summary">' + esc(p.summary) + '</span>' : '') +
+      (meta ? '<span class="link-preview__meta">' + esc(meta) + '</span>' : '');
+
+    var rect = link.getBoundingClientRect();
+    var top = rect.bottom + 8;
+    if (supportsPopover) { el.showPopover(); } else { el.style.display = 'block'; }
+    var cardHeight = el.offsetHeight;
+    if (top + cardHeight > window.innerHeight - 16) {
+      top = rect.top - cardHeight - 8;
+    }
+    var left = Math.min(
+      Math.max(rect.left, 12),
+      window.innerWidth - el.offsetWidth - 12
+    );
+    el.style.top = top + 'px';
+    el.style.left = left + 'px';
+    el.classList.add('visible');
+    currentLink = link;
+  }
+
+  function hide() {
+    if (!card) return;
+    card.classList.remove('visible');
+    if (supportsPopover) {
+      try { card.hidePopover(); } catch(e) {}
+    } else {
+      card.style.display = 'none';
+    }
+    currentLink = null;
+  }
+
+  function scheduleHide() {
+    clearTimeout(showTimer);
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, 120);
+  }
+
+  function bind(link) {
+    var slug = link.dataset.wikilinkSlug;
+    if (!slug || !previews[slug]) return;
+
+    link.addEventListener('pointerenter', function() {
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+      showTimer = setTimeout(function() { show(link, slug); }, HOVER_DELAY);
+    });
+    link.addEventListener('pointerleave', scheduleHide);
+    link.addEventListener('focus', function() { show(link, slug); });
+    link.addEventListener('blur', scheduleHide);
+  }
+
+  document.querySelectorAll('.article-body a[data-wikilink-slug], .article-backlinks a[data-wikilink-slug]')
+    .forEach(bind);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') hide();
+  });
+  window.addEventListener('scroll', function() { if (currentLink) hide(); }, { passive: true });
+})();
+</script>
+</main>
+<footer class="footer container">
+  <p>Generated 2026-07-10 &middot; 12 articles &middot; Built with Grimoire</p>
+</footer>
+<script>
+(function() {
+  var KEY = 'grimoire-theme';
+  var toggle = document.getElementById('theme-toggle');
+  var icon = document.getElementById('theme-icon');
+  var root = document.documentElement;
+
+  function getStored() {
+    try { return localStorage.getItem(KEY); } catch(e) { return null; }
+  }
+
+  function apply(theme) {
+    root.classList.remove('theme-light', 'theme-dark');
+    if (theme) root.classList.add('theme-' + theme);
+    icon.textContent = theme === 'dark' ? '\u2600' : '\u263E';
+    try { localStorage.setItem(KEY, theme || ''); } catch(e) {}
+  }
+
+  var stored = getStored();
+  if (stored) apply(stored);
+
+  toggle.addEventListener('click', function() {
+    var isDark = root.classList.contains('theme-dark') ||
+      (!root.classList.contains('theme-light') &&
+       window.matchMedia('(prefers-color-scheme: dark)').matches);
+    apply(isDark ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" class="motion-subtle density-comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Grimoire">
+  <meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <title>Context Engineering Templates — Context Engineering for LLM Agents</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='%230d9488'/%3E%3Ccircle cx='25' cy='8' r='4' fill='%230d9488' opacity='0.55'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains%20Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body class="mode-read">
+<script>
+(function() {
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  window.GRIMOIRE_MOTION_OK = function() {
+    if (root.className.indexOf('motion-none') !== -1) return false;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  function revealAll() {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('revealed'); });
+  }
+
+  function start() {
+    if (!window.GRIMOIRE_MOTION_OK() || !('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav>
+  <a href="../../index.html" class="brand">Context Engineering for LLM Agents</a>
+  <div class="tabs">
+    <a href="../../read/index.html" class="tab active">Read</a>
+        <a href="../../graph/index.html" class="tab">Graph</a>
+        <a href="../../search/index.html" class="tab">Search</a>
+        <a href="../../feed/index.html" class="tab">Feed</a>
+        <a href="../../gaps/index.html" class="tab">Gaps</a>
+        <a href="../../quiz/index.html" class="tab">Quiz</a>
+  </div>
+  <div class="nav-right">
+    <kbd>&#8984;K</kbd>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <span id="theme-icon">&#9681;</span>
+    </button>
+  </div>
+</nav>
+<div class="read-progress" id="read-progress"></div>
+<main id="main" class="container">
+
+<div class="read-3col">
+  <div class="read-sidebar">
+      <h4>Articles</h4>
+      <ul>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
+        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
+        <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
+        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-templates/index.html" aria-current="page">Context Engineering Templates</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
+      </ul>
+    </div>
+  <div class="read-content">
+    <article class="article" id="context-engineering-templates" data-slug="context-engineering-templates">
+      <div class="article-meta">
+        <span class="confidence-badge p1" title="P1 — compiled from should-ingest sources (solid confidence)">P1</span>
+        <a href="#sources" class="source-count">2 sources</a>
+        
+        
+        <span class="article-meta__words">1053 words &middot; 5 min</span>
+      </div>
+      <h1 style="view-transition-name: vta-context-engineering-templates">Context Engineering Templates</h1>
+      <div class="tag-row"><span class="tag">agent-engineering</span><span class="tag">context-engineering</span><span class="tag">templates</span><span class="tag">prp</span><span class="tag">open-source</span></div>
+      <div class="summary">Two open-source templates that operationalize context engineering: coleam00's PRP/CLAUDE.md workflow and davidkimai's atoms-to-fields biological progression.</div>
+      <div class="article-body">
+        <h2 id="overview">Overview</h2>
+<p>Context engineering as a discipline has open-source templates that turn the idea into a repeatable workflow. This article covers two of them.</p>
+<p><strong>coleam00's Context Engineering Template</strong> is "A comprehensive template for getting started with Context Engineering - the discipline of engineering context for AI coding assistants so they have the information necessary to get the job done end to end." Its headline claim: "Context Engineering is 10x better than prompt engineering and 100x better than vibe coding." It frames the shift as: prompt engineering is "Like giving someone a sticky note," while context engineering is "Like writing a full screenplay with all the details."</p>
+<p><strong>davidkimai's Context-Engineering</strong> is "A frontier, first-principles handbook for moving beyond prompt engineering to the wider discipline of context design, orchestration, and optimization." It anchors on Karpathy's definition — "Context engineering is the delicate art and science of filling the context window with just the right information for the next step" — and organizes the whole field around a biological metaphor progressing from atoms to neural/semantic fields.</p>
+<p>Together they show two operationalization styles: coleam00 is a hands-on project workflow for AI coding assistants; davidkimai is a progressive curriculum grounded in research.</p>
+<h2 id="key-capabilities">Key Capabilities</h2>
+<ul>
+<li><strong>PRP workflow (coleam00)</strong> — Generate and execute a "Product Requirements Prompt," a "comprehensive implementation blueprint," via <code>/generate-prp</code> and <code>/execute-prp</code>.</li>
+<li><strong>CLAUDE.md global rules (coleam00)</strong> — A file of "project-wide rules that the AI assistant will follow in every conversation."</li>
+<li><strong>Examples folder (coleam00)</strong> — A "critical" <code>examples/</code> folder, since "AI coding assistants perform much better when they can see patterns to follow."</li>
+<li><strong>Biological metaphor progression (davidkimai)</strong> — A first-principles ladder: <code>atoms → molecules → cells → organs → neural systems → neural &#x26; semantic field theory</code>.</li>
+<li><strong>Research-grounded framing (davidkimai)</strong> — Ties each level to papers (a 1400-paper survey, IBM Zurich cognitive tools, Context Rot, and more).</li>
+</ul>
+<h2 id="how-it-works">How It Works</h2>
+<h3 id="coleam00-the-prp-claudemd-examples-initial-workflow">coleam00: the PRP / CLAUDE.md / examples / INITIAL workflow</h3>
+<p>The quick-start sequence is:</p>
+<ol>
+<li>Clone the template.</li>
+<li>"Set up your project rules" by editing <code>CLAUDE.md</code> — which covers "Project awareness," "Code structure," "Testing requirements," "Style conventions," and "Documentation standards."</li>
+<li>"Add examples" — "Place relevant code examples in the examples/ folder."</li>
+<li>"Create your initial feature request" by editing <code>INITIAL.md</code>, which has four sections: <code>FEATURE</code>, <code>EXAMPLES</code>, <code>DOCUMENTATION</code>, and <code>OTHER CONSIDERATIONS</code>.</li>
+<li>"Generate a comprehensive PRP" with <code>/generate-prp INITIAL.md</code>.</li>
+<li>"Execute the PRP to implement your feature" with <code>/execute-prp PRPs/your-feature-name.md</code>.</li>
+</ol>
+<p>A <strong>PRP (Product Requirements Prompt)</strong> is an "implementation blueprint" that includes "Complete context and documentation," "Implementation steps with validation," "Error handling patterns," and "Test requirements." They are "similar to PRDs... but are crafted more specifically to instruct an AI coding assistant." <code>/generate-prp</code> runs a Research Phase, Documentation Gathering, Blueprint Creation, and a Quality Check that "Scores confidence level (1-10)." <code>/execute-prp</code> then loads context, plans "using TodoWrite," executes, validates ("Runs tests and linting"), and iterates.</p>
+<p>The template's stated rationale: "Most agent failures aren't model failures - they're context failures," and validation loops make the system "Self-Correcting."</p>
+<h3 id="davidkimai-the-atoms-fields-biological-progression">davidkimai: the atoms → fields biological progression</h3>
+<p>This repo "provides a progressive, first-principles approach to context engineering, built around a biological metaphor":</p>
+<pre><code>atoms → molecules → cells → organs → neural systems → neural &#x26; semantic field theory
+  │        │         │         │             │                         │
+single    few-     memory +   multi-   cognitive tools +     context = fields +
+prompt    shot     agents     agents   operating systems     persistence &#x26; resonance
+</code></pre>
+<p>Each stage maps to a familiar real-world parallel: atoms are "Like: Basic prompt engineering," molecules "Like: Few-shot learning," cells "Like: Conversational chatbots," organs "Like: Multi-agent systems," neural systems "Like: ReAct / Chain-of-Thought," and neural fields "Like: Semantic field theory." The repo layers these into four levels — Level 1 Basic Context Engineering, Level 2 Field Theory, Level 3 Protocol System, and Level 4 Meta-Recursion.</p>
+<p>It adopts a "Karpathy + 3Blue1Brown Inspired Style" with six principles: "First principles," "Iterative add-on – add only what the model demonstrably lacks," "Measure everything," "Delete ruthlessly – pruning beats padding," "Code > slides," and "Visualize everything." Its definition of context engineering (from the 1400-paper survey) is that "Context is the complete information payload provided to a LLM at inference time, encompassing all structured informational components that the model needs to plausibly accomplish a given task."</p>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="example-writing-an-effective-initialmd-coleam00">Example: Writing an effective INITIAL.md (coleam00)</h3>
+<p>The template contrasts a weak vs. strong feature description. Weak: "Build a web scraper." Strong: "Build an async web scraper using BeautifulSoup that extracts product data from e-commerce sites, handles rate limiting, and stores results in PostgreSQL." Its best practices stress being explicit ("Don't assume the AI knows your preferences"), providing comprehensive examples ("Show both what to do AND what not to do"), and using validation gates ("PRPs include test commands that must pass").</p>
+<h3 id="example-a-learning-path-through-the-metaphor-davidkimai">Example: A learning path through the metaphor (davidkimai)</h3>
+<p>The repo's quick start walks a learner from <code>00_foundations/01_atoms_prompting.md</code> ("Understand why prompts alone often underperform"), to a minimal runnable example, to copy-paste templates in <code>20_templates/</code>, to a complete <code>30_examples/00_toy_chatbot/</code> "with context management" — mirroring the atoms → organs climb.</p>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li><strong>coleam00 excludes RAG/tools for now</strong> — "This template doesn't focus on RAG and tools with context engineering because I have a LOT more in store for that soon."</li>
+<li><strong>coleam00 is coding-assistant specific</strong> — It is scoped to "AI coding assistants" (Claude Code slash commands, CLAUDE.md), not agents in general.</li>
+<li><strong>davidkimai reaches speculative frontier levels</strong> — Later stages invoke "Quantum Semantics," "Neural Field Theory," and "Meta-Recursion," which the repo frames as frontier/"Under Construction" rather than settled practice ("Comprehensive Course Under Construction").</li>
+<li><strong>Abstraction has a cost</strong> — The repo itself quotes "Abstraction is the cost of generalization," flagging that the higher metaphor levels trade concreteness for generality.</li>
+</ul>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a class="internal" href="../context-vs-prompt-engineering/index.html" data-wikilink-slug="context-vs-prompt-engineering">foundations/context-vs-prompt-engineering</a> — the prompt-vs-context distinction both templates build on</li>
+<li><a class="internal" href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">foundations/what-is-context-engineering</a> — the discipline these templates operationalize</li>
+<li><a class="internal" href="../twelve-factor-agents/index.html" data-wikilink-slug="twelve-factor-agents">agent-engineering/twelve-factor-agents</a> — another practitioner framework for context-aware agents</li>
+<li><a href="https://github.com/coleam00/context-engineering-intro">Context Engineering Template (coleam00)</a> — the PRP workflow template</li>
+<li><a href="https://github.com/davidkimai/Context-Engineering">Context-Engineering (davidkimai)</a> — the first-principles handbook</li>
+</ul>
+      </div>
+      <section class="article-backlinks" aria-label="Articles linking here">
+        <h2>Linked from</h2>
+        <ul>
+        <li>
+          <a href="../twelve-factor-agents/index.html" data-wikilink-slug="twelve-factor-agents">12-Factor Agents</a>
+          <span class="article-backlinks__teaser">HumanLayer's 12 engineering principles for building reliable LLM-powered software, several of which are direct…</span>
+        </li>
+        </ul>
+      </section>
+      <section class="article-sources" id="sources" aria-label="Sources">
+        <h2>Sources</h2>
+        <ol>
+        <li><a href="https://github.com/coleam00/context-engineering-intro" rel="noopener">Context Engineering Intro Template (coleam00)</a> <span class="article-sources__domain">github.com</span></li>
+        <li><a href="https://github.com/davidkimai/Context-Engineering" rel="noopener">Context-Engineering (davidkimai)</a> <span class="article-sources__domain">github.com</span></li>
+        </ol>
+      </section>
+      <nav class="article__nav" aria-label="Article navigation">
+        <a href="../twelve-factor-agents/index.html" class="btn read-nav-btn" rel="prev">&larr; 12-Factor Agents</a>
+        <a href="../lessons-from-manus/index.html" class="btn read-nav-btn" rel="next">Lessons from Building Manus &rarr;</a>
+      </nav>
+    </article>
+  </div>
+  <div class="read-toc-right">
+      <h4>On this page</h4>
+      <ul>
+          <li data-heading="overview"><a href="#overview">Overview</a></li>
+          <li data-heading="key-capabilities"><a href="#key-capabilities">Key Capabilities</a></li>
+          <li data-heading="how-it-works"><a href="#how-it-works">How It Works</a></li>
+          <li data-heading="usage-examples"><a href="#usage-examples">Usage Examples</a></li>
+          <li data-heading="limitations"><a href="#limitations">Limitations</a></li>
+          <li data-heading="see-also"><a href="#see-also">See Also</a></li>
+      </ul>
+    </div>
+</div>
+<script>window.LINK_PREVIEWS = {"twelve-factor-agents":{"title":"12-Factor Agents","summary":"HumanLayer's 12 engineering principles for building reliable LLM-powered software, several of which are directly about owning and shaping the agent's context.","tags":["agent-engineering","context-engineering","reliability"],"readingTime":5},"context-vs-prompt-engineering":{"title":"Context Engineering vs. Prompt Engineering","summary":"How context engineering broadens prompt engineering — from crafting one static string to curating an entire dynamic, stateful information payload across multiple turns.","tags":["context-engineering","prompt-engineering","foundations"],"readingTime":5},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6}};</script>
+<script>
+(function() {
+  try { localStorage.setItem('grimoire-last-read', "context-engineering-templates"); } catch(e) {}
+
+  // Reading progress: the CSS scroll-timeline path takes over where
+  // supported; the scroll listener is the fallback.
+  var bar = document.getElementById('read-progress');
+  var cssProgress = window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+  if (!cssProgress) {
+    var updateProgress = function() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+      if (bar) bar.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  // Unresolved wikilinks stay inert.
+  document.addEventListener('click', function(e) {
+    var dead = e.target.closest('a[aria-disabled="true"]');
+    if (dead) e.preventDefault();
+  });
+
+  // TOC scroll spy with a sliding accent marker.
+  var toc = document.querySelector('.read-toc-right');
+  if (toc) {
+    var list = toc.querySelector('ul');
+    var marker = document.createElement('span');
+    marker.className = 'read-toc-marker';
+    marker.setAttribute('aria-hidden', 'true');
+    if (list) list.appendChild(marker);
+
+    var setActive = function(item) {
+      toc.querySelectorAll('li').forEach(function(l) { l.classList.remove('active'); });
+      item.classList.add('active');
+      if (list && marker) {
+        marker.style.transform = 'translateY(' + item.offsetTop + 'px)';
+        marker.style.height = item.offsetHeight + 'px';
+        marker.style.opacity = '1';
+      }
+    };
+
+    var spy = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var active = toc.querySelector('li[data-heading="' + entry.target.id + '"]');
+        if (active) setActive(active);
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    document.querySelectorAll('.article-body h2[id]').forEach(function(h) { spy.observe(h); });
+  }
+})();
+</script>
+<script>
+(function() {
+  var previews = window.LINK_PREVIEWS;
+  if (!previews) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  var HOVER_DELAY = 250;
+  var card = null;
+  var showTimer = null;
+  var hideTimer = null;
+  var currentLink = null;
+  var supportsPopover = typeof HTMLElement !== 'undefined' &&
+    Object.prototype.hasOwnProperty.call(HTMLElement.prototype, 'popover');
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function ensureCard() {
+    if (card) return card;
+    card = document.createElement('div');
+    card.className = 'link-preview';
+    card.setAttribute('role', 'tooltip');
+    if (supportsPopover) card.setAttribute('popover', 'manual');
+    document.body.appendChild(card);
+    card.addEventListener('pointerenter', function() { clearTimeout(hideTimer); });
+    card.addEventListener('pointerleave', scheduleHide);
+    return card;
+  }
+
+  function show(link, slug) {
+    var p = previews[slug];
+    if (!p) return;
+    var el = ensureCard();
+    var meta = [p.readingTime ? p.readingTime + ' min' : null]
+      .concat(p.tags || []).filter(Boolean).join(' \u00b7 ');
+    el.innerHTML =
+      '<span class="link-preview__title">' + esc(p.title) + '</span>' +
+      (p.summary ? '<span class="link-preview__summary">' + esc(p.summary) + '</span>' : '') +
+      (meta ? '<span class="link-preview__meta">' + esc(meta) + '</span>' : '');
+
+    var rect = link.getBoundingClientRect();
+    var top = rect.bottom + 8;
+    if (supportsPopover) { el.showPopover(); } else { el.style.display = 'block'; }
+    var cardHeight = el.offsetHeight;
+    if (top + cardHeight > window.innerHeight - 16) {
+      top = rect.top - cardHeight - 8;
+    }
+    var left = Math.min(
+      Math.max(rect.left, 12),
+      window.innerWidth - el.offsetWidth - 12
+    );
+    el.style.top = top + 'px';
+    el.style.left = left + 'px';
+    el.classList.add('visible');
+    currentLink = link;
+  }
+
+  function hide() {
+    if (!card) return;
+    card.classList.remove('visible');
+    if (supportsPopover) {
+      try { card.hidePopover(); } catch(e) {}
+    } else {
+      card.style.display = 'none';
+    }
+    currentLink = null;
+  }
+
+  function scheduleHide() {
+    clearTimeout(showTimer);
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, 120);
+  }
+
+  function bind(link) {
+    var slug = link.dataset.wikilinkSlug;
+    if (!slug || !previews[slug]) return;
+
+    link.addEventListener('pointerenter', function() {
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+      showTimer = setTimeout(function() { show(link, slug); }, HOVER_DELAY);
+    });
+    link.addEventListener('pointerleave', scheduleHide);
+    link.addEventListener('focus', function() { show(link, slug); });
+    link.addEventListener('blur', scheduleHide);
+  }
+
+  document.querySelectorAll('.article-body a[data-wikilink-slug], .article-backlinks a[data-wikilink-slug]')
+    .forEach(bind);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') hide();
+  });
+  window.addEventListener('scroll', function() { if (currentLink) hide(); }, { passive: true });
+})();
+</script>
+</main>
+<footer class="footer container">
+  <p>Generated 2026-07-10 &middot; 12 articles &middot; Built with Grimoire</p>
+</footer>
+<script>
+(function() {
+  var KEY = 'grimoire-theme';
+  var toggle = document.getElementById('theme-toggle');
+  var icon = document.getElementById('theme-icon');
+  var root = document.documentElement;
+
+  function getStored() {
+    try { return localStorage.getItem(KEY); } catch(e) { return null; }
+  }
+
+  function apply(theme) {
+    root.classList.remove('theme-light', 'theme-dark');
+    if (theme) root.classList.add('theme-' + theme);
+    icon.textContent = theme === 'dark' ? '\u2600' : '\u263E';
+    try { localStorage.setItem(KEY, theme || ''); } catch(e) {}
+  }
+
+  var stored = getStored();
+  if (stored) apply(stored);
+
+  toggle.addEventListener('click', function() {
+    var isDark = root.classList.contains('theme-dark') ||
+      (!root.classList.contains('theme-light') &&
+       window.matchMedia('(prefers-color-scheme: dark)').matches);
+    apply(isDark ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>
