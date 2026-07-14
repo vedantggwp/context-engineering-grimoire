@@ -64,4 +64,7 @@ When an observation is a huge web page or PDF, Manus can drop the body from the 
 - [[agent-engineering/twelve-factor-agents]] — a complementary principles-based take, including compacting errors into context
 - [[failure-modes/lost-in-the-middle]] — the attention failure recitation is designed to avoid
 - [[strategies/context-management-tactics]] — compression, externalized memory, and other context-shaping tactics
+- [[strategies/agentic-context-engineering]] — ACE, a formal framework for the evolving agent memory Manus builds by hand
+- [[strategies/context-compression-optimization]] — ACON, a rigorous, measured take on the compression Manus does by hand
+- [[strategies/four-context-strategies]] — the write/select/compress/isolate taxonomy these field lessons instantiate
 - [Context Engineering for AI Agents: Lessons from Building Manus](https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus) — the full post

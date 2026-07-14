@@ -16,15 +16,20 @@ it with prompt engineering, and develops the context-window-as-working-memory me
 distraction / confusion / clash, and the Liu et al. "lost in the middle" U-shaped curve
 showing models under-use information buried mid-context. **Strategies** gives the repeatable
 fixes — LangChain's write/select/compress/isolate taxonomy, Breunig's six management tactics,
-and Anthropic's just-in-time agentic retrieval. **Agent engineering** distills hard-won
+and Anthropic's just-in-time agentic retrieval — and now extends into the 2025–2026 research
+frontier: **ACE** (Agentic Context Engineering), which treats context as a self-improving
+playbook refined from execution feedback, and **ACON**, which optimizes context *compression*
+from failure analysis to cut peak tokens 26–54% without fine-tuning. **Agent engineering** distills hard-won
 practice: HumanLayer's 12-Factor Agents, the Manus team's rebuild lessons, and two open
 templates (coleam00, davidkimai) that operationalize the ideas. **Evaluation** closes the
 loop: without evals (Hamel Husain, Eugene Yan) you cannot tell whether any of the above
 actually improved the system.
 
 A note on provenance: this wiki was built deliberately from *messy* sources — practitioner
-blogs, arXiv papers, and GitHub repos rather than a single clean documentation site. Only the
-three GitHub READMEs captured at `full` (verbatim) fidelity; the remaining twelve sources are
-`extract`-fidelity HTML extractions. Where an extract dropped a figure or table (notably the
-arXiv plots), the articles say so rather than reconstruct numbers from memory. Read every
-claim against the fidelity label on its source.
+blogs, arXiv papers, and GitHub repos rather than a single clean documentation site. Of the
+seventeen usable sources behind its fourteen articles, only the three GitHub READMEs were
+captured at `full` (verbatim) fidelity; the remaining fourteen are `extract`-fidelity HTML
+extractions — including the two newest additions (the ACE and ACON papers), which rest on
+their freely-licensed arXiv abstracts rather than a full read of the PDFs. Where an extract
+dropped a figure or table (notably the arXiv plots), the articles say so rather than
+reconstruct numbers from memory. Read every claim against the fidelity label on its source.

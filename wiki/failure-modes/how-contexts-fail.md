@@ -84,4 +84,6 @@ An agent connected to many MCP tools calls irrelevant ones or produces low-quali
 - [[failure-modes/lost-in-the-middle]] — a related, measured degradation where models under-use information positioned in the middle of long contexts
 - [[strategies/four-context-strategies]] — approaches for managing context to avoid these failure modes
 - [[strategies/context-management-tactics]] — concrete tactics for keeping contexts lean and coherent
+- [[strategies/agentic-context-engineering]] — ACE, designed to prevent "context collapse," a close cousin of these failures
+- [[strategies/context-compression-optimization]] — ACON, which compresses history to mitigate "context distraction" in long-horizon agents
 - [How to Fix Your Context (Drew Breunig)](https://www.dbreunig.com/2025/06/26/how-to-fix-your-context.html) — the follow-up covering mitigations

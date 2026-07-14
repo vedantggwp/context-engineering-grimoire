@@ -1,6 +1,6 @@
 # Approved Sources: Context Engineering for LLM Agents
 Approved: 2026-07-10
-Total: 18 attempted / 15 usable
+Total: 20 attempted / 17 usable
 Note: Deliberately messy-source topic (blogs, papers, forum posts, GitHub) — NOT a docs site. Selected to test fetch-ladder generalization.
 
 ## Ingest Queue
@@ -25,6 +25,8 @@ Note: Deliberately messy-source topic (blogs, papers, forum posts, GitHub) — N
 | 16 | https://arxiv.org/html/2307.03172v3 | Lost in the Middle (v3 HTML) | paper | P0 | failed | failed | failed |
 | 17 | https://www.reddit.com/r/LocalLLaMA/comments/1lm3wag/... | Reddit: context engineering thread | thread | P2 | failed | failed | failed |
 | 18 | https://news.ycombinator.com/item?id=44427757 | HN thread | thread | P2 | extract | html-extract | rejected (off-topic capture) |
+| 19 | https://arxiv.org/abs/2510.04618 | Agentic Context Engineering (ACE) | paper | P0 | extract | html-extract | ingested |
+| 20 | https://arxiv.org/abs/2510.00615 | ACON: Optimizing Context Compression | paper | P0 | extract | html-extract | ingested |
 
 ## Failure notes
 - **#16** arXiv HTML fulltext for v3 returns no acceptable capture; the v1 HTML render exists and was used instead (#13). arXiv HTML availability is version-dependent.

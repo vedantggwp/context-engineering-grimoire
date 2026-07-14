@@ -76,17 +76,19 @@
   <div class="read-sidebar">
       <h4>Articles</h4>
       <ul>
-        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
-        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
         <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
+        <li><a href="../agentic-context-engineering/index.html">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
         <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
         <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-compression-optimization/index.html">Context Compression Optimization (ACON) for Long-Horizon Agents</a></li>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../lessons-from-manus/index.html" aria-current="page">Lessons from Building Manus</a></li>
         <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
         <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
         <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
-        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
         <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
-        <li><a href="../lessons-from-manus/index.html" aria-current="page">Lessons from Building Manus</a></li>
         <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
       </ul>
     </div>
@@ -97,7 +99,7 @@
         <a href="#sources" class="source-count">1 source</a>
         
         <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
-        <span class="article-meta__words">1102 words &middot; 5 min</span>
+        <span class="article-meta__words">1143 words &middot; 6 min</span>
       </div>
       <h1 style="view-transition-name: vta-lessons-from-manus">Lessons from Building Manus</h1>
       <div class="tag-row"><span class="tag">agent-engineering</span><span class="tag">context-engineering</span><span class="tag">kv-cache</span><span class="tag">agents</span><span class="tag">memory</span></div>
@@ -153,6 +155,9 @@
 <li><a class="internal" href="../twelve-factor-agents/index.html" data-wikilink-slug="twelve-factor-agents">agent-engineering/twelve-factor-agents</a> — a complementary principles-based take, including compacting errors into context</li>
 <li><a class="internal" href="../lost-in-the-middle/index.html" data-wikilink-slug="lost-in-the-middle">failure-modes/lost-in-the-middle</a> — the attention failure recitation is designed to avoid</li>
 <li><a class="internal" href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">strategies/context-management-tactics</a> — compression, externalized memory, and other context-shaping tactics</li>
+<li><a class="internal" href="../agentic-context-engineering/index.html" data-wikilink-slug="agentic-context-engineering">strategies/agentic-context-engineering</a> — ACE, a formal framework for the evolving agent memory Manus builds by hand</li>
+<li><a class="internal" href="../context-compression-optimization/index.html" data-wikilink-slug="context-compression-optimization">strategies/context-compression-optimization</a> — ACON, a rigorous, measured take on the compression Manus does by hand</li>
+<li><a class="internal" href="../four-context-strategies/index.html" data-wikilink-slug="four-context-strategies">strategies/four-context-strategies</a> — the write/select/compress/isolate taxonomy these field lessons instantiate</li>
 <li><a href="https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus">Context Engineering for AI Agents: Lessons from Building Manus</a> — the full post</li>
 </ul>
       </div>
@@ -163,6 +168,18 @@
           <a href="../twelve-factor-agents/index.html" data-wikilink-slug="twelve-factor-agents">12-Factor Agents</a>
           <span class="article-backlinks__teaser">HumanLayer's 12 engineering principles for building reliable LLM-powered software, several of which are direct…</span>
         </li>
+        <li>
+          <a href="../agentic-context-engineering/index.html" data-wikilink-slug="agentic-context-engineering">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a>
+          <span class="article-backlinks__teaser">A framework that treats an agent's context as a self-improving playbook, refined from execution feedback via g…</span>
+        </li>
+        <li>
+          <a href="../context-compression-optimization/index.html" data-wikilink-slug="context-compression-optimization">Context Compression Optimization (ACON) for Long-Horizon Agents</a>
+          <span class="article-backlinks__teaser">ACON compresses an agent's observations and history by iteratively refining compression guidelines from failur…</span>
+        </li>
+        <li>
+          <a href="../four-context-strategies/index.html" data-wikilink-slug="four-context-strategies">The Four Context Strategies: Write, Select, Compress, Isolate</a>
+          <span class="article-backlinks__teaser">LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with c…</span>
+        </li>
         </ul>
       </section>
       <section class="article-sources" id="sources" aria-label="Sources">
@@ -172,8 +189,8 @@
         </ol>
       </section>
       <nav class="article__nav" aria-label="Article navigation">
-        <a href="../context-engineering-templates/index.html" class="btn read-nav-btn" rel="prev">&larr; Context Engineering Templates</a>
-        <a href="../evals-for-llm-systems/index.html" class="btn read-nav-btn" rel="next">Evals for LLM Systems &rarr;</a>
+        <a href="../what-is-context-engineering/index.html" class="btn read-nav-btn" rel="prev">&larr; What Is Context Engineering</a>
+        <a href="../context-window-as-working-memory/index.html" class="btn read-nav-btn" rel="next">The Context Window as Working Memory &rarr;</a>
       </nav>
     </article>
   </div>
@@ -189,7 +206,7 @@
       </ul>
     </div>
 </div>
-<script>window.LINK_PREVIEWS = {"twelve-factor-agents":{"title":"12-Factor Agents","summary":"HumanLayer's 12 engineering principles for building reliable LLM-powered software, several of which are directly about owning and shaping the agent's context.","tags":["agent-engineering","context-engineering","reliability"],"readingTime":5},"lost-in-the-middle":{"title":"Lost in the Middle: How Models Use Long Contexts","summary":"Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrade sharply when it sits in the middle.","tags":["failure-modes","long-context","retrieval"],"readingTime":6},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7}};</script>
+<script>window.LINK_PREVIEWS = {"twelve-factor-agents":{"title":"12-Factor Agents","summary":"HumanLayer's 12 engineering principles for building reliable LLM-powered software, several of which are directly about owning and shaping the agent's context.","tags":["agent-engineering","context-engineering","reliability"],"readingTime":5},"lost-in-the-middle":{"title":"Lost in the Middle: How Models Use Long Contexts","summary":"Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrade sharply when it sits in the middle.","tags":["failure-modes","long-context","retrieval"],"readingTime":6},"agentic-context-engineering":{"title":"Agentic Context Engineering (ACE): Contexts as Evolving Playbooks","summary":"A framework that treats an agent's context as a self-improving playbook, refined from execution feedback via generation, reflection, and curation — without weight updates.","tags":["context-engineering","agents","strategies"],"readingTime":4},"context-compression-optimization":{"title":"Context Compression Optimization (ACON) for Long-Horizon Agents","summary":"ACON compresses an agent's observations and history by iteratively refining compression guidelines from failure analysis — gradient-free, no fine-tuning, 26–54% fewer peak tokens.","tags":["context-engineering","agents","strategies"],"readingTime":4},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7},"four-context-strategies":{"title":"The Four Context Strategies: Write, Select, Compress, Isolate","summary":"LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.","tags":["context-engineering","agents","strategies"],"readingTime":7}};</script>
 <script>
 (function() {
   try { localStorage.setItem('grimoire-last-read', "lessons-from-manus"); } catch(e) {}
@@ -344,7 +361,7 @@
 </script>
 </main>
 <footer class="footer container">
-  <p>Generated 2026-07-10 &middot; 12 articles &middot; Built with Grimoire</p>
+  <p>Generated 2026-07-14 &middot; 14 articles &middot; Built with Grimoire</p>
 </footer>
 <script>
 (function() {

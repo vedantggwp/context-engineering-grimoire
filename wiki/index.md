@@ -2,8 +2,8 @@
 
 > Master catalog of all articles. Updated during the compile stage.
 
-Last updated: 2026-07-10
-Total articles: 12
+Last updated: 2026-07-12
+Total articles: 14
 
 ---
 
@@ -29,6 +29,8 @@ Total articles: 12
 | [[strategies/four-context-strategies]] | LangChain's four buckets — write, select, compress, and isolate context — with concrete examples of each. | 2026-07-10 |
 | [[strategies/context-management-tactics]] | Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures. | 2026-07-10 |
 | [[strategies/agentic-search-and-retrieval]] | How agents fetch context on demand — Anthropic's just-in-time retrieval and agentic search vs. pre-loading. | 2026-07-10 |
+| [[strategies/agentic-context-engineering]] | ACE treats an agent's context as a self-improving playbook, refined from execution feedback via generation, reflection, and curation — no weight updates. | 2026-07-12 |
+| [[strategies/context-compression-optimization]] | ACON compresses agent observations and history by optimizing compression guidelines from failure analysis — gradient-free, 26–54% fewer peak tokens. | 2026-07-12 |
 
 ## Agent Engineering
 
@@ -52,13 +54,13 @@ Total articles: 12
 |-------|----------|-----------------|--------------|
 | Foundations | 3 | P0 | 2026-07-10 |
 | Failure Modes | 2 | P0–P1 | 2026-07-10 |
-| Strategies | 3 | P0–P1 | 2026-07-10 |
+| Strategies | 5 | P0–P1 | 2026-07-12 |
 | Agent Engineering | 3 | P0–P1 | 2026-07-10 |
 | Evaluation | 1 | P1 | 2026-07-10 |
 
 ## Source Fidelity
 
-This wiki is a deliberately messy-source knowledge base. Of 15 usable raw captures,
-**3 are `full` (verbatim GitHub READMEs)** and **12 are `extract` (HTML extraction of
-blogs and arXiv papers)**. Ten of twelve articles therefore rest on `extract`-fidelity
+This wiki is a deliberately messy-source knowledge base. Of 17 usable raw captures,
+**3 are `full` (verbatim GitHub READMEs)** and **14 are `extract` (HTML extraction of
+blogs and arXiv papers)**. Twelve of fourteen articles therefore rest on `extract`-fidelity
 sources — see each article's frontmatter and the coverage-gaps report.
