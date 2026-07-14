@@ -84,7 +84,9 @@ improving task success over existing compression baselines.
 
 - **26–54%** reduction in peak token usage across three benchmarks.
 - Up to **46%** performance improvement for smaller models via reduced distraction.
-- Distilled compressors retain **95%+** of the teacher compressor's performance.
+- The optimized compressor is distilled into smaller models to cut compression
+  overhead; the abstract does not quantify how much performance the distilled
+  compressor retains.
 
 (Figures are as stated in the abstract; see the paper for methodology.)
 
