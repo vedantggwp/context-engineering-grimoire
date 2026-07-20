@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" class="motion-subtle density-comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Grimoire">
+  <meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <title>Multi-Agent Context Isolation — Context Engineering for LLM Agents</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='%230d9488'/%3E%3Ccircle cx='25' cy='8' r='4' fill='%230d9488' opacity='0.55'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains%20Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body class="mode-read">
+<script>
+(function() {
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  window.GRIMOIRE_MOTION_OK = function() {
+    if (root.className.indexOf('motion-none') !== -1) return false;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  function revealAll() {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('revealed'); });
+  }
+
+  function start() {
+    if (!window.GRIMOIRE_MOTION_OK() || !('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<a href="#main" class="skip-link">Skip to content</a>
+<nav>
+  <a href="../../index.html" class="brand">Context Engineering for LLM Agents</a>
+  <div class="tabs">
+    <a href="../../read/index.html" class="tab active">Read</a>
+        <a href="../../graph/index.html" class="tab">Graph</a>
+        <a href="../../search/index.html" class="tab">Search</a>
+        <a href="../../feed/index.html" class="tab">Feed</a>
+        <a href="../../gaps/index.html" class="tab">Gaps</a>
+        <a href="../../quiz/index.html" class="tab">Quiz</a>
+  </div>
+  <div class="nav-right">
+    <kbd>&#8984;K</kbd>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <span id="theme-icon">&#9681;</span>
+    </button>
+  </div>
+</nav>
+<div class="read-progress" id="read-progress"></div>
+<main id="main" class="container">
+
+<div class="read-3col">
+  <div class="read-sidebar">
+      <h4>Articles</h4>
+      <ul>
+        <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
+        <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../agent-memory/index.html">Agent Memory: Forms, Functions, Dynamics</a></li>
+        <li><a href="../agentic-context-engineering/index.html">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a></li>
+        <li><a href="../context-compression-optimization/index.html">Context Compression Optimization (ACON) for Long-Horizon Agents</a></li>
+        <li><a href="../multi-agent-context-isolation/index.html" aria-current="page">Multi-Agent Context Isolation</a></li>
+        <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-rot/index.html">Context Rot: Performance Degrades With Input Length Alone</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-as-a-discipline/index.html">Context Engineering as a Twenty-Year Discipline</a></li>
+        <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
+        <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
+        <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
+        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
+      </ul>
+    </div>
+  <div class="read-content">
+    <article class="article" id="multi-agent-context-isolation" data-slug="multi-agent-context-isolation">
+      <div class="article-meta">
+        <span class="confidence-badge p0" title="P0 — compiled from must-ingest sources (highest confidence)">P0</span>
+        <a href="#sources" class="source-count">1 source</a>
+        
+        <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
+        <span class="article-meta__words">1295 words &middot; 6 min</span>
+      </div>
+      <h1 style="view-transition-name: vta-multi-agent-context-isolation">Multi-Agent Context Isolation</h1>
+      <div class="tag-row"><span class="tag">strategies</span><span class="tag">agents</span><span class="tag">multi-agent</span><span class="tag">isolation</span><span class="tag">architecture</span></div>
+      <div class="summary">Anthropic's production account of the isolate strategy: subagents with separate context windows explore in parallel and return condensed findings, buying capacity at roughly 15× the token cost.</div>
+      <div class="article-body">
+        <h2 id="overview">Overview</h2>
+<p>"Isolate" is the fourth strategy in LangChain's write/select/compress/isolate
+taxonomy (see <a class="internal" href="../four-context-strategies/index.html" data-wikilink-slug="four-context-strategies">strategies/four-context-strategies</a>), and it is the one most
+often described abstractly. Anthropic's engineering post on their Research feature
+is the canonical production account of what isolation actually costs and buys.</p>
+<p>The framing is explicitly a context-engineering one:</p>
+<blockquote>
+<p>"The essence of search is compression: distilling insights from a vast corpus.
+Subagents facilitate compression by operating in parallel with their own context
+windows, exploring different aspects of the question simultaneously before
+condensing the most important tokens for the lead research agent."</p>
+</blockquote>
+<p>The key insight is that a subagent is not primarily a specialization mechanism —
+it is a <strong>context window you get to spend and then throw away</strong>. The subagent may
+burn tens of thousands of tokens exploring; only its distilled findings enter the
+lead agent's context. Separation of concerns ("distinct tools, prompts, and
+exploration trajectories") is a second-order benefit that "reduces path
+dependency."</p>
+<h2 id="key-capabilities">Key Capabilities</h2>
+<ul>
+<li><strong>Buys context capacity through parallelism</strong> — multiple independent windows
+rather than one window that fills up.</li>
+<li><strong>Measured gain</strong>: a system with Claude Opus 4 leading and Claude Sonnet 4
+subagents "outperformed single-agent Claude Opus 4 by 90.2% on our internal
+research eval."</li>
+<li><strong>Explains why it works</strong>: on BrowseComp, "three factors explained 95% of the
+performance variance... token usage by itself explains 80% of the variance,"
+with tool-call count and model choice as the others.</li>
+<li><strong>States its own cost</strong>: "agents typically use about 4× more tokens than chat
+interactions, and multi-agent systems use about 15× more tokens than chats."</li>
+<li><strong>States where it does not apply</strong> — an unusually candid negative result for a
+vendor engineering post.</li>
+</ul>
+<h2 id="how-it-works">How It Works</h2>
+<p>An orchestrator-worker pattern. A LeadResearcher agent analyzes the query,
+develops a strategy, and spawns subagents that explore different aspects in
+parallel. Each subagent searches independently, uses interleaved thinking to
+evaluate tool results, and returns findings. The lead synthesizes and decides
+whether more research is needed. A final CitationAgent attributes claims to
+sources.</p>
+<p>One detail is a context-engineering tell in itself: the lead agent saves its plan
+to Memory "since if the context window exceeds 200,000 tokens it will be truncated
+and it is important to retain the plan." That is the <strong>write</strong> strategy operating
+underneath the <strong>isolate</strong> strategy — persisting state outside the window because
+the window is not durable. See <a class="internal" href="../agent-memory/index.html" data-wikilink-slug="agent-memory">strategies/agent-memory</a>.</p>
+<p>The post contrasts this with static RAG: "Traditional approaches using Retrieval
+Augmented Generation (RAG) use static retrieval... In contrast, our architecture
+uses a multi-step search that dynamically finds relevant information, adapts to
+new findings, and analyzes results." This is the same argument made in
+<a class="internal" href="../agentic-search-and-retrieval/index.html" data-wikilink-slug="agentic-search-and-retrieval">strategies/agentic-search-and-retrieval</a>.</p>
+<h3 id="delegation-is-the-hard-part">Delegation is the hard part</h3>
+<p>The failure modes are specific and worth internalizing, because they are what
+isolation costs you: the lead agent must transfer intent across a context
+boundary, and that boundary is lossy.</p>
+<blockquote>
+<p>"Each subagent needs an objective, an output format, guidance on the tools and
+sources to use, and clear task boundaries. Without detailed task descriptions,
+agents duplicate work, leave gaps, or fail to find necessary information."</p>
+</blockquote>
+<p>The concrete example: the instruction 'research the semiconductor shortage' was
+vague enough that one subagent explored the 2021 automotive chip crisis while two
+others duplicated work on 2025 supply chains. Early versions also produced
+"spawning 50 subagents for simple queries, scouring the web endlessly for
+nonexistent sources, and distracting each other with excessive updates."</p>
+<p>The fix was explicit effort-scaling rules embedded in the prompt: "Simple
+fact-finding requires just 1 agent with 3-10 tool calls, direct comparisons might
+need 2-4 subagents with 10-15 calls each, and complex research might use more than
+10 subagents with clearly divided responsibilities."</p>
+<h3 id="other-stated-lessons">Other stated lessons</h3>
+<ul>
+<li><strong>Tool design gates everything.</strong> "An agent searching the web for context that
+only exists in Slack is doomed from the start." With MCP servers, agents
+"encounter unseen tools with descriptions of wildly varying quality."</li>
+<li><strong>Start wide, then narrow.</strong> "Agents often default to overly long, specific
+queries that return few results."</li>
+<li><strong>Thinking as a scratchpad.</strong> Extended thinking for lead-agent planning;
+interleaved thinking in subagents after tool results.</li>
+<li><strong>Parallelism at two levels</strong> — lead spawns 3-5 subagents in parallel; subagents
+use 3+ tools in parallel. Together these "cut research time by up to 90% for
+complex queries."</li>
+<li><strong>Agents can improve their own tooling.</strong> A tool-testing agent that rewrote a
+flawed MCP tool description produced "a 40% decrease in task completion time for
+future agents using the new description."</li>
+</ul>
+<h3 id="evaluating-an-isolated-context-system">Evaluating an isolated-context system</h3>
+<p>Path-based evaluation breaks: "Even with identical starting points, agents might
+take completely different valid paths to reach their goal." The post's evaluation
+advice aligns closely with <a class="internal" href="../evals-for-llm-systems/index.html" data-wikilink-slug="evals-for-llm-systems">evaluation/evals-for-llm-systems</a>:</p>
+<ul>
+<li>Start immediately with ~20 queries. "A prompt tweak might boost success rates
+from 30% to 80%. With effect sizes this large, you can spot changes with just a
+few test cases."</li>
+<li>LLM-as-judge against a rubric (factual accuracy, citation accuracy,
+completeness, source quality, tool efficiency). "A single LLM call with a single
+prompt outputting scores from 0.0-1.0 and a pass-fail grade was the most
+consistent."</li>
+<li>Human evaluation still catches what automation misses — testers found early
+agents "consistently chose SEO-optimized content farms over authoritative but
+less highly-ranked sources like academic PDFs or personal blogs."</li>
+</ul>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="example-decide-whether-isolation-is-worth-15-tokens">Example: Decide whether isolation is worth 15× tokens</h3>
+<p>The post is explicit that this is an economic question: multi-agent systems
+"require tasks where the value of the task is high enough to pay for the increased
+performance." Breadth-first research over many independent directions qualifies.</p>
+<h3 id="example-write-subagent-prompts-as-contracts-not-requests">Example: Write subagent prompts as contracts, not requests</h3>
+<p>Objective, output format, tool guidance, task boundaries. The semiconductor
+example shows that under-specification does not produce a vague answer — it
+produces <em>duplicated work and silent gaps</em>, which are much harder to detect.</p>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li><strong>Not for tightly-coupled work.</strong> Stated directly: "some domains that require
+all agents to share the same context or involve many dependencies between agents
+are not a good fit... most coding tasks involve fewer truly parallelizable tasks
+than research, and LLM agents are not yet great at coordinating and delegating
+to other agents in real time."</li>
+<li><strong>Synchronous bottleneck.</strong> As built, "the lead agent can't steer subagents,
+subagents can't coordinate, and the entire system can be blocked while waiting
+for a single subagent to finish searching."</li>
+<li><strong>Emergent behavior resists testing.</strong> "Small changes to the lead agent can
+unpredictably change how subagents behave."</li>
+<li><strong>Errors compound across turns.</strong> "One step failing can cause agents to explore
+entirely different trajectories." Mitigations are resume-from-failure plus
+"deterministic safeguards like retry logic and regular checkpoints."</li>
+<li><strong>Vendor-internal evaluation.</strong> The 90.2% figure is from Anthropic's own
+internal research eval, on Anthropic's own models. It is not independently
+replicated.</li>
+<li><strong>Point-in-time.</strong> Written June 2025 against Claude 4-era models.</li>
+</ul>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a class="internal" href="../four-context-strategies/index.html" data-wikilink-slug="four-context-strategies">strategies/four-context-strategies</a> — this is the "isolate" strategy in production</li>
+<li><a class="internal" href="../agent-memory/index.html" data-wikilink-slug="agent-memory">strategies/agent-memory</a> — the lead agent's plan-persistence is the "write" strategy underneath</li>
+<li><a class="internal" href="../agentic-search-and-retrieval/index.html" data-wikilink-slug="agentic-search-and-retrieval">strategies/agentic-search-and-retrieval</a> — the dynamic-retrieval argument this post makes against static RAG</li>
+<li><a class="internal" href="../twelve-factor-agents/index.html" data-wikilink-slug="twelve-factor-agents">agent-engineering/twelve-factor-agents</a> — overlapping principles on owning control flow and context construction</li>
+<li><a class="internal" href="../evals-for-llm-systems/index.html" data-wikilink-slug="evals-for-llm-systems">evaluation/evals-for-llm-systems</a> — the outcome-based evaluation stance this post adopts</li>
+<li><a class="internal" href="../context-rot/index.html" data-wikilink-slug="context-rot">failure-modes/context-rot</a> — the length degradation that makes buying extra windows worthwhile</li>
+<li><a class="internal" href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">strategies/context-management-tactics</a> — Breunig names this tactic Context Quarantine and situates it among five others</li>
+<li><a class="internal" href="../context-compression-optimization/index.html" data-wikilink-slug="context-compression-optimization">strategies/context-compression-optimization</a> — ACON reaches the same goal by optimizing compression instead of buying extra windows</li>
+</ul>
+      </div>
+      <section class="article-backlinks" aria-label="Articles linking here">
+        <h2>Linked from</h2>
+        <ul>
+        <li>
+          <a href="../twelve-factor-agents/index.html" data-wikilink-slug="twelve-factor-agents">12-Factor Agents</a>
+          <span class="article-backlinks__teaser">HumanLayer's 12 engineering principles for building reliable LLM-powered software, several of which are direct…</span>
+        </li>
+        <li>
+          <a href="../evals-for-llm-systems/index.html" data-wikilink-slug="evals-for-llm-systems">Evals for LLM Systems</a>
+          <span class="article-backlinks__teaser">Why evals are the starting point for any LLM system, Hamel's three levels of evaluation, evaluating RAG, and E…</span>
+        </li>
+        <li>
+          <a href="../context-rot/index.html" data-wikilink-slug="context-rot">Context Rot: Performance Degrades With Input Length Alone</a>
+          <span class="article-backlinks__teaser">Chroma tests 18 frontier models on deliberately trivial tasks and finds performance degrades as input grows —…</span>
+        </li>
+        <li>
+          <a href="../agent-memory/index.html" data-wikilink-slug="agent-memory">Agent Memory: Forms, Functions, Dynamics</a>
+          <span class="article-backlinks__teaser">A 47-author survey argues long/short-term is the wrong taxonomy for agent memory, and proposes forms (token-le…</span>
+        </li>
+        <li>
+          <a href="../agentic-search-and-retrieval/index.html" data-wikilink-slug="agentic-search-and-retrieval">Agentic Search and Just-in-Time Retrieval</a>
+          <span class="article-backlinks__teaser">How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-…</span>
+        </li>
+        <li>
+          <a href="../context-compression-optimization/index.html" data-wikilink-slug="context-compression-optimization">Context Compression Optimization (ACON) for Long-Horizon Agents</a>
+          <span class="article-backlinks__teaser">ACON compresses an agent's observations and history by iteratively refining compression guidelines from failur…</span>
+        </li>
+        <li>
+          <a href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">Context Management Tactics: Six Ways to Fix Your Context</a>
+          <span class="article-backlinks__teaser">Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigatin…</span>
+        </li>
+        <li>
+          <a href="../four-context-strategies/index.html" data-wikilink-slug="four-context-strategies">The Four Context Strategies: Write, Select, Compress, Isolate</a>
+          <span class="article-backlinks__teaser">LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with c…</span>
+        </li>
+        </ul>
+      </section>
+      <section class="article-sources" id="sources" aria-label="Sources">
+        <h2>Sources</h2>
+        <ol>
+        <li><a href="https://www.anthropic.com/engineering/multi-agent-research-system" rel="noopener">How we built our multi-agent research system (Anthropic Engineering)</a> <span class="article-sources__domain">anthropic.com</span></li>
+        </ol>
+      </section>
+      <nav class="article__nav" aria-label="Article navigation">
+        <a href="../context-compression-optimization/index.html" class="btn read-nav-btn" rel="prev">&larr; Context Compression Optimization (ACON) for Long-Horizon Agents</a>
+        <a href="../context-window-as-working-memory/index.html" class="btn read-nav-btn" rel="next">The Context Window as Working Memory &rarr;</a>
+      </nav>
+    </article>
+  </div>
+  <div class="read-toc-right">
+      <h4>On this page</h4>
+      <ul>
+          <li data-heading="overview"><a href="#overview">Overview</a></li>
+          <li data-heading="key-capabilities"><a href="#key-capabilities">Key Capabilities</a></li>
+          <li data-heading="how-it-works"><a href="#how-it-works">How It Works</a></li>
+          <li data-heading="usage-examples"><a href="#usage-examples">Usage Examples</a></li>
+          <li data-heading="limitations"><a href="#limitations">Limitations</a></li>
+          <li data-heading="see-also"><a href="#see-also">See Also</a></li>
+      </ul>
+    </div>
+</div>
+<script>window.LINK_PREVIEWS = {"twelve-factor-agents":{"title":"12-Factor Agents","summary":"HumanLayer's 12 engineering principles for building reliable LLM-powered software, several of which are directly about owning and shaping the agent's context.","tags":["agent-engineering","context-engineering","reliability"],"readingTime":5},"evals-for-llm-systems":{"title":"Evals for LLM Systems","summary":"Why evals are the starting point for any LLM system, Hamel's three levels of evaluation, evaluating RAG, and Eugene Yan's eval metrics and pitfalls.","tags":["evaluation","llm-systems","rag"],"readingTime":8},"context-rot":{"title":"Context Rot: Performance Degrades With Input Length Alone","summary":"Chroma tests 18 frontier models on deliberately trivial tasks and finds performance degrades as input grows — even far below the context limit, and even when the task itself never…","tags":["failure-modes","long-context","benchmarks"],"readingTime":7},"agent-memory":{"title":"Agent Memory: Forms, Functions, Dynamics","summary":"A 47-author survey argues long/short-term is the wrong taxonomy for agent memory, and proposes forms (token-level, parametric, latent) × functions (factual, experiential, working)…","tags":["strategies","memory","agents"],"readingTime":5},"agentic-search-and-retrieval":{"title":"Agentic Search and Just-in-Time Retrieval","summary":"How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.","tags":["context-engineering","agents","retrieval"],"readingTime":7},"context-compression-optimization":{"title":"Context Compression Optimization (ACON) for Long-Horizon Agents","summary":"ACON compresses an agent's observations and history by iteratively refining compression guidelines from failure analysis — gradient-free, no fine-tuning, 26–54% fewer peak tokens.","tags":["context-engineering","agents","strategies"],"readingTime":4},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7},"four-context-strategies":{"title":"The Four Context Strategies: Write, Select, Compress, Isolate","summary":"LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.","tags":["context-engineering","agents","strategies"],"readingTime":7}};</script>
+<script>
+(function() {
+  try { localStorage.setItem('grimoire-last-read', "multi-agent-context-isolation"); } catch(e) {}
+
+  // Reading progress: the CSS scroll-timeline path takes over where
+  // supported; the scroll listener is the fallback.
+  var bar = document.getElementById('read-progress');
+  var cssProgress = window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+  if (!cssProgress) {
+    var updateProgress = function() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+      if (bar) bar.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  // Unresolved wikilinks stay inert.
+  document.addEventListener('click', function(e) {
+    var dead = e.target.closest('a[aria-disabled="true"]');
+    if (dead) e.preventDefault();
+  });
+
+  // TOC scroll spy with a sliding accent marker.
+  var toc = document.querySelector('.read-toc-right');
+  if (toc) {
+    var list = toc.querySelector('ul');
+    var marker = document.createElement('span');
+    marker.className = 'read-toc-marker';
+    marker.setAttribute('aria-hidden', 'true');
+    if (list) list.appendChild(marker);
+
+    var setActive = function(item) {
+      toc.querySelectorAll('li').forEach(function(l) { l.classList.remove('active'); });
+      item.classList.add('active');
+      if (list && marker) {
+        marker.style.transform = 'translateY(' + item.offsetTop + 'px)';
+        marker.style.height = item.offsetHeight + 'px';
+        marker.style.opacity = '1';
+      }
+    };
+
+    var spy = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var active = toc.querySelector('li[data-heading="' + entry.target.id + '"]');
+        if (active) setActive(active);
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    document.querySelectorAll('.article-body h2[id]').forEach(function(h) { spy.observe(h); });
+  }
+})();
+</script>
+<script>
+(function() {
+  var previews = window.LINK_PREVIEWS;
+  if (!previews) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  var HOVER_DELAY = 250;
+  var card = null;
+  var showTimer = null;
+  var hideTimer = null;
+  var currentLink = null;
+  var supportsPopover = typeof HTMLElement !== 'undefined' &&
+    Object.prototype.hasOwnProperty.call(HTMLElement.prototype, 'popover');
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function ensureCard() {
+    if (card) return card;
+    card = document.createElement('div');
+    card.className = 'link-preview';
+    card.setAttribute('role', 'tooltip');
+    if (supportsPopover) card.setAttribute('popover', 'manual');
+    document.body.appendChild(card);
+    card.addEventListener('pointerenter', function() { clearTimeout(hideTimer); });
+    card.addEventListener('pointerleave', scheduleHide);
+    return card;
+  }
+
+  function show(link, slug) {
+    var p = previews[slug];
+    if (!p) return;
+    var el = ensureCard();
+    var meta = [p.readingTime ? p.readingTime + ' min' : null]
+      .concat(p.tags || []).filter(Boolean).join(' \u00b7 ');
+    el.innerHTML =
+      '<span class="link-preview__title">' + esc(p.title) + '</span>' +
+      (p.summary ? '<span class="link-preview__summary">' + esc(p.summary) + '</span>' : '') +
+      (meta ? '<span class="link-preview__meta">' + esc(meta) + '</span>' : '');
+
+    var rect = link.getBoundingClientRect();
+    var top = rect.bottom + 8;
+    if (supportsPopover) { el.showPopover(); } else { el.style.display = 'block'; }
+    var cardHeight = el.offsetHeight;
+    if (top + cardHeight > window.innerHeight - 16) {
+      top = rect.top - cardHeight - 8;
+    }
+    var left = Math.min(
+      Math.max(rect.left, 12),
+      window.innerWidth - el.offsetWidth - 12
+    );
+    el.style.top = top + 'px';
+    el.style.left = left + 'px';
+    el.classList.add('visible');
+    currentLink = link;
+  }
+
+  function hide() {
+    if (!card) return;
+    card.classList.remove('visible');
+    if (supportsPopover) {
+      try { card.hidePopover(); } catch(e) {}
+    } else {
+      card.style.display = 'none';
+    }
+    currentLink = null;
+  }
+
+  function scheduleHide() {
+    clearTimeout(showTimer);
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, 120);
+  }
+
+  function bind(link) {
+    var slug = link.dataset.wikilinkSlug;
+    if (!slug || !previews[slug]) return;
+
+    link.addEventListener('pointerenter', function() {
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+      showTimer = setTimeout(function() { show(link, slug); }, HOVER_DELAY);
+    });
+    link.addEventListener('pointerleave', scheduleHide);
+    link.addEventListener('focus', function() { show(link, slug); });
+    link.addEventListener('blur', scheduleHide);
+  }
+
+  document.querySelectorAll('.article-body a[data-wikilink-slug], .article-backlinks a[data-wikilink-slug]')
+    .forEach(bind);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') hide();
+  });
+  window.addEventListener('scroll', function() { if (currentLink) hide(); }, { passive: true });
+})();
+</script>
+</main>
+<footer class="footer container">
+  <p>Generated 2026-07-20 &middot; 18 articles &middot; Built with Grimoire</p>
+</footer>
+<script>
+(function() {
+  var KEY = 'grimoire-theme';
+  var toggle = document.getElementById('theme-toggle');
+  var icon = document.getElementById('theme-icon');
+  var root = document.documentElement;
+
+  function getStored() {
+    try { return localStorage.getItem(KEY); } catch(e) { return null; }
+  }
+
+  function apply(theme) {
+    root.classList.remove('theme-light', 'theme-dark');
+    if (theme) root.classList.add('theme-' + theme);
+    icon.textContent = theme === 'dark' ? '\u2600' : '\u263E';
+    try { localStorage.setItem(KEY, theme || ''); } catch(e) {}
+  }
+
+  var stored = getStored();
+  if (stored) apply(stored);
+
+  toggle.addEventListener('click', function() {
+    var isDark = root.classList.contains('theme-dark') ||
+      (!root.classList.contains('theme-light') &&
+       window.matchMedia('(prefers-color-scheme: dark)').matches);
+    apply(isDark ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>

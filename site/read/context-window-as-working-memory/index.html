@@ -77,19 +77,23 @@
       <h4>Articles</h4>
       <ul>
         <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
-        <li><a href="../agentic-context-engineering/index.html">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a></li>
-        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
-        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
         <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../agent-memory/index.html">Agent Memory: Forms, Functions, Dynamics</a></li>
+        <li><a href="../agentic-context-engineering/index.html">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a></li>
         <li><a href="../context-compression-optimization/index.html">Context Compression Optimization (ACON) for Long-Horizon Agents</a></li>
-        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
-        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../multi-agent-context-isolation/index.html">Multi-Agent Context Isolation</a></li>
         <li><a href="../context-window-as-working-memory/index.html" aria-current="page">The Context Window as Working Memory</a></li>
+        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-rot/index.html">Context Rot: Performance Degrades With Input Length Alone</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
         <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-as-a-discipline/index.html">Context Engineering as a Twenty-Year Discipline</a></li>
         <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
         <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
-        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
         <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
+        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
       </ul>
     </div>
   <div class="read-content">
@@ -99,7 +103,7 @@
         <a href="#sources" class="source-count">2 sources</a>
         
         <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
-        <span class="article-meta__words">1112 words &middot; 5 min</span>
+        <span class="article-meta__words">1163 words &middot; 6 min</span>
       </div>
       <h1 style="view-transition-name: vta-context-window-as-working-memory">The Context Window as Working Memory</h1>
       <div class="tag-row"><span class="tag">context-engineering</span><span class="tag">foundations</span><span class="tag">context-window</span><span class="tag">working-memory</span><span class="tag">analogy</span></div>
@@ -150,14 +154,26 @@
 <li><a class="internal" href="../lost-in-the-middle/index.html" data-wikilink-slug="lost-in-the-middle">failure-modes/lost-in-the-middle</a> — the positional degradation that finite windows expose</li>
 <li><a class="internal" href="../context-management-tactics/index.html" data-wikilink-slug="context-management-tactics">strategies/context-management-tactics</a> — compaction and offloading when working memory fills</li>
 <li><a href="https://rlancemartin.github.io/2025/06/23/context_engineering/">Context Engineering (Lance Martin)</a> — the source of the OS/RAM framing and the four-bucket taxonomy</li>
+<li><a class="internal" href="../context-rot/index.html" data-wikilink-slug="context-rot">failure-modes/context-rot</a> — evidence that window size is capacity, not usable capacity</li>
+<li><a class="internal" href="../agent-memory/index.html" data-wikilink-slug="agent-memory">strategies/agent-memory</a> — the literature that formalizes what sits outside the window</li>
+<li><a class="internal" href="../context-engineering-as-a-discipline/index.html" data-wikilink-slug="context-engineering-as-a-discipline">foundations/context-engineering-as-a-discipline</a> — where the RAM-analogy era sits in a twenty-year history</li>
+<li><a class="internal" href="../agentic-search-and-retrieval/index.html" data-wikilink-slug="agentic-search-and-retrieval">strategies/agentic-search-and-retrieval</a> — why fetching on demand beats preloading: the window is RAM, not disk</li>
 </ul>
       </div>
       <section class="article-backlinks" aria-label="Articles linking here">
         <h2>Linked from</h2>
         <ul>
         <li>
+          <a href="../context-rot/index.html" data-wikilink-slug="context-rot">Context Rot: Performance Degrades With Input Length Alone</a>
+          <span class="article-backlinks__teaser">Chroma tests 18 frontier models on deliberately trivial tasks and finds performance degrades as input grows —…</span>
+        </li>
+        <li>
           <a href="../lost-in-the-middle/index.html" data-wikilink-slug="lost-in-the-middle">Lost in the Middle: How Models Use Long Contexts</a>
           <span class="article-backlinks__teaser">Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrad…</span>
+        </li>
+        <li>
+          <a href="../context-engineering-as-a-discipline/index.html" data-wikilink-slug="context-engineering-as-a-discipline">Context Engineering as a Twenty-Year Discipline</a>
+          <span class="article-backlinks__teaser">Hua et al. argue context engineering is not a 2025 invention but a practice traceable to early-1990s HCI, evol…</span>
         </li>
         <li>
           <a href="../context-vs-prompt-engineering/index.html" data-wikilink-slug="context-vs-prompt-engineering">Context Engineering vs. Prompt Engineering</a>
@@ -166,6 +182,14 @@
         <li>
           <a href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">What Is Context Engineering</a>
           <span class="article-backlinks__teaser">The discipline of filling an LLM's limited context window with the right information, tools, and format at eac…</span>
+        </li>
+        <li>
+          <a href="../agent-memory/index.html" data-wikilink-slug="agent-memory">Agent Memory: Forms, Functions, Dynamics</a>
+          <span class="article-backlinks__teaser">A 47-author survey argues long/short-term is the wrong taxonomy for agent memory, and proposes forms (token-le…</span>
+        </li>
+        <li>
+          <a href="../agentic-search-and-retrieval/index.html" data-wikilink-slug="agentic-search-and-retrieval">Agentic Search and Just-in-Time Retrieval</a>
+          <span class="article-backlinks__teaser">How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-…</span>
         </li>
         </ul>
       </section>
@@ -177,8 +201,8 @@
         </ol>
       </section>
       <nav class="article__nav" aria-label="Article navigation">
-        <a href="../lessons-from-manus/index.html" class="btn read-nav-btn" rel="prev">&larr; Lessons from Building Manus</a>
-        <a href="../twelve-factor-agents/index.html" class="btn read-nav-btn" rel="next">12-Factor Agents &rarr;</a>
+        <a href="../multi-agent-context-isolation/index.html" class="btn read-nav-btn" rel="prev">&larr; Multi-Agent Context Isolation</a>
+        <a href="../how-contexts-fail/index.html" class="btn read-nav-btn" rel="next">How Contexts Fail: Four Failure Modes &rarr;</a>
       </nav>
     </article>
   </div>
@@ -194,7 +218,7 @@
       </ul>
     </div>
 </div>
-<script>window.LINK_PREVIEWS = {"lost-in-the-middle":{"title":"Lost in the Middle: How Models Use Long Contexts","summary":"Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrade sharply when it sits in the middle.","tags":["failure-modes","long-context","retrieval"],"readingTime":6},"context-vs-prompt-engineering":{"title":"Context Engineering vs. Prompt Engineering","summary":"How context engineering broadens prompt engineering — from crafting one static string to curating an entire dynamic, stateful information payload across multiple turns.","tags":["context-engineering","prompt-engineering","foundations"],"readingTime":5},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7},"four-context-strategies":{"title":"The Four Context Strategies: Write, Select, Compress, Isolate","summary":"LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.","tags":["context-engineering","agents","strategies"],"readingTime":7}};</script>
+<script>window.LINK_PREVIEWS = {"context-rot":{"title":"Context Rot: Performance Degrades With Input Length Alone","summary":"Chroma tests 18 frontier models on deliberately trivial tasks and finds performance degrades as input grows — even far below the context limit, and even when the task itself never…","tags":["failure-modes","long-context","benchmarks"],"readingTime":7},"lost-in-the-middle":{"title":"Lost in the Middle: How Models Use Long Contexts","summary":"Liu et al. find a U-shaped curve: models best use information at the very start or end of the input and degrade sharply when it sits in the middle.","tags":["failure-modes","long-context","retrieval"],"readingTime":6},"context-engineering-as-a-discipline":{"title":"Context Engineering as a Twenty-Year Discipline","summary":"Hua et al. argue context engineering is not a 2025 invention but a practice traceable to early-1990s HCI, evolving in phases set by machine intelligence — and propose a systematic…","tags":["foundations","history","definitions"],"readingTime":4},"context-vs-prompt-engineering":{"title":"Context Engineering vs. Prompt Engineering","summary":"How context engineering broadens prompt engineering — from crafting one static string to curating an entire dynamic, stateful information payload across multiple turns.","tags":["context-engineering","prompt-engineering","foundations"],"readingTime":5},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"agent-memory":{"title":"Agent Memory: Forms, Functions, Dynamics","summary":"A 47-author survey argues long/short-term is the wrong taxonomy for agent memory, and proposes forms (token-level, parametric, latent) × functions (factual, experiential, working)…","tags":["strategies","memory","agents"],"readingTime":5},"agentic-search-and-retrieval":{"title":"Agentic Search and Just-in-Time Retrieval","summary":"How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.","tags":["context-engineering","agents","retrieval"],"readingTime":7},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7},"four-context-strategies":{"title":"The Four Context Strategies: Write, Select, Compress, Isolate","summary":"LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.","tags":["context-engineering","agents","strategies"],"readingTime":7}};</script>
 <script>
 (function() {
   try { localStorage.setItem('grimoire-last-read', "context-window-as-working-memory"); } catch(e) {}
@@ -349,7 +373,7 @@
 </script>
 </main>
 <footer class="footer container">
-  <p>Generated 2026-07-14 &middot; 14 articles &middot; Built with Grimoire</p>
+  <p>Generated 2026-07-20 &middot; 18 articles &middot; Built with Grimoire</p>
 </footer>
 <script>
 (function() {

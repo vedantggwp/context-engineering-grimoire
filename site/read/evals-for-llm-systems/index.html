@@ -77,19 +77,23 @@
       <h4>Articles</h4>
       <ul>
         <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
-        <li><a href="../agentic-context-engineering/index.html">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a></li>
-        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
-        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
         <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../agent-memory/index.html">Agent Memory: Forms, Functions, Dynamics</a></li>
+        <li><a href="../agentic-context-engineering/index.html">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a></li>
         <li><a href="../context-compression-optimization/index.html">Context Compression Optimization (ACON) for Long-Horizon Agents</a></li>
-        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
-        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../multi-agent-context-isolation/index.html">Multi-Agent Context Isolation</a></li>
         <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-rot/index.html">Context Rot: Performance Degrades With Input Length Alone</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
         <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-as-a-discipline/index.html">Context Engineering as a Twenty-Year Discipline</a></li>
         <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
         <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
-        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
         <li><a href="../evals-for-llm-systems/index.html" aria-current="page">Evals for LLM Systems</a></li>
+        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
       </ul>
     </div>
   <div class="read-content">
@@ -99,7 +103,7 @@
         <a href="#sources" class="source-count">2 sources</a>
         
         <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
-        <span class="article-meta__words">1631 words &middot; 8 min</span>
+        <span class="article-meta__words">1641 words &middot; 8 min</span>
       </div>
       <h1 style="view-transition-name: vta-evals-for-llm-systems">Evals for LLM Systems</h1>
       <div class="tag-row"><span class="tag">evaluation</span><span class="tag">llm-systems</span><span class="tag">rag</span><span class="tag">testing</span></div>
@@ -160,9 +164,18 @@
 <li><a class="internal" href="../agentic-search-and-retrieval/index.html" data-wikilink-slug="agentic-search-and-retrieval">strategies/agentic-search-and-retrieval</a> — the RAG and retrieval techniques whose quality evals measure</li>
 <li><a class="internal" href="../what-is-context-engineering/index.html" data-wikilink-slug="what-is-context-engineering">foundations/what-is-context-engineering</a> — why measuring a context-engineered system is the point of building evals</li>
 <li><a href="https://hamel.dev/blog/posts/evals/">Your AI Product Needs Evals (Hamel Husain)</a> — the full three-level playbook with code</li>
+<li><a class="internal" href="../multi-agent-context-isolation/index.html" data-wikilink-slug="multi-agent-context-isolation">strategies/multi-agent-context-isolation</a> — outcome-based evaluation applied to non-deterministic agent paths</li>
 </ul>
       </div>
-      
+      <section class="article-backlinks" aria-label="Articles linking here">
+        <h2>Linked from</h2>
+        <ul>
+        <li>
+          <a href="../multi-agent-context-isolation/index.html" data-wikilink-slug="multi-agent-context-isolation">Multi-Agent Context Isolation</a>
+          <span class="article-backlinks__teaser">Anthropic's production account of the isolate strategy: subagents with separate context windows explore in par…</span>
+        </li>
+        </ul>
+      </section>
       <section class="article-sources" id="sources" aria-label="Sources">
         <h2>Sources</h2>
         <ol>
@@ -171,8 +184,8 @@
         </ol>
       </section>
       <nav class="article__nav" aria-label="Article navigation">
-        <a href="../context-engineering-templates/index.html" class="btn read-nav-btn" rel="prev">&larr; Context Engineering Templates</a>
-        <span></span>
+        <a href="../context-vs-prompt-engineering/index.html" class="btn read-nav-btn" rel="prev">&larr; Context Engineering vs. Prompt Engineering</a>
+        <a href="../context-engineering-templates/index.html" class="btn read-nav-btn" rel="next">Context Engineering Templates &rarr;</a>
       </nav>
     </article>
   </div>
@@ -188,7 +201,7 @@
       </ul>
     </div>
 </div>
-<script>window.LINK_PREVIEWS = {"how-contexts-fail":{"title":"How Contexts Fail: Four Failure Modes","summary":"Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.","tags":["failure-modes","context-management","agents"],"readingTime":6},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"agentic-search-and-retrieval":{"title":"Agentic Search and Just-in-Time Retrieval","summary":"How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.","tags":["context-engineering","agents","retrieval"],"readingTime":6}};</script>
+<script>window.LINK_PREVIEWS = {"how-contexts-fail":{"title":"How Contexts Fail: Four Failure Modes","summary":"Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.","tags":["failure-modes","context-management","agents"],"readingTime":6},"what-is-context-engineering":{"title":"What Is Context Engineering","summary":"The discipline of filling an LLM's limited context window with the right information, tools, and format at each step so an agent can plausibly solve its task.","tags":["context-engineering","foundations","llm-agents"],"readingTime":6},"agentic-search-and-retrieval":{"title":"Agentic Search and Just-in-Time Retrieval","summary":"How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.","tags":["context-engineering","agents","retrieval"],"readingTime":7},"multi-agent-context-isolation":{"title":"Multi-Agent Context Isolation","summary":"Anthropic's production account of the isolate strategy: subagents with separate context windows explore in parallel and return condensed findings, buying capacity at roughly 15× th…","tags":["strategies","agents","multi-agent"],"readingTime":6}};</script>
 <script>
 (function() {
   try { localStorage.setItem('grimoire-last-read', "evals-for-llm-systems"); } catch(e) {}
@@ -343,7 +356,7 @@
 </script>
 </main>
 <footer class="footer container">
-  <p>Generated 2026-07-14 &middot; 14 articles &middot; Built with Grimoire</p>
+  <p>Generated 2026-07-20 &middot; 18 articles &middot; Built with Grimoire</p>
 </footer>
 <script>
 (function() {

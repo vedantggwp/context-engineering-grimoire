@@ -120,3 +120,4 @@ using a smaller open-source model.
   is the on-demand counterpart to ACE's accumulate-and-curate ("write") approach
 - [[agent-engineering/twelve-factor-agents]] — "own your context window" and
   "compact errors into context" prefigure ACE's structured, evolving playbook
+- [[strategies/agent-memory]] — ACE's self-improving playbook is experiential memory in the survey's taxonomy

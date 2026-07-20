@@ -87,3 +87,4 @@ An agent connected to many MCP tools calls irrelevant ones or produces low-quali
 - [[strategies/agentic-context-engineering]] — ACE, designed to prevent "context collapse," a close cousin of these failures
 - [[strategies/context-compression-optimization]] — ACON, which compresses history to mitigate "context distraction" in long-horizon agents
 - [How to Fix Your Context (Drew Breunig)](https://www.dbreunig.com/2025/06/26/how-to-fix-your-context.html) — the follow-up covering mitigations
+- [[failure-modes/context-rot]] — Context Distraction measured: 18 models, task complexity held constant

@@ -100,3 +100,5 @@ give the model a "think"/scratchpad tool
 - [[strategies/agentic-search-and-retrieval]] — a deeper treatment of RAG and just-in-time retrieval as a context tactic
 - [[strategies/agentic-context-engineering]] — ACE, which turns summarization/offloading into a collapse-resistant evolving playbook
 - [[strategies/context-compression-optimization]] — ACON, which turns static summarization/pruning heuristics into an optimized compression guideline
+- [[strategies/multi-agent-context-isolation]] — the primary source for Context Quarantine — Anthropic's own account of the system this article cites secondhand
+- [[strategies/agent-memory]] — Breunig's offloading and summarization tactics, viewed as memory operations

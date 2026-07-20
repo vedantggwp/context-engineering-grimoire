@@ -68,3 +68,4 @@ When an observation is a huge web page or PDF, Manus can drop the body from the 
 - [[strategies/context-compression-optimization]] — ACON, a rigorous, measured take on the compression Manus does by hand
 - [[strategies/four-context-strategies]] — the write/select/compress/isolate taxonomy these field lessons instantiate
 - [Context Engineering for AI Agents: Lessons from Building Manus](https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus) — the full post
+- [[strategies/agent-memory]] — the research taxonomy that names what Manus's file-system-as-context is an instance of

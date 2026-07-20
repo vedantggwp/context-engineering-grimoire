@@ -100,3 +100,6 @@ apply RAG over tool descriptions
 - [[strategies/agentic-context-engineering]] — ACE, a feedback-driven way to "write" and curate context into an evolving playbook
 - [[strategies/context-compression-optimization]] — ACON, the "compress" bucket made rigorous and self-tuning
 - [[agent-engineering/lessons-from-manus]] — Manus's field lessons operationalizing write/select/compress/isolate in a production agent
+- [[failure-modes/context-rot]] — the empirical case for select and compress — performance decays with length alone
+- [[strategies/multi-agent-context-isolation]] — the "isolate" bucket as Anthropic built it in production
+- [[strategies/agent-memory]] — the "write" bucket as a research field in its own right
