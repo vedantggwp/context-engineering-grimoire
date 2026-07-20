@@ -103,3 +103,6 @@ at runtime: glob / grep to fetch specific files just-in-time
 - [[failure-modes/how-contexts-fail]] — context rot and the failure modes that pre-loading everything invites
 - [[strategies/agentic-context-engineering]] — ACE, the "write"-side counterpart that evolves a curated context playbook from execution feedback
 - [[strategies/context-compression-optimization]] — ACON, the compression counterpart: shrink what you keep rather than fetch on demand
+- [[strategies/multi-agent-context-isolation]] — Anthropic's production system built on this dynamic-retrieval argument
+- [[strategies/agent-memory]] — retrieval as one of three memory dynamics
+- [[foundations/context-window-as-working-memory]] — just-in-time retrieval is the direct response to a finite working memory — fetch rather than preload

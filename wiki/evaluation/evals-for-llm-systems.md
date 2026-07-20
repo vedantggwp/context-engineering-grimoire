@@ -82,3 +82,4 @@ Hamel shows the same synthetic-generation prompt produces both test cases and fi
 - [[strategies/agentic-search-and-retrieval]] — the RAG and retrieval techniques whose quality evals measure
 - [[foundations/what-is-context-engineering]] — why measuring a context-engineered system is the point of building evals
 - [Your AI Product Needs Evals (Hamel Husain)](https://hamel.dev/blog/posts/evals/) — the full three-level playbook with code
+- [[strategies/multi-agent-context-isolation]] — outcome-based evaluation applied to non-deterministic agent paths

@@ -77,19 +77,23 @@
       <h4>Articles</h4>
       <ul>
         <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
-        <li><a href="../agentic-context-engineering/index.html">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a></li>
-        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
-        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
         <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../agent-memory/index.html">Agent Memory: Forms, Functions, Dynamics</a></li>
+        <li><a href="../agentic-context-engineering/index.html">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a></li>
         <li><a href="../context-compression-optimization/index.html" aria-current="page">Context Compression Optimization (ACON) for Long-Horizon Agents</a></li>
-        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
-        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../multi-agent-context-isolation/index.html">Multi-Agent Context Isolation</a></li>
         <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-rot/index.html">Context Rot: Performance Degrades With Input Length Alone</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
         <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-as-a-discipline/index.html">Context Engineering as a Twenty-Year Discipline</a></li>
         <li><a href="../lost-in-the-middle/index.html">Lost in the Middle: How Models Use Long Contexts</a></li>
         <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
-        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
         <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
+        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
       </ul>
     </div>
   <div class="read-content">
@@ -99,7 +103,7 @@
         <a href="#sources" class="source-count">1 source</a>
         
         <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
-        <span class="article-meta__words">823 words &middot; 4 min</span>
+        <span class="article-meta__words">855 words &middot; 4 min</span>
       </div>
       <h1 style="view-transition-name: vta-context-compression-optimization">Context Compression Optimization (ACON) for Long-Horizon Agents</h1>
       <div class="tag-row"><span class="tag">context-engineering</span><span class="tag">agents</span><span class="tag">strategies</span><span class="tag">compression</span><span class="tag">long-horizon</span></div>
@@ -199,6 +203,8 @@ ACON's compression is designed to mitigate for long-horizon agents</li>
 context; ACON keeps less <em>in</em> it — complementary ways to bound the window</li>
 <li><a class="internal" href="../lessons-from-manus/index.html" data-wikilink-slug="lessons-from-manus">agent-engineering/lessons-from-manus</a> — Manus's hands-on compaction and
 context-management lessons that ACON formalizes, optimizes, and measures</li>
+<li><a class="internal" href="../context-rot/index.html" data-wikilink-slug="context-rot">failure-modes/context-rot</a> — why compression pays — degradation begins well below the window limit</li>
+<li><a class="internal" href="../multi-agent-context-isolation/index.html" data-wikilink-slug="multi-agent-context-isolation">strategies/multi-agent-context-isolation</a> — subagents compress by construction; ACON compresses explicitly — two routes to the same token budget</li>
 </ul>
       </div>
       <section class="article-backlinks" aria-label="Articles linking here">
@@ -207,6 +213,10 @@ context-management lessons that ACON formalizes, optimizes, and measures</li>
         <li>
           <a href="../lessons-from-manus/index.html" data-wikilink-slug="lessons-from-manus">Lessons from Building Manus</a>
           <span class="article-backlinks__teaser">Six practical context-engineering lessons the Manus team learned rebuilding their agent framework four times,…</span>
+        </li>
+        <li>
+          <a href="../context-rot/index.html" data-wikilink-slug="context-rot">Context Rot: Performance Degrades With Input Length Alone</a>
+          <span class="article-backlinks__teaser">Chroma tests 18 frontier models on deliberately trivial tasks and finds performance degrades as input grows —…</span>
         </li>
         <li>
           <a href="../how-contexts-fail/index.html" data-wikilink-slug="how-contexts-fail">How Contexts Fail: Four Failure Modes</a>
@@ -228,6 +238,10 @@ context-management lessons that ACON formalizes, optimizes, and measures</li>
           <a href="../four-context-strategies/index.html" data-wikilink-slug="four-context-strategies">The Four Context Strategies: Write, Select, Compress, Isolate</a>
           <span class="article-backlinks__teaser">LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with c…</span>
         </li>
+        <li>
+          <a href="../multi-agent-context-isolation/index.html" data-wikilink-slug="multi-agent-context-isolation">Multi-Agent Context Isolation</a>
+          <span class="article-backlinks__teaser">Anthropic's production account of the isolate strategy: subagents with separate context windows explore in par…</span>
+        </li>
         </ul>
       </section>
       <section class="article-sources" id="sources" aria-label="Sources">
@@ -237,8 +251,8 @@ context-management lessons that ACON formalizes, optimizes, and measures</li>
         </ol>
       </section>
       <nav class="article__nav" aria-label="Article navigation">
-        <a href="../agentic-search-and-retrieval/index.html" class="btn read-nav-btn" rel="prev">&larr; Agentic Search and Just-in-Time Retrieval</a>
-        <a href="../what-is-context-engineering/index.html" class="btn read-nav-btn" rel="next">What Is Context Engineering &rarr;</a>
+        <a href="../agentic-context-engineering/index.html" class="btn read-nav-btn" rel="prev">&larr; Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a>
+        <a href="../multi-agent-context-isolation/index.html" class="btn read-nav-btn" rel="next">Multi-Agent Context Isolation &rarr;</a>
       </nav>
     </article>
   </div>
@@ -255,7 +269,7 @@ context-management lessons that ACON formalizes, optimizes, and measures</li>
       </ul>
     </div>
 </div>
-<script>window.LINK_PREVIEWS = {"lessons-from-manus":{"title":"Lessons from Building Manus","summary":"Six practical context-engineering lessons the Manus team learned rebuilding their agent framework four times, from KV-cache design to keeping failures in context.","tags":["agent-engineering","context-engineering","kv-cache"],"readingTime":6},"how-contexts-fail":{"title":"How Contexts Fail: Four Failure Modes","summary":"Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.","tags":["failure-modes","context-management","agents"],"readingTime":6},"agentic-context-engineering":{"title":"Agentic Context Engineering (ACE): Contexts as Evolving Playbooks","summary":"A framework that treats an agent's context as a self-improving playbook, refined from execution feedback via generation, reflection, and curation — without weight updates.","tags":["context-engineering","agents","strategies"],"readingTime":4},"agentic-search-and-retrieval":{"title":"Agentic Search and Just-in-Time Retrieval","summary":"How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.","tags":["context-engineering","agents","retrieval"],"readingTime":6},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7},"four-context-strategies":{"title":"The Four Context Strategies: Write, Select, Compress, Isolate","summary":"LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.","tags":["context-engineering","agents","strategies"],"readingTime":7}};</script>
+<script>window.LINK_PREVIEWS = {"lessons-from-manus":{"title":"Lessons from Building Manus","summary":"Six practical context-engineering lessons the Manus team learned rebuilding their agent framework four times, from KV-cache design to keeping failures in context.","tags":["agent-engineering","context-engineering","kv-cache"],"readingTime":6},"context-rot":{"title":"Context Rot: Performance Degrades With Input Length Alone","summary":"Chroma tests 18 frontier models on deliberately trivial tasks and finds performance degrades as input grows — even far below the context limit, and even when the task itself never…","tags":["failure-modes","long-context","benchmarks"],"readingTime":7},"how-contexts-fail":{"title":"How Contexts Fail: Four Failure Modes","summary":"Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.","tags":["failure-modes","context-management","agents"],"readingTime":6},"agentic-context-engineering":{"title":"Agentic Context Engineering (ACE): Contexts as Evolving Playbooks","summary":"A framework that treats an agent's context as a self-improving playbook, refined from execution feedback via generation, reflection, and curation — without weight updates.","tags":["context-engineering","agents","strategies"],"readingTime":4},"agentic-search-and-retrieval":{"title":"Agentic Search and Just-in-Time Retrieval","summary":"How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.","tags":["context-engineering","agents","retrieval"],"readingTime":7},"context-management-tactics":{"title":"Context Management Tactics: Six Ways to Fix Your Context","summary":"Drew Breunig's six tactics — RAG, tool loadout, quarantine, pruning, summarization, offloading — for mitigating context failures in agents.","tags":["context-engineering","agents","strategies"],"readingTime":7},"four-context-strategies":{"title":"The Four Context Strategies: Write, Select, Compress, Isolate","summary":"LangChain's four buckets for agent context engineering — write, select, compress, and isolate context — with concrete examples of each.","tags":["context-engineering","agents","strategies"],"readingTime":7},"multi-agent-context-isolation":{"title":"Multi-Agent Context Isolation","summary":"Anthropic's production account of the isolate strategy: subagents with separate context windows explore in parallel and return condensed findings, buying capacity at roughly 15× th…","tags":["strategies","agents","multi-agent"],"readingTime":6}};</script>
 <script>
 (function() {
   try { localStorage.setItem('grimoire-last-read', "context-compression-optimization"); } catch(e) {}
@@ -410,7 +424,7 @@ context-management lessons that ACON formalizes, optimizes, and measures</li>
 </script>
 </main>
 <footer class="footer container">
-  <p>Generated 2026-07-14 &middot; 14 articles &middot; Built with Grimoire</p>
+  <p>Generated 2026-07-20 &middot; 18 articles &middot; Built with Grimoire</p>
 </footer>
 <script>
 (function() {

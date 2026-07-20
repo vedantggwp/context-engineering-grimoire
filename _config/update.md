@@ -48,3 +48,4 @@ max_stale_checks: 3
      Format: - slug-a <-> slug-b — reason -->
 - agentic-search-and-retrieval <-> context-vs-prompt-engineering — incidental overlap; a foundational definition and a specific retrieval tactic share vocabulary but a reader on one gains nothing specific from the other
 - context-engineering-templates <-> lessons-from-manus — both are practitioner sources but the overlap (generic templates vs Manus's specific rebuild lessons) is incidental, not a relationship worth a cross-link
+- agentic-context-engineering <-> multi-agent-context-isolation — incidental overlap; both are 2025-era agent context techniques, but ACE refines a reusable playbook from execution feedback while isolation partitions windows across parallel agents — they solve different problems and a reader on one gains nothing specific from the other

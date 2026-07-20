@@ -86,3 +86,4 @@ Since reader performance saturates long before retriever recall (more than 20 do
 - [[failure-modes/how-contexts-fail]] — Drew Breunig's four failure modes, including Context Distraction (degradation as context grows), which this paper measures empirically
 - [[strategies/agentic-search-and-retrieval]] — retrieval and reranking strategies that respond to the position effect
 - [[foundations/context-window-as-working-memory]] — why filling the window isn't the same as using it well
+- [[failure-modes/context-rot]] — the length-isolating successor on 18 frontier models; finds degradation from input length even where position has no effect

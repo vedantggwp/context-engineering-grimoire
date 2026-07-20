@@ -74,3 +74,4 @@ A multi-turn agent doing a codebase migration or a research project cannot be st
 - [[foundations/context-window-as-working-memory]] — why finite context forces curation rather than one-shot prompting
 - [[strategies/context-management-tactics]] — the per-turn curation practices that distinguish context from prompt work
 - [Context Engineering (Simon Willison)](https://simonwillison.net/2025/Jun/27/context-engineering/) — the argument for why the term will stick
+- [[foundations/context-engineering-as-a-discipline]] — a paper complicating the 2025-origin story with twenty years of prior art

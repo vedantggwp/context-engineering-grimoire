@@ -98,3 +98,4 @@ Anthropic describes a "just in time" strategy where an agent maintains lightweig
 - [[strategies/four-context-strategies]] — write, select, compress, and isolate as concrete tactics
 - [[failure-modes/how-contexts-fail]] — the context failures that context engineering exists to prevent
 - [Effective Context Engineering for AI Agents (Anthropic)](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) — Anthropic's practical anatomy and long-horizon techniques
+- [[foundations/context-engineering-as-a-discipline]] — an attempt to give these practitioner definitions a systematic form

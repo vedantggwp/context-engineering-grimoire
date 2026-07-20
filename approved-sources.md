@@ -1,6 +1,6 @@
 # Approved Sources: Context Engineering for LLM Agents
 Approved: 2026-07-10
-Total: 20 attempted / 17 usable
+Total: 24 attempted / 21 usable
 Note: Deliberately messy-source topic (blogs, papers, forum posts, GitHub) — NOT a docs site. Selected to test fetch-ladder generalization.
 
 ## Ingest Queue
@@ -27,8 +27,16 @@ Note: Deliberately messy-source topic (blogs, papers, forum posts, GitHub) — N
 | 18 | https://news.ycombinator.com/item?id=44427757 | HN thread | thread | P2 | extract | html-extract | rejected (off-topic capture) |
 | 19 | https://arxiv.org/abs/2510.04618 | Agentic Context Engineering (ACE) | paper | P0 | extract | html-extract | ingested |
 | 20 | https://arxiv.org/abs/2510.00615 | ACON: Optimizing Context Compression | paper | P0 | extract | html-extract | ingested |
+| 21 | https://research.trychroma.com/context-rot | Context Rot: How Increasing Input Tokens Impacts LLM Performance | article | P0 | extract | html-extract | ingested |
+| 22 | https://www.anthropic.com/engineering/multi-agent-research-system | How We Built Our Multi-Agent Research System | article | P0 | extract | html-extract | ingested |
+| 23 | https://arxiv.org/abs/2512.13564 | Memory in the Age of AI Agents (survey) | paper | P0 | extract | html-extract | ingested |
+| 24 | https://arxiv.org/abs/2510.26493 | Context Engineering 2.0: The Context of Context Engineering | paper | P0 | extract | html-extract | ingested |
 
 ## Failure notes
 - **#16** arXiv HTML fulltext for v3 returns no acceptable capture; the v1 HTML render exists and was used instead (#13). arXiv HTML availability is version-dependent.
 - **#17** Reddit blocked at BOTH the research.js ladder and the WebFetch fallback rung. Forum content is the ladder's hard weak spot.
+- **#23, #24** arXiv `/abs` pages capture the abstract and bibliographic record cleanly,
+  but NOT the paper body. Both articles built from them carry an explicit
+  abstract-only fidelity warning. This is a known ceiling of the `/abs` route, not a
+  fetch failure — a full read needs the PDF or HTML fulltext.
 - **#18** HN item captured cleanly (`fidelity: extract`, 200) but the extracted text was an off-topic thread about C compilers. `extract` certifies faithfulness-to-page, not relevance-to-topic — curation still load-bearing. Rejected from corpus.

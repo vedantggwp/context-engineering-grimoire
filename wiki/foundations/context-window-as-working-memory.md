@@ -78,3 +78,7 @@ When working memory approaches capacity, it can be compressed. Martin points to 
 - [[failure-modes/lost-in-the-middle]] — the positional degradation that finite windows expose
 - [[strategies/context-management-tactics]] — compaction and offloading when working memory fills
 - [Context Engineering (Lance Martin)](https://rlancemartin.github.io/2025/06/23/context_engineering/) — the source of the OS/RAM framing and the four-bucket taxonomy
+- [[failure-modes/context-rot]] — evidence that window size is capacity, not usable capacity
+- [[strategies/agent-memory]] — the literature that formalizes what sits outside the window
+- [[foundations/context-engineering-as-a-discipline]] — where the RAM-analogy era sits in a twenty-year history
+- [[strategies/agentic-search-and-retrieval]] — why fetching on demand beats preloading: the window is RAM, not disk

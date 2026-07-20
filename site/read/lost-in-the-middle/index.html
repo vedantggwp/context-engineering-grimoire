@@ -77,19 +77,23 @@
       <h4>Articles</h4>
       <ul>
         <li><a href="../four-context-strategies/index.html">The Four Context Strategies: Write, Select, Compress, Isolate</a></li>
-        <li><a href="../agentic-context-engineering/index.html">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a></li>
-        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
-        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
         <li><a href="../agentic-search-and-retrieval/index.html">Agentic Search and Just-in-Time Retrieval</a></li>
+        <li><a href="../context-management-tactics/index.html">Context Management Tactics: Six Ways to Fix Your Context</a></li>
+        <li><a href="../agent-memory/index.html">Agent Memory: Forms, Functions, Dynamics</a></li>
+        <li><a href="../agentic-context-engineering/index.html">Agentic Context Engineering (ACE): Contexts as Evolving Playbooks</a></li>
         <li><a href="../context-compression-optimization/index.html">Context Compression Optimization (ACON) for Long-Horizon Agents</a></li>
-        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
-        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
+        <li><a href="../multi-agent-context-isolation/index.html">Multi-Agent Context Isolation</a></li>
         <li><a href="../context-window-as-working-memory/index.html">The Context Window as Working Memory</a></li>
+        <li><a href="../how-contexts-fail/index.html">How Contexts Fail: Four Failure Modes</a></li>
+        <li><a href="../what-is-context-engineering/index.html">What Is Context Engineering</a></li>
+        <li><a href="../context-rot/index.html">Context Rot: Performance Degrades With Input Length Alone</a></li>
+        <li><a href="../lessons-from-manus/index.html">Lessons from Building Manus</a></li>
         <li><a href="../twelve-factor-agents/index.html">12-Factor Agents</a></li>
+        <li><a href="../context-engineering-as-a-discipline/index.html">Context Engineering as a Twenty-Year Discipline</a></li>
         <li><a href="../lost-in-the-middle/index.html" aria-current="page">Lost in the Middle: How Models Use Long Contexts</a></li>
         <li><a href="../context-vs-prompt-engineering/index.html">Context Engineering vs. Prompt Engineering</a></li>
-        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
         <li><a href="../evals-for-llm-systems/index.html">Evals for LLM Systems</a></li>
+        <li><a href="../context-engineering-templates/index.html">Context Engineering Templates</a></li>
       </ul>
     </div>
   <div class="read-content">
@@ -99,7 +103,7 @@
         <a href="#sources" class="source-count">1 source</a>
         
         <span class="fidelity-badge fidelity-badge--mixed" title="At least one cited source was only partially captured; verify claims against the source list.">Compiled from partial captures &mdash; verify against sources</span>
-        <span class="article-meta__words">1184 words &middot; 6 min</span>
+        <span class="article-meta__words">1205 words &middot; 6 min</span>
       </div>
       <h1 style="view-transition-name: vta-lost-in-the-middle">Lost in the Middle: How Models Use Long Contexts</h1>
       <div class="tag-row"><span class="tag">failure-modes</span><span class="tag">long-context</span><span class="tag">retrieval</span><span class="tag">research</span></div>
@@ -169,6 +173,7 @@ Claude (100K)         48.2%         76.4%
 <li><a class="internal" href="../how-contexts-fail/index.html" data-wikilink-slug="how-contexts-fail">failure-modes/how-contexts-fail</a> — Drew Breunig's four failure modes, including Context Distraction (degradation as context grows), which this paper measures empirically</li>
 <li><a class="internal" href="../agentic-search-and-retrieval/index.html" data-wikilink-slug="agentic-search-and-retrieval">strategies/agentic-search-and-retrieval</a> — retrieval and reranking strategies that respond to the position effect</li>
 <li><a class="internal" href="../context-window-as-working-memory/index.html" data-wikilink-slug="context-window-as-working-memory">foundations/context-window-as-working-memory</a> — why filling the window isn't the same as using it well</li>
+<li><a class="internal" href="../context-rot/index.html" data-wikilink-slug="context-rot">failure-modes/context-rot</a> — the length-isolating successor on 18 frontier models; finds degradation from input length even where position has no effect</li>
 </ul>
       </div>
       <section class="article-backlinks" aria-label="Articles linking here">
@@ -177,6 +182,10 @@ Claude (100K)         48.2%         76.4%
         <li>
           <a href="../lessons-from-manus/index.html" data-wikilink-slug="lessons-from-manus">Lessons from Building Manus</a>
           <span class="article-backlinks__teaser">Six practical context-engineering lessons the Manus team learned rebuilding their agent framework four times,…</span>
+        </li>
+        <li>
+          <a href="../context-rot/index.html" data-wikilink-slug="context-rot">Context Rot: Performance Degrades With Input Length Alone</a>
+          <span class="article-backlinks__teaser">Chroma tests 18 frontier models on deliberately trivial tasks and finds performance degrades as input grows —…</span>
         </li>
         <li>
           <a href="../how-contexts-fail/index.html" data-wikilink-slug="how-contexts-fail">How Contexts Fail: Four Failure Modes</a>
@@ -195,7 +204,7 @@ Claude (100K)         48.2%         76.4%
         </ol>
       </section>
       <nav class="article__nav" aria-label="Article navigation">
-        <a href="../twelve-factor-agents/index.html" class="btn read-nav-btn" rel="prev">&larr; 12-Factor Agents</a>
+        <a href="../context-engineering-as-a-discipline/index.html" class="btn read-nav-btn" rel="prev">&larr; Context Engineering as a Twenty-Year Discipline</a>
         <a href="../context-vs-prompt-engineering/index.html" class="btn read-nav-btn" rel="next">Context Engineering vs. Prompt Engineering &rarr;</a>
       </nav>
     </article>
@@ -212,7 +221,7 @@ Claude (100K)         48.2%         76.4%
       </ul>
     </div>
 </div>
-<script>window.LINK_PREVIEWS = {"lessons-from-manus":{"title":"Lessons from Building Manus","summary":"Six practical context-engineering lessons the Manus team learned rebuilding their agent framework four times, from KV-cache design to keeping failures in context.","tags":["agent-engineering","context-engineering","kv-cache"],"readingTime":6},"how-contexts-fail":{"title":"How Contexts Fail: Four Failure Modes","summary":"Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.","tags":["failure-modes","context-management","agents"],"readingTime":6},"context-window-as-working-memory":{"title":"The Context Window as Working Memory","summary":"Karpathy's analogy of the LLM as an operating system and its context window as RAM — a finite working memory whose limited capacity makes context curation essential.","tags":["context-engineering","foundations","context-window"],"readingTime":5},"agentic-search-and-retrieval":{"title":"Agentic Search and Just-in-Time Retrieval","summary":"How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.","tags":["context-engineering","agents","retrieval"],"readingTime":6}};</script>
+<script>window.LINK_PREVIEWS = {"lessons-from-manus":{"title":"Lessons from Building Manus","summary":"Six practical context-engineering lessons the Manus team learned rebuilding their agent framework four times, from KV-cache design to keeping failures in context.","tags":["agent-engineering","context-engineering","kv-cache"],"readingTime":6},"context-rot":{"title":"Context Rot: Performance Degrades With Input Length Alone","summary":"Chroma tests 18 frontier models on deliberately trivial tasks and finds performance degrades as input grows — even far below the context limit, and even when the task itself never…","tags":["failure-modes","long-context","benchmarks"],"readingTime":7},"how-contexts-fail":{"title":"How Contexts Fail: Four Failure Modes","summary":"Drew Breunig's four ways long contexts break agents: poisoning, distraction, confusion, and clash — why bigger context windows create new failures.","tags":["failure-modes","context-management","agents"],"readingTime":6},"context-window-as-working-memory":{"title":"The Context Window as Working Memory","summary":"Karpathy's analogy of the LLM as an operating system and its context window as RAM — a finite working memory whose limited capacity makes context curation essential.","tags":["context-engineering","foundations","context-window"],"readingTime":6},"agentic-search-and-retrieval":{"title":"Agentic Search and Just-in-Time Retrieval","summary":"How agents fetch context on demand at runtime — Anthropic's just-in-time retrieval and agentic search vs. pre-loading, plus select-context strategies.","tags":["context-engineering","agents","retrieval"],"readingTime":7}};</script>
 <script>
 (function() {
   try { localStorage.setItem('grimoire-last-read', "lost-in-the-middle"); } catch(e) {}
@@ -367,7 +376,7 @@ Claude (100K)         48.2%         76.4%
 </script>
 </main>
 <footer class="footer container">
-  <p>Generated 2026-07-14 &middot; 14 articles &middot; Built with Grimoire</p>
+  <p>Generated 2026-07-20 &middot; 18 articles &middot; Built with Grimoire</p>
 </footer>
 <script>
 (function() {

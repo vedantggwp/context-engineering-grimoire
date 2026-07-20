@@ -116,3 +116,5 @@ improving task success over existing compression baselines.
   context; ACON keeps less *in* it — complementary ways to bound the window
 - [[agent-engineering/lessons-from-manus]] — Manus's hands-on compaction and
   context-management lessons that ACON formalizes, optimizes, and measures
+- [[failure-modes/context-rot]] — why compression pays — degradation begins well below the window limit
+- [[strategies/multi-agent-context-isolation]] — subagents compress by construction; ACON compresses explicitly — two routes to the same token budget
